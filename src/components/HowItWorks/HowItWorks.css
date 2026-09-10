@@ -1,0 +1,344 @@
+.how{
+
+    position:relative;
+
+    padding:90px 8%;
+
+    overflow:hidden;
+
+    background:linear-gradient(
+        135deg,
+        #83341a,
+        #310832,
+        #4b36ea
+    );
+
+    background-size:300% 300%;
+
+    animation:gradientMove 12s ease infinite;
+}
+.how h2{
+
+    font-size:42px;
+
+    color:#8B1E24;
+
+    margin-bottom:10px;
+}
+
+.how>p{
+
+    color:#666;
+
+    margin-bottom:50px;
+
+    font-size:18px;
+}
+
+.progress-line{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:70px;
+}
+
+.progress-line div{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    background:#E63946;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    box-shadow:0 10px 20px rgba(230,57,70,.3);
+}
+
+.progress-line span{
+
+    width:120px;
+
+    height:5px;
+
+    background:#E63946;
+}
+
+.how-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:30px;
+}
+.how-card{
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    padding:35px;
+
+    border-radius:20px;
+
+    transition:.4s;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+}
+.how-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.step-number{
+
+    font-size:38px;
+
+    color:#E63946;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+}
+
+.step-icon{
+
+    font-size:48px;
+
+    color:#E63946;
+
+    margin-bottom:20px;
+}
+
+.how-card h3{
+
+    color:rgb(58, 8, 240);
+
+    margin-bottom:15px;
+}
+
+.how-card p{
+
+    color:rgba(255,255,255,.85);
+
+    line-height:1.8;
+}
+
+.journey-btn{
+
+    margin-top:60px;
+
+    padding:18px 40px;
+
+    border:none;
+
+    border-radius:50px;
+
+    background:#E63946;
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-weight:bold;
+}
+
+.journey-btn:hover{
+
+    background:#8B1E24;
+
+    transform:scale(1.05);
+}
+
+@media(max-width:1000px){
+
+    .how-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .progress-line{
+
+        display:none;
+
+    }
+
+    .how-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+.how-section::before,
+.how-section::after{
+
+    content:"";
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(100px);
+
+    opacity:.3;
+
+}
+
+
+.how-section::before{
+
+    width:350px;
+
+    height:350px;
+
+    background:#60A5FA;
+
+    top:-100px;
+
+    left:-100px;
+
+    animation:floatGlow 12s infinite;
+
+}
+
+
+.how-section::after{
+
+    width:400px;
+
+    height:400px;
+
+    background:#F472B6;
+
+    bottom:-150px;
+
+    right:-100px;
+
+    animation:floatGlow 15s infinite;
+
+}
+
+
+
+@keyframes gradientMove{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+
+}
+
+
+
+@keyframes floatGlow{
+
+    0%{
+        transform:translate(0,0);
+    }
+
+    50%{
+        transform:translate(40px,-30px);
+    }
+
+    100%{
+        transform:translate(0,0);
+    }
+
+}
+/* Paste at bottom of each section CSS */
+
+html.dark .about-us,
+html.dark .how-it-works,
+html.dark .kundwa-features,
+html.dark .love-stories,
+html.dark .success-stories,
+html.dark .why-choose-kundwa,
+[data-kundwa-theme="dark"] .about-us,
+[data-kundwa-theme="dark"] .how-it-works,
+[data-kundwa-theme="dark"] .kundwa-features,
+[data-kundwa-theme="dark"] .love-stories,
+[data-kundwa-theme="dark"] .success-stories,
+[data-kundwa-theme="dark"] .why-choose-kundwa {
+  background: #0f0a1a !important;
+  color: #f3e8ff !important;
+}
+
+html.dark .about-us h2,
+html.dark .how-it-works h2,
+html.dark .kundwa-features h2,
+html.dark .love-stories h2,
+html.dark .success-stories h2,
+html.dark .why-choose-kundwa h2,
+[data-kundwa-theme="dark"] .about-us h2,
+[data-kundwa-theme="dark"] .how-it-works h2,
+[data-kundwa-theme="dark"] .kundwa-features h2,
+[data-kundwa-theme="dark"] .love-stories h2,
+[data-kundwa-theme="dark"] .success-stories h2,
+[data-kundwa-theme="dark"] .why-choose-kundwa h2 {
+  color: #faf5ff !important;
+}
+
+html.dark .about-us p,
+html.dark .how-it-works p,
+html.dark .kundwa-features p,
+html.dark .love-stories p,
+html.dark .success-stories p,
+html.dark .why-choose-kundwa p,
+[data-kundwa-theme="dark"] .about-us p,
+[data-kundwa-theme="dark"] .how-it-works p {
+  color: #a78bfa !important;
+}
+
+/* Cards inside sections */
+html.dark .about-us .card,
+html.dark .how-it-works .card,
+html.dark .feature-card,
+html.dark .story-card,
+html.dark .why-card,
+[data-kundwa-theme="dark"] .feature-card,
+[data-kundwa-theme="dark"] .story-card {
+  background: #1a1028 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f3e8ff !important;
+  box-shadow: none !important;
+}

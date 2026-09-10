@@ -1,0 +1,1005 @@
+/* =========================================================
+   UMUHUZA — NEW APP PREFERENCES
+   ========================================================= */
+
+.new-preferences-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      180deg,
+      #fff7f9 0%,
+      #ffffff 35%,
+      #fffafb 100%
+    );
+  color: #2d1f25;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.new-preferences-header {
+  height: 74px;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid #f0e3e7;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6%;
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  box-shadow:
+    0 3px 18px rgba(73, 30, 46, 0.05);
+}
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.new-preferences-back {
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #6c5961;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.new-preferences-back:hover {
+  color: #c9184a;
+  transform: translateX(-2px);
+}
+
+.new-preferences-back svg {
+  font-size: 18px;
+}
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.new-preferences-brand {
+  color: #c9184a;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   HEADER TITLE
+   ========================================================= */
+
+.new-preferences-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #5f4a53;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.new-preferences-header-title svg {
+  color: #c9184a;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.new-preferences-main {
+  width: min(850px, 92%);
+
+  margin: 0 auto;
+
+  padding: 42px 0 70px;
+}
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.new-preferences-card {
+  background: #ffffff;
+
+  border: 1px solid #f0e1e6;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 15px 45px rgba(70, 28, 45, 0.07);
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.new-preferences-intro {
+  padding: 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  border-bottom: 1px solid #f2e6e9;
+}
+
+.new-preferences-intro-icon {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  border-radius: 17px;
+
+  background: #fff0f4;
+
+  color: #c9184a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+}
+
+.new-preferences-eyebrow {
+  display: block;
+
+  color: #c9184a;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+}
+
+.new-preferences-intro h1 {
+  margin: 6px 0 5px;
+
+  color: #302128;
+
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.new-preferences-intro p {
+  margin: 0;
+
+  color: #817078;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   SETTINGS SECTION
+   ========================================================= */
+
+.new-preferences-section {
+  padding: 27px 30px;
+
+  border-bottom: 1px solid #f4eaed;
+}
+
+.new-preferences-section:last-of-type {
+  border-bottom: none;
+}
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.new-preferences-section-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  margin-bottom: 20px;
+}
+
+.new-preferences-section-heading h2 {
+  margin: 0 0 4px;
+
+  color: #33242b;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.new-preferences-section-heading p {
+  margin: 0;
+
+  color: #85757c;
+
+  font-size: 12.5px;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   SECTION ICON
+   ========================================================= */
+
+.new-preferences-section-icon {
+  width: 43px;
+  height: 43px;
+
+  flex-shrink: 0;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 19px;
+}
+
+.new-preferences-section-icon.language {
+  background: #fff0f4;
+  color: #c9184a;
+}
+
+.new-preferences-section-icon.appearance {
+  background: #fff5e9;
+  color: #cc7412;
+}
+
+.new-preferences-section-icon.sound {
+  background: #eef8fa;
+  color: #258194;
+}
+
+.new-preferences-section-icon.autoplay {
+  background: #f5f0ff;
+  color: #7650b8;
+}
+
+/* =========================================================
+   LANGUAGE OPTIONS
+   ========================================================= */
+
+.new-preferences-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.preference-option {
+  width: 100%;
+
+  min-height: 67px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #eee3e7;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition: 0.2s ease;
+}
+
+.preference-option:hover {
+  background: #fff8fa;
+
+  border-color: #f0c5d0;
+}
+
+.preference-option.selected {
+  background: #fff7f9;
+
+  border-color: #e9a7b8;
+
+  box-shadow:
+    0 4px 12px rgba(201, 24, 74, 0.06);
+}
+
+.preference-option-left {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.language-flag {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+
+  background: #f8f3f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+}
+
+.preference-option strong {
+  display: block;
+
+  color: #33242b;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.preference-option small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #918087;
+
+  font-size: 11px;
+}
+
+.preference-check {
+  width: 27px;
+  height: 27px;
+
+  border-radius: 50%;
+
+  background: #c9184a;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   APPEARANCE OPTIONS
+   ========================================================= */
+
+.appearance-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 11px;
+}
+
+.appearance-option {
+  min-height: 135px;
+
+  position: relative;
+
+  padding: 18px 15px;
+
+  border: 1px solid #eee3e7;
+
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  transition: 0.2s ease;
+}
+
+.appearance-option:hover {
+  background: #fff8fa;
+
+  border-color: #f0c5d0;
+}
+
+.appearance-option.selected {
+  background: #fff7f9;
+
+  border-color: #e9a7b8;
+
+  box-shadow:
+    0 5px 15px rgba(201, 24, 74, 0.07);
+}
+
+.appearance-option > svg {
+  margin-bottom: 10px;
+
+  color: #c9184a;
+
+  font-size: 24px;
+}
+
+.appearance-option strong {
+  color: #33242b;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+.appearance-option > span:not(.appearance-check) {
+  margin-top: 4px;
+
+  color: #8c7b82;
+
+  font-size: 10.5px;
+}
+
+.appearance-check {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  width: 24px;
+  height: 24px;
+
+  border-radius: 50%;
+
+  background: #c9184a;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   TOGGLE SETTINGS
+   ========================================================= */
+
+.new-preferences-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+}
+
+.new-preferences-setting-info {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  min-width: 0;
+}
+
+.new-preferences-setting-info h2 {
+  margin: 0 0 4px;
+
+  color: #33242b;
+
+  font-size: 15px;
+
+  font-weight: 800;
+}
+
+.new-preferences-setting-info p {
+  margin: 0;
+
+  color: #85757c;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   TOGGLE
+   ========================================================= */
+
+.preference-toggle {
+  width: 50px;
+  height: 28px;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  border-radius: 30px;
+
+  background: #d9cfd3;
+
+  padding: 3px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.preference-toggle span {
+  display: block;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.15);
+
+  transition: 0.2s ease;
+}
+
+.preference-toggle.on {
+  background: #c9184a;
+}
+
+.preference-toggle.on span {
+  transform: translateX(22px);
+}
+
+/* =========================================================
+   SUCCESS
+   ========================================================= */
+
+.new-preferences-success {
+  margin: 0 30px 20px;
+
+  padding: 13px 15px;
+
+  border-radius: 11px;
+
+  background: #f3fbf6;
+
+  border: 1px solid #cfeedd;
+
+  color: #24824d;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 12.5px;
+
+  font-weight: 700;
+}
+
+.new-preferences-success svg {
+  font-size: 17px;
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.new-preferences-error {
+  margin: 0 30px 20px;
+
+  padding: 13px 15px;
+
+  border-radius: 11px;
+
+  background: #fff0f2;
+
+  border: 1px solid #ffd1d9;
+
+  color: #b42345;
+
+  font-size: 12.5px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   SAVE AREA
+   ========================================================= */
+
+.new-preferences-save {
+  padding: 24px 30px;
+
+  background: #fffafb;
+
+  border-top: 1px solid #f2e6e9;
+
+  display: flex;
+
+  justify-content: flex-end;
+}
+
+.new-preferences-save-btn {
+  min-width: 165px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #c9184a;
+
+  color: #ffffff;
+
+  padding: 12px 20px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(201, 24, 74, 0.22);
+
+  transition: 0.2s ease;
+}
+
+.new-preferences-save-btn:hover {
+  background: #ad123f;
+
+  transform: translateY(-1px);
+}
+
+.new-preferences-save-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* =========================================================
+   SAVE SPINNER
+   ========================================================= */
+
+.save-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: preference-spin 0.7s linear infinite;
+}
+
+@keyframes preference-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.new-preferences-footer {
+  text-align: center;
+
+  padding: 42px 20px 10px;
+
+  color: #9a898f;
+}
+
+.new-preferences-footer > div {
+  font-size: 24px;
+
+  margin-bottom: 5px;
+}
+
+.new-preferences-footer strong {
+  display: block;
+
+  color: #c9184a;
+
+  font-size: 15px;
+
+  letter-spacing: 1px;
+}
+
+.new-preferences-footer p {
+  margin: 6px 0;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   EMPTY / LOADING
+   ========================================================= */
+
+.new-preferences-empty,
+.new-preferences-loading {
+  width: min(500px, 90%);
+
+  margin: 100px auto;
+
+  padding: 45px 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #f0e1e6;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 15px 45px rgba(70, 28, 45, 0.08);
+}
+
+.new-preferences-empty-icon,
+.new-preferences-loading-icon {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+
+  background: #fff0f4;
+
+  color: #c9184a;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+}
+
+.new-preferences-empty h2,
+.new-preferences-loading h2 {
+  margin: 0;
+
+  color: #33242b;
+
+  font-size: 22px;
+}
+
+.new-preferences-empty p,
+.new-preferences-loading p {
+  color: #827178;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+.new-preferences-primary-btn {
+  margin-top: 15px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #c9184a;
+
+  color: #ffffff;
+
+  padding: 12px 22px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.new-preferences-primary-btn:hover {
+  background: #ad123f;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .new-preferences-header {
+    height: 66px;
+
+    padding: 0 18px;
+  }
+
+  .new-preferences-back span {
+    display: none;
+  }
+
+  .new-preferences-brand {
+    font-size: 17px;
+  }
+
+  .new-preferences-header-title span {
+    display: none;
+  }
+
+  .new-preferences-main {
+    width: 94%;
+
+    padding-top: 25px;
+  }
+
+  .new-preferences-intro {
+    padding: 24px 20px;
+  }
+
+  .new-preferences-intro-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 14px;
+
+    font-size: 21px;
+  }
+
+  .new-preferences-intro h1 {
+    font-size: 21px;
+  }
+
+  .new-preferences-section {
+    padding: 23px 20px;
+  }
+
+  .appearance-options {
+    grid-template-columns: 1fr;
+  }
+
+  .appearance-option {
+    min-height: 76px;
+
+    flex-direction: row;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    text-align: left;
+
+    padding: 15px;
+  }
+
+  .appearance-option > svg {
+    margin-bottom: 0;
+
+    font-size: 21px;
+  }
+
+  .appearance-option > span:not(.appearance-check) {
+    margin-top: 0;
+
+    margin-left: auto;
+  }
+
+  .appearance-check {
+    position: static;
+
+    margin-left: auto;
+  }
+
+  .new-preferences-setting-row {
+    gap: 15px;
+  }
+
+  .new-preferences-setting-info p {
+    font-size: 11.5px;
+  }
+
+  .new-preferences-save {
+    padding: 20px;
+  }
+
+  .new-preferences-save-btn {
+    width: 100%;
+  }
+
+  .new-preferences-success,
+  .new-preferences-error {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 430px) {
+  .new-preferences-intro {
+    align-items: flex-start;
+  }
+
+  .new-preferences-intro p {
+    font-size: 12px;
+  }
+
+  .new-preferences-section-heading {
+    gap: 11px;
+  }
+
+  .new-preferences-section-icon {
+    width: 39px;
+    height: 39px;
+
+    border-radius: 11px;
+
+    font-size: 17px;
+  }
+
+  .preference-option {
+    min-height: 62px;
+
+    padding: 10px 12px;
+  }
+
+  .language-flag {
+    width: 34px;
+    height: 34px;
+
+    font-size: 18px;
+  }
+
+  .preference-option strong {
+    font-size: 13px;
+  }
+
+  .preference-option small {
+    font-size: 10px;
+  }
+
+  .new-preferences-setting-info {
+    gap: 10px;
+  }
+
+  .new-preferences-setting-info h2 {
+    font-size: 14px;
+  }
+
+  .new-preferences-setting-info p {
+    font-size: 10.5px;
+  }
+}

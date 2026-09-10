@@ -1,0 +1,682 @@
+.member-card {
+  background: #1a1225;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-6px);
+}
+
+/* PHOTO */
+.member-card-photo {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.member-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.member-card-placeholder {
+  font-size: 70px;
+  color: #c4b5fd;
+}
+
+/* BODY */
+.member-card-body {
+  padding: 18px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #e2e8f0;
+}
+
+.member-card-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.member-card-location,
+.member-card-looking,
+.member-card-status {
+  margin: 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #a5b4fc;
+}
+
+.member-card-status.online {
+  color: #4ade80;
+}
+
+.member-card-status.offline {
+  color: #94a3b8;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.member-card-near {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #4c1d95;
+  color: #e9d5ff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+/* BUTTONS */
+.member-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.member-card-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-view {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-view:hover {
+  background: #1d4ed8;
+}
+
+.btn-like {
+  background: #ffffff;
+  color: #16a34a;
+}
+
+.btn-like:hover {
+  background: #f0fdf4;
+}
+
+.btn-interest {
+  background: #16a34a;
+  color: white;
+}
+
+.btn-interest:hover {
+  background: #15803d;
+}
+
+.btn-chat {
+  background: #7c3aed;
+  color: white;
+}
+
+.btn-chat:hover {
+  background: #6d28d9;
+}
+/* ===============================
+   MEMBERS GRID - makes cards fit well
+=============================== */
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  padding: 10px 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* On very large screens keep maximum 3 cards per row */
+@media (min-width: 1100px) {
+  .members-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    gap: 24px;
+  }
+}/* ===============================
+   MOBILE OPTIMIZATION
+=============================== */
+
+@media (max-width: 640px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin: 0 auto;
+    gap: 24px;
+    padding: 10px 16px 40px;
+  }
+
+  .member-card {
+    border-radius: 18px;
+  }
+
+  .member-card-photo {
+    height: 240px; /* a bit taller on mobile looks better */
+  }
+
+  .member-card-body {
+    padding: 16px 16px 20px;
+  }
+
+  .member-card-name {
+    font-size: 1.2rem;
+  }
+
+  .member-card-actions {
+    gap: 10px;
+  }
+
+  .member-card-actions button {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+}
+/* ===============================
+   MOBILE - Better fit + compact buttons
+=============================== */
+
+@media (max-width: 640px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    margin: 0 auto;
+    gap: 20px;
+    padding: 12px 14px 40px;
+  }
+
+  .member-card {
+    border-radius: 18px;
+  }
+
+  .member-card-photo {
+    height: 230px;
+  }
+
+  .member-card-body {
+    padding: 14px 14px 18px;
+    gap: 6px;
+  }
+
+  .member-card-name {
+    font-size: 1.15rem;
+  }
+
+  .member-card-location,
+  .member-card-looking,
+  .member-card-status {
+    font-size: 0.87rem;
+  }
+
+  .member-card-near {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+  }
+
+  /* Compact buttons */
+  .member-card-actions {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .member-card-actions button {
+    padding: 11px 12px;
+    font-size: 0.9rem;
+    border-radius: 11px;
+  }
+
+  /* Make Like button look like the others */
+  .btn-like {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .members-grid {
+    max-width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .member-card-photo {
+    height: 210px;
+  }
+
+  .member-card-actions button {
+    padding: 10px;
+    font-size: 0.87rem;
+  }
+}
+/* ===============================
+   MOBILE - Bigger cards that fill the screen
+=============================== */
+
+@media (max-width: 640px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    gap: 20px;
+    padding: 12px 12px 40px;
+  }
+
+  .member-card {
+    width: 100%;
+    border-radius: 18px;
+  }
+
+  .member-card-photo {
+    height: 260px;
+  }
+
+  .member-card-body {
+    padding: 16px 16px 20px;
+  }
+
+  .member-card-name {
+    font-size: 1.25rem;
+  }
+
+  .member-card-actions {
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .member-card-actions button {
+    padding: 13px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+
+  .btn-like {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+  }
+}
+/* Dark */
+html.dark .member-card,
+[data-kundwa-theme="dark"] .member-card {
+  background: #1a1028 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark .member-content,
+[data-kundwa-theme="dark"] .member-content {
+  background: #1a1028 !important;
+}
+
+html.dark .member-card-name,
+[data-kundwa-theme="dark"] .member-card-name {
+  color: #faf5ff !important;
+}
+
+html.dark .location,
+html.dark .looking,
+html.dark .status,
+[data-kundwa-theme="dark"] .location,
+[data-kundwa-theme="dark"] .looking,
+[data-kundwa-theme="dark"] .status {
+  color: #c4b5fd !important;
+}
+
+html.dark .member-photo-wrap,
+[data-kundwa-theme="dark"] .member-photo-wrap {
+  background: linear-gradient(160deg, #2e1065, #4c1d95);
+}
+
+html.dark .profile-btn,
+[data-kundwa-theme="dark"] .profile-btn {
+  background: rgba(124, 58, 237, 0.3) !important;
+  color: #e9d5ff !important;
+  border: 1px solid rgba(167, 139, 250, 0.4) !important;
+}
+
+html.dark .like-btn,
+[data-kundwa-theme="dark"] .like-btn {
+  background: transparent !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+  color: #86efac !important;
+}
+
+html.dark .interest-btn,
+[data-kundwa-theme="dark"] .interest-btn {
+  background: linear-gradient(180deg, #22c55e, #16a34a) !important;
+  color: #fff !important;
+  border: none !important;
+}
+/* Member card — dark blue background */
+
+.member-card {
+  background: #0f172a !important; /* dark blue */
+  border: 1px solid rgba(148, 163, 184, 0.15) !important;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35);
+}
+
+.member-content {
+  background: #0f172a !important; /* same dark blue under photo */
+  color: #e2e8f0;
+  padding: 14px 16px 16px;
+}
+
+.member-card-name {
+  color: #f8fafc !important;
+}
+
+.location,
+.looking,
+.status {
+  color: #94a3b8 !important;
+}
+
+.status.online {
+  color: #4ade80 !important;
+}
+
+.near-you-badge {
+  background: #312e81 !important;
+  color: #c7d2fe !important;
+}
+
+/* Buttons stay strong on dark blue */
+.profile-btn {
+  background: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.like-btn {
+  background: #ffffff !important;
+  color: #16a34a !important;
+  border: none !important;
+}
+
+.interest-btn {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* If you have Start Chat on the card */
+.chat-btn,
+.start-chat-btn {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+/* =========================================================
+   MEMBER CARD — match Success Stories dark style
+========================================================= */
+
+.member-card {
+  display: flex;
+  flex-direction: column;
+  background: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  text-align: left;
+  height: 100%;
+}
+
+/* Photo */
+.member-card-photo {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1e293b, #312e81);
+}
+
+.member-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.member-card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #94a3b8;
+  font-size: 2.5rem;
+  background: linear-gradient(160deg, #1e293b, #312e81);
+}
+
+/* Body */
+.member-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px 18px;
+  background: #0f172a;
+  color: #e2e8f0;
+  flex: 1;
+}
+
+.member-card-name {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f9a8d4; /* same soft pink as success names */
+}
+
+.member-card-location,
+.member-card-looking {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.member-card-location svg {
+  color: #f472b6;
+  flex-shrink: 0;
+}
+
+.member-card-looking svg {
+  color: #f472b6;
+  flex-shrink: 0;
+}
+
+.member-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.member-card-status .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #64748b;
+}
+
+.member-card-status.online {
+  color: #4ade80;
+}
+
+.member-card-status.online .status-dot {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+}
+
+.member-card-near {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.2);
+  color: #c7d2fe;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+/* Buttons */
+.member-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.member-card-actions button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.member-card-actions button:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+/* View Profile — blue */
+.btn-view {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Like — white */
+.btn-like {
+  background: #ffffff;
+  color: #16a34a;
+}
+
+/* Send Interest — green */
+.btn-interest {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+/* Start Chat — purple (like success pink buttons, brand violet) */
+.btn-chat {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #ffffff;
+}
+/* =========================================================
+   HOME — featured members section (dark behind cards)
+========================================================= */
+
+.featured-members {
+  background: #020617 !important;
+  color: #e2e8f0;
+  padding: 48px 20px 64px;
+  text-align: center;
+}
+
+.featured-members h2 {
+  margin: 0 0 10px;
+  color: #f8fafc !important;
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  font-weight: 800;
+}
+
+.featured-members > p {
+  margin: 0 auto 32px;
+  max-width: 560px;
+  color: #94a3b8 !important;
+  line-height: 1.5;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.featured-members {
+  background: #020617 !important;
+  color: #e2e8f0;
+  padding: 48px 20px 64px;
+  text-align: center;
+}
+
+.featured-members h2 {
+  color: #f8fafc !important;
+  margin: 0 0 10px;
+}
+
+.featured-members > p {
+  color: #94a3b8 !important;
+  margin: 0 auto 32px;
+  max-width: 560px;
+}

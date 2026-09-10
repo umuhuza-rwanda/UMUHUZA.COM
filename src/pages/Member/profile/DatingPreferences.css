@@ -1,0 +1,1078 @@
+/* =====================================================
+   KUNDWA
+   DATING PREFERENCES
+===================================================== */
+
+.dating-preferences-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(244, 63, 94, 0.08),
+      transparent 32%
+    ),
+    #f8fafc;
+
+  color: #1f2937;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.dating-header {
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 40px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #e5e7eb;
+
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  backdrop-filter: blur(12px);
+}
+
+
+.dating-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  border: none;
+  background: transparent;
+
+  color: #64748b;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  transition: 0.2s ease;
+}
+
+
+.dating-back-btn:hover {
+  background: #f8fafc;
+  color: #e11d48;
+}
+
+
+.dating-back-btn svg {
+  font-size: 18px;
+}
+
+
+.dating-brand {
+  font-size: 21px;
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+
+  color: #e11d48;
+}
+
+
+.dating-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #475569;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+.dating-header-title svg {
+  color: #e11d48;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.dating-main {
+  width: min(920px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 44px 0 70px;
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+.dating-intro-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  padding: 30px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.05);
+
+  margin-bottom: 22px;
+}
+
+
+.dating-intro-icon {
+  width: 64px;
+  height: 64px;
+
+  min-width: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: #fff1f2;
+
+  color: #e11d48;
+
+  font-size: 28px;
+}
+
+
+.dating-eyebrow {
+  display: block;
+
+  color: #e11d48;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+
+  margin-bottom: 6px;
+}
+
+
+.dating-intro-card h1 {
+  margin: 0 0 8px;
+
+  color: #111827;
+
+  font-size: 27px;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.6px;
+}
+
+
+.dating-intro-card p {
+  margin: 0;
+
+  max-width: 650px;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.dating-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 18px;
+
+  margin-bottom: 18px;
+
+  border-radius: 12px;
+
+  background: #fff1f2;
+
+  border: 1px solid #fecdd3;
+
+  color: #be123c;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+.dating-error svg {
+  min-width: 18px;
+}
+
+
+/* =====================================================
+   SUCCESS
+===================================================== */
+
+.dating-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+
+  padding: 16px 18px;
+
+  margin-bottom: 18px;
+
+  border-radius: 12px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #166534;
+}
+
+
+.dating-success svg {
+  margin-top: 2px;
+
+  font-size: 20px;
+
+  min-width: 20px;
+}
+
+
+.dating-success div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+
+.dating-success strong {
+  font-size: 14px;
+}
+
+
+.dating-success span {
+  font-size: 13px;
+  color: #15803d;
+}
+
+
+/* =====================================================
+   FORM CARD
+===================================================== */
+
+.dating-form-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  padding: 34px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
+
+.dating-section-header {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 15px;
+
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+
+.dating-section-header.second-section {
+  margin-top: 38px;
+}
+
+
+.dating-section-icon {
+  width: 44px;
+  height: 44px;
+
+  min-width: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  font-size: 20px;
+}
+
+
+.dating-section-icon.heart {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+
+.dating-section-icon.users {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+
+.dating-section-header h2 {
+  margin: 1px 0 5px;
+
+  font-size: 18px;
+
+  color: #111827;
+}
+
+
+.dating-section-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   DATING OPTIONS
+===================================================== */
+
+.dating-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 22px;
+}
+
+
+.dating-option {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  text-align: left;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+  padding: 17px 18px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.dating-option:hover {
+  border-color: #fda4af;
+
+  background: #fffafb;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 15px rgba(225, 29, 72, 0.06);
+}
+
+
+.dating-option.selected {
+  border-color: #fb7185;
+
+  background: #fff1f2;
+
+  box-shadow:
+    0 5px 18px rgba(225, 29, 72, 0.08);
+}
+
+
+.dating-option-icon {
+  width: 45px;
+  height: 45px;
+
+  min-width: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  font-size: 23px;
+}
+
+
+.dating-option.selected
+.dating-option-icon {
+  background: #ffffff;
+}
+
+
+.dating-option-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.dating-option-content strong {
+  color: #1f2937;
+
+  font-size: 14px;
+}
+
+
+.dating-option-content span {
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.dating-option-check {
+  width: 26px;
+  height: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #e11d48;
+}
+
+
+.dating-option-check svg {
+  font-size: 22px;
+}
+
+
+/* =====================================================
+   GENDER OPTIONS
+===================================================== */
+
+.dating-gender-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 14px;
+
+  margin-top: 22px;
+}
+
+
+.dating-gender-option {
+  min-height: 145px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  position: relative;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 15px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.dating-gender-option:hover {
+  border-color: #93c5fd;
+
+  background: #f8fbff;
+
+  transform: translateY(-2px);
+}
+
+
+.dating-gender-option.selected {
+  border-color: #60a5fa;
+
+  background: #eff6ff;
+
+  box-shadow:
+    0 6px 20px rgba(37, 99, 235, 0.08);
+}
+
+
+.gender-option-emoji {
+  font-size: 35px;
+}
+
+
+.dating-gender-option strong {
+  color: #334155;
+
+  font-size: 14px;
+}
+
+
+.dating-gender-option > svg {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  color: #2563eb;
+
+  font-size: 20px;
+}
+
+
+/* =====================================================
+   INFORMATION BOX
+===================================================== */
+
+.dating-information {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-top: 28px;
+
+  padding: 16px 18px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 13px;
+}
+
+
+.dating-information > svg {
+  min-width: 19px;
+
+  margin-top: 2px;
+
+  color: #64748b;
+}
+
+
+.dating-information div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.dating-information strong {
+  color: #334155;
+
+  font-size: 13px;
+}
+
+
+.dating-information p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   SAVE AREA
+===================================================== */
+
+.dating-save-container {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 30px;
+
+  padding-top: 24px;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+
+.dating-save-btn {
+  min-width: 190px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 13px 20px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #e11d48;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(225, 29, 72, 0.18);
+
+  transition: 0.2s ease;
+}
+
+
+.dating-save-btn:hover:not(:disabled) {
+  background: #be123c;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(225, 29, 72, 0.24);
+}
+
+
+.dating-save-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+
+.dating-cancel-btn {
+  padding: 13px 20px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.dating-cancel-btn:hover:not(:disabled) {
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+
+  color: #334155;
+}
+
+
+.dating-cancel-btn:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   SPINNER
+===================================================== */
+
+.dating-spinner {
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid rgba(255, 255, 255, 0.35);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    dating-spin 0.7s linear infinite;
+}
+
+
+@keyframes dating-spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =====================================================
+   EMPTY / LOGIN
+===================================================== */
+
+.dating-empty-card,
+.dating-loading-card {
+  width: min(500px, calc(100% - 40px));
+
+  margin: 120px auto;
+
+  padding: 45px 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 15px 40px rgba(15, 23, 42, 0.07);
+}
+
+
+.dating-empty-icon,
+.dating-loading-icon {
+  width: 65px;
+  height: 65px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: #fff1f2;
+
+  color: #e11d48;
+
+  font-size: 28px;
+}
+
+
+.dating-empty-card h2,
+.dating-loading-card h2 {
+  margin: 0 0 8px;
+
+  color: #111827;
+
+  font-size: 21px;
+}
+
+
+.dating-empty-card p,
+.dating-loading-card p {
+  margin: 0 0 22px;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+.dating-primary-btn {
+  padding: 12px 22px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #e11d48;
+
+  color: #ffffff;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.dating-footer {
+  text-align: center;
+
+  padding: 35px 20px 0;
+
+  color: #94a3b8;
+}
+
+
+.dating-footer-heart {
+  font-size: 20px;
+
+  margin-bottom: 5px;
+}
+
+
+.dating-footer strong {
+  display: block;
+
+  color: #e11d48;
+
+  font-size: 15px;
+}
+
+
+.dating-footer p {
+  margin: 6px 0 4px;
+
+  font-size: 12px;
+}
+
+
+.dating-footer small {
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 760px) {
+
+  .dating-header {
+    height: auto;
+
+    min-height: 68px;
+
+    padding: 12px 18px;
+
+    gap: 12px;
+  }
+
+
+  .dating-brand {
+    font-size: 18px;
+  }
+
+
+  .dating-header-title span {
+    display: none;
+  }
+
+
+  .dating-back-btn span {
+    display: none;
+  }
+
+
+  .dating-main {
+    width: min(
+      100% - 24px,
+      680px
+    );
+
+    padding-top: 24px;
+  }
+
+
+  .dating-intro-card {
+    align-items: flex-start;
+
+    padding: 22px;
+
+    gap: 15px;
+  }
+
+
+  .dating-intro-icon {
+    width: 50px;
+    height: 50px;
+
+    min-width: 50px;
+
+    font-size: 22px;
+  }
+
+
+  .dating-intro-card h1 {
+    font-size: 21px;
+  }
+
+
+  .dating-form-card {
+    padding: 22px 18px;
+  }
+
+
+  .dating-gender-options {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+
+  .dating-gender-option {
+    min-height: 90px;
+
+    flex-direction: row;
+
+    justify-content: flex-start;
+
+    padding: 0 22px;
+  }
+
+
+  .gender-option-emoji {
+    font-size: 30px;
+  }
+
+
+  .dating-gender-option > svg {
+    right: 18px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+  }
+
+
+  .dating-save-container {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+
+  .dating-save-btn,
+  .dating-cancel-btn {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .dating-main {
+    width: calc(100% - 20px);
+  }
+
+
+  .dating-intro-card {
+    padding: 18px;
+  }
+
+
+  .dating-intro-card h1 {
+    font-size: 19px;
+  }
+
+
+  .dating-intro-card p {
+    font-size: 12px;
+  }
+
+
+  .dating-section-header h2 {
+    font-size: 16px;
+  }
+
+
+  .dating-option {
+    padding: 14px;
+
+    gap: 10px;
+  }
+
+
+  .dating-option-icon {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    font-size: 20px;
+  }
+
+
+  .dating-option-content span {
+    font-size: 11px;
+  }
+
+}

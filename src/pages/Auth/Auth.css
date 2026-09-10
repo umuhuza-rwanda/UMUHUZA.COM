@@ -1,0 +1,1965 @@
+/* =========================================================
+   KUNDWA AUTH SYSTEM
+   Signup / About You / Profile Setup
+========================================================= */
+
+
+/* =========================================================
+   AUTH PAGE
+========================================================= */
+
+.auth-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px 20px;
+
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(124, 58, 237, .45),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(230, 57, 70, .35),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            135deg,
+            #24104F,
+            #4B164C,
+            #8B1E24
+        );
+
+}
+
+
+/* =========================================================
+   MAIN AUTH CONTAINER
+========================================================= */
+
+.auth-container {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    min-height: 680px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    background: #ffffff;
+
+    border-radius: 30px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, .30);
+
+}
+
+
+/* =========================================================
+   LEFT WELCOME SIDE
+========================================================= */
+
+.auth-welcome {
+
+    padding: 70px 55px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(236, 72, 153, .35),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(124, 58, 237, .45),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            #8B1E24,
+            #5B1748,
+            #32145F
+        );
+
+}
+
+
+.auth-logo {
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    margin-bottom: 50px;
+
+    letter-spacing: .3px;
+
+}
+
+
+.auth-welcome h1 {
+
+    font-size: 52px;
+
+    line-height: 1.15;
+
+    margin: 0 0 25px;
+
+    font-weight: 800;
+
+}
+
+
+.auth-welcome p {
+
+    max-width: 420px;
+
+    margin: 0;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, .82);
+
+}
+
+
+.auth-hearts {
+
+    margin-top: 45px;
+
+    font-size: 28px;
+
+    letter-spacing: 12px;
+
+}
+
+
+/* =========================================================
+   RIGHT FORM SIDE
+========================================================= */
+
+.auth-form-container {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 55px 50px;
+
+    background: #ffffff;
+
+}
+
+
+.auth-form {
+
+    width: 100%;
+
+    max-width: 470px;
+
+}
+
+
+.auth-form h2 {
+
+    color: #8B1E24;
+
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    margin: 0 0 8px;
+
+    font-weight: 800;
+
+}
+
+
+.auth-subtitle {
+
+    color: #777;
+
+    margin: 0 0 30px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   SIGNUP PROGRESS
+========================================================= */
+
+.signup-progress {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 32px;
+
+}
+
+
+.progress-step {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5px;
+
+    flex-shrink: 0;
+
+}
+
+
+.progress-step span {
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #eeeeee;
+
+    color: #888;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+}
+
+
+.progress-step small {
+
+    color: #999;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+}
+
+
+.progress-step.active span {
+
+    background: #E63946;
+
+    color: white;
+
+    box-shadow:
+        0 5px 15px rgba(230, 57, 70, .30);
+
+}
+
+
+.progress-step.active small {
+
+    color: #8B1E24;
+
+    font-weight: 700;
+
+}
+
+
+.progress-step.completed span {
+
+    background: #27ae60;
+
+    color: white;
+
+    box-shadow:
+        0 5px 15px rgba(39, 174, 96, .25);
+
+}
+
+
+.progress-step.completed small {
+
+    color: #27ae60;
+
+    font-weight: 600;
+
+}
+
+
+.progress-line {
+
+    width: 55px;
+
+    height: 2px;
+
+    background: #dddddd;
+
+    margin: 0 8px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.progress-line.active-line {
+
+    background: #E63946;
+
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
+
+.auth-error {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 14px;
+
+    margin-bottom: 20px;
+
+    border-radius: 10px;
+
+    background: #fff1f2;
+
+    border: 1px solid #fecdd3;
+
+    color: #b42318;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+
+    margin-bottom: 20px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #444;
+
+    font-weight: 600;
+
+    font-size: 14px;
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    font-family: inherit;
+
+}
+
+
+/* =========================================================
+   INPUT WRAPPER
+========================================================= */
+
+.input-wrapper {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+}
+
+
+.input-wrapper svg {
+
+    position: absolute;
+
+    left: 15px;
+
+    color: #999;
+
+    font-size: 18px;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+}
+
+
+/* =========================================================
+   NORMAL INPUTS
+========================================================= */
+
+.input-wrapper input,
+.form-group > input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 16px 14px 45px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 15px;
+
+    color: #333;
+
+    background: #ffffff;
+
+    transition: .25s;
+
+}
+
+
+.input-wrapper input::placeholder,
+.form-group > input::placeholder {
+
+    color: #aaa;
+
+}
+
+
+.input-wrapper input:focus,
+.form-group > input:focus {
+
+    border-color: #8B1E24;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 36, .10);
+
+}
+
+
+.input-wrapper input:disabled,
+.form-group input:disabled {
+
+    background: #f7f7f7;
+
+    cursor: not-allowed;
+
+    opacity: .7;
+
+}
+
+
+/* =========================================================
+   SELECT FIELDS
+========================================================= */
+
+.input-wrapper select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 40px 14px 45px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 15px;
+
+    background: #ffffff;
+
+    color: #444;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+
+.input-wrapper select:focus {
+
+    border-color: #8B1E24;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 36, .10);
+
+}
+
+
+.input-wrapper select:disabled {
+
+    background: #f7f7f7;
+
+    color: #aaa;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   DATE INPUT
+========================================================= */
+
+.input-wrapper input[type="date"] {
+
+    color: #555;
+
+}
+
+
+.input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+
+    cursor: pointer;
+
+    opacity: .65;
+
+}
+
+
+/* =========================================================
+   NUMBER / YEAR INPUT
+========================================================= */
+
+.input-wrapper input[type="number"] {
+
+    appearance: textfield;
+
+}
+
+
+.input-wrapper input[type="number"]::-webkit-inner-spin-button,
+.input-wrapper input[type="number"]::-webkit-outer-spin-button {
+
+    opacity: .7;
+
+}
+
+
+/* =========================================================
+   INPUT HELP
+========================================================= */
+
+.input-help {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #999;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   PHONE NUMBER
+========================================================= */
+
+.phone-input-group {
+
+    display: grid;
+
+    grid-template-columns: 135px 1fr;
+
+    gap: 10px;
+
+}
+
+
+.phone-country-select {
+
+    width: 100%;
+
+    padding: 14px 10px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #444;
+
+    outline: none;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+}
+
+
+.phone-country-select:focus {
+
+    border-color: #8B1E24;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 36, .10);
+
+}
+
+
+.phone-number-input {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 15px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 15px;
+
+}
+
+
+.phone-number-input:focus {
+
+    border-color: #8B1E24;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 36, .10);
+
+}
+
+
+/* =========================================================
+   TEXTAREA
+========================================================= */
+
+.textarea-wrapper {
+
+    position: relative;
+
+    width: 100%;
+
+}
+
+
+.textarea-wrapper svg {
+
+    position: absolute;
+
+    left: 15px;
+
+    top: 16px;
+
+    color: #999;
+
+    font-size: 18px;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+}
+
+
+.textarea-wrapper textarea {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 15px 14px 45px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    resize: vertical;
+
+    min-height: 90px;
+
+    color: #333;
+
+    transition: .25s;
+
+}
+
+
+.textarea-wrapper textarea:focus {
+
+    border-color: #8B1E24;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 30, 36, .10);
+
+}
+
+
+.textarea-wrapper textarea:disabled {
+
+    background: #f7f7f7;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+.terms {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin: 20px 0 25px;
+
+    font-size: 13px;
+
+    color: #666;
+
+    line-height: 1.5;
+
+}
+
+
+.terms input {
+
+    margin-top: 3px;
+
+    width: 16px;
+
+    height: 16px;
+
+    accent-color: #E63946;
+
+    cursor: pointer;
+
+}
+
+
+.terms label {
+
+    cursor: pointer;
+
+}
+
+
+.terms span {
+
+    color: #8B1E24;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.auth-primary-btn {
+
+    width: 100%;
+
+    min-height: 52px;
+
+    padding: 15px 18px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #E63946,
+            #8B1E24
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    box-shadow:
+        0 10px 25px rgba(230, 57, 70, .25);
+
+}
+
+
+.auth-primary-btn:hover:not(:disabled) {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 30px rgba(230, 57, 70, .35);
+
+}
+
+
+.auth-primary-btn:active:not(:disabled) {
+
+    transform: translateY(0);
+
+}
+
+
+.auth-primary-btn:disabled {
+
+    opacity: .65;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+}
+
+
+/* =========================================================
+   LOGIN SWITCH
+========================================================= */
+
+.auth-switch {
+
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+.auth-link {
+
+    border: none;
+
+    background: none;
+
+    color: #E63946;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    margin-left: 5px;
+
+    padding: 0;
+
+}
+
+
+.auth-link:hover {
+
+    text-decoration: underline;
+
+}
+
+
+.auth-link:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =========================================================
+   NAVIGATION BUTTONS
+========================================================= */
+
+.auth-navigation {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 10px;
+
+}
+
+
+.auth-navigation .auth-primary-btn {
+
+    flex: 1;
+
+}
+
+
+.auth-back-btn {
+
+    padding: 15px 22px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: #777;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+
+.auth-back-btn:hover {
+
+    border-color: #8B1E24;
+
+    color: #8B1E24;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================================
+   PROFILE COMPLETION
+========================================================= */
+
+.profile-completion {
+
+    background: #fff8f8;
+
+    border: 1px solid #f8dddd;
+
+    border-radius: 14px;
+
+    padding: 15px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.completion-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+
+    color: #555;
+
+    font-size: 14px;
+
+}
+
+
+.completion-header strong {
+
+    color: #E63946;
+
+}
+
+
+.completion-bar {
+
+    width: 100%;
+
+    height: 8px;
+
+    background: #eeeeee;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-bottom: 8px;
+
+}
+
+
+.completion-progress {
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #E63946,
+            #8B1E24
+        );
+
+}
+
+
+.profile-completion small {
+
+    color: #888;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   PROFILE PHOTO SECTION
+========================================================= */
+
+.profile-photo-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.profile-photo-placeholder {
+
+    width: 150px;
+
+    height: 150px;
+
+    min-width: 150px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    position: relative;
+
+    background: #f7e9ef;
+
+    border: 4px solid #ffffff;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .12);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.profile-placeholder-icon {
+
+    font-size: 60px;
+
+    color: #d08aa3;
+
+}
+
+
+.profile-photo-preview {
+
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    border-radius: 50%;
+
+}
+
+
+.camera-icon {
+
+    position: absolute;
+
+    right: 5px;
+
+    bottom: 5px;
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    color: #d84b7a;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, .15);
+
+}
+
+
+.photo-text {
+
+    min-width: 0;
+
+}
+
+
+.photo-text h3 {
+
+    color: #8B1E24;
+
+    margin: 0 0 6px;
+
+    font-size: 17px;
+
+}
+
+
+.photo-text p {
+
+    color: #777;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    margin: 0 0 10px;
+
+}
+
+
+/* =========================================================
+   PHOTO GRID
+   For future 4-photo profile setup
+========================================================= */
+
+.profile-photo-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.profile-photo-card {
+
+    position: relative;
+
+    aspect-ratio: 1 / 1;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background: #f7e9ef;
+
+    border: 1px solid #f0d9e1;
+
+}
+
+
+.profile-photo-card img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+
+.profile-photo-card.main-photo {
+
+    border: 2px solid #E63946;
+
+}
+
+
+.profile-photo-label {
+
+    position: absolute;
+
+    left: 8px;
+
+    bottom: 8px;
+
+    padding: 5px 8px;
+
+    border-radius: 8px;
+
+    background: rgba(139, 30, 36, .9);
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.profile-photo-remove {
+
+    position: absolute;
+
+    top: 7px;
+
+    right: 7px;
+
+    width: 28px;
+
+    height: 28px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, .65);
+
+    color: white;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+/* =========================================================
+   UPLOAD PHOTO BUTTON
+========================================================= */
+
+.upload-photo-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 9px 14px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #8B1E24;
+
+    color: white;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+
+.upload-photo-btn:hover {
+
+    background: #E63946;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================================
+   INTERESTS
+========================================================= */
+
+.interest-options {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+}
+
+
+.interest-options button {
+
+    padding: 9px 13px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 20px;
+
+    background: white;
+
+    color: #666;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+    font-size: 13px;
+
+}
+
+
+.interest-options button:hover {
+
+    border-color: #E63946;
+
+    color: #E63946;
+
+    background: #fff8f8;
+
+}
+
+
+.interest-options button.selected,
+.interest-options button.selected-interest {
+
+    background: #E63946;
+
+    color: white;
+
+    border-color: #E63946;
+
+}
+
+
+/* =========================================================
+   COUNTRY / LOCATION SPECIAL BLOCK
+========================================================= */
+
+.location-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+}
+
+
+.location-field {
+
+    min-width: 0;
+
+}
+
+
+/* =========================================================
+   VERIFICATION INFORMATION
+========================================================= */
+
+.verification-box {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+
+    background: #f8f7ff;
+
+    border: 1px solid #e5e1ff;
+
+}
+
+
+.verification-box-icon {
+
+    flex-shrink: 0;
+
+    color: #6d4aff;
+
+    font-size: 20px;
+
+}
+
+
+.verification-box-content {
+
+    min-width: 0;
+
+}
+
+
+.verification-box-content strong {
+
+    display: block;
+
+    color: #444;
+
+    margin-bottom: 4px;
+
+    font-size: 14px;
+
+}
+
+
+.verification-box-content p {
+
+    margin: 0;
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================================
+   REAL PHOTO NOTICE
+========================================================= */
+
+.real-photo-notice {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    margin-top: 10px;
+
+    border-radius: 10px;
+
+    background: #fff8f8;
+
+    border: 1px solid #f5dddd;
+
+    color: #777;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+.real-photo-notice strong {
+
+    color: #8B1E24;
+
+}
+
+
+/* =========================================================
+   SCROLLING FOR LONG FORMS
+========================================================= */
+
+.auth-form-container {
+
+    overflow-y: auto;
+
+}
+
+
+.auth-form-container::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+
+.auth-form-container::-webkit-scrollbar-track {
+
+    background: transparent;
+
+}
+
+
+.auth-form-container::-webkit-scrollbar-thumb {
+
+    background: #dddddd;
+
+    border-radius: 10px;
+
+}
+
+
+.auth-form-container::-webkit-scrollbar-thumb:hover {
+
+    background: #bbbbbb;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .auth-page {
+
+        padding: 20px;
+
+        align-items: flex-start;
+
+    }
+
+
+    .auth-container {
+
+        grid-template-columns: 1fr;
+
+        min-height: auto;
+
+        max-width: 650px;
+
+    }
+
+
+    .auth-welcome {
+
+        padding: 40px 30px;
+
+        text-align: center;
+
+        align-items: center;
+
+    }
+
+
+    .auth-logo {
+
+        margin-bottom: 25px;
+
+    }
+
+
+    .auth-welcome h1 {
+
+        font-size: 40px;
+
+    }
+
+
+    .auth-welcome p {
+
+        font-size: 16px;
+
+    }
+
+
+    .auth-hearts {
+
+        margin-top: 25px;
+
+    }
+
+
+    .auth-form-container {
+
+        padding: 40px 30px;
+
+        overflow-y: visible;
+
+    }
+
+
+    .auth-form {
+
+        max-width: 100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET / SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .auth-page {
+
+        padding: 0;
+
+    }
+
+
+    .auth-container {
+
+        width: 100%;
+
+        border-radius: 0;
+
+    }
+
+
+    .auth-welcome {
+
+        padding: 35px 25px;
+
+    }
+
+
+    .auth-welcome h1 {
+
+        font-size: 34px;
+
+    }
+
+
+    .auth-welcome p {
+
+        font-size: 15px;
+
+    }
+
+
+    .auth-form-container {
+
+        padding: 35px 22px;
+
+    }
+
+
+    .auth-form h2 {
+
+        font-size: 28px;
+
+    }
+
+
+    .signup-progress {
+
+        margin-bottom: 25px;
+
+    }
+
+
+    .progress-line {
+
+        width: 35px;
+
+        margin-left: 5px;
+
+        margin-right: 5px;
+
+    }
+
+
+    .progress-step small {
+
+        font-size: 10px;
+
+    }
+
+
+    .location-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+    }
+
+
+    .phone-input-group {
+
+        grid-template-columns: 110px 1fr;
+
+    }
+
+
+    .profile-photo-section {
+
+        align-items: flex-start;
+
+    }
+
+
+    .profile-photo-placeholder {
+
+        width: 90px;
+
+        height: 90px;
+
+        min-width: 90px;
+
+    }
+
+
+    .profile-placeholder-icon {
+
+        font-size: 38px;
+
+    }
+
+
+    .camera-icon {
+
+        width: 28px;
+
+        height: 28px;
+
+        font-size: 14px;
+
+        right: 2px;
+
+        bottom: 2px;
+
+    }
+
+
+    .photo-text h3 {
+
+        font-size: 15px;
+
+    }
+
+
+    .photo-text p {
+
+        font-size: 12px;
+
+    }
+
+
+    .profile-photo-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 8px;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .auth-form-container {
+
+        padding: 30px 16px;
+
+    }
+
+
+    .auth-welcome {
+
+        padding: 30px 18px;
+
+    }
+
+
+    .auth-welcome h1 {
+
+        font-size: 30px;
+
+    }
+
+
+    .signup-progress {
+
+        justify-content: space-between;
+
+    }
+
+
+    .progress-line {
+
+        flex: 1;
+
+        width: auto;
+
+        min-width: 15px;
+
+    }
+
+
+    .phone-input-group {
+
+        grid-template-columns: 100px 1fr;
+
+        gap: 7px;
+
+    }
+
+
+    .phone-country-select {
+
+        font-size: 12px;
+
+        padding-left: 7px;
+
+        padding-right: 7px;
+
+    }
+
+
+    .auth-primary-btn {
+
+        font-size: 15px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION BUTTONS
+========================================================= */
+
+@media (max-width: 500px) {
+
+    .auth-navigation {
+
+        flex-direction: column-reverse;
+
+        width: 100%;
+
+    }
+
+
+    .auth-navigation .auth-primary-btn,
+    .auth-back-btn {
+
+        width: 100%;
+
+    }
+
+}

@@ -1,0 +1,1101 @@
+/* =====================================================
+   UMURANGA.COM NAVBAR
+===================================================== */
+
+.navbar {
+  width: 100%;
+  height: 92px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 4%;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eeeeee;
+
+  position: relative;
+  z-index: 1000;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 30px;
+  font-weight: 800;
+
+  color: #8f1d2c;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.logo-heart {
+  font-size: 31px;
+}
+
+
+/* =====================================================
+   DESKTOP NAVIGATION
+===================================================== */
+
+.desktop-nav-links {
+  display: flex;
+  align-items: center;
+
+  gap: 34px;
+
+  margin-left: auto;
+  margin-right: 32px;
+}
+
+.desktop-nav-links button {
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 17px;
+  font-weight: 600;
+
+  color: #555555;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.desktop-nav-links button:hover {
+  color: #b21f45;
+
+  transform: translateY(-1px);
+}
+
+.desktop-nav-links svg {
+  font-size: 20px;
+}
+
+
+/* =====================================================
+   RIGHT SIDE
+===================================================== */
+
+.nav-right {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* =====================================================
+   WHATSAPP
+===================================================== */
+
+.whatsapp-btn {
+  height: 48px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #16c763;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px
+    rgba(22, 199, 99, 0.25);
+}
+
+.whatsapp-icon {
+  font-size: 17px;
+}
+
+
+/* =====================================================
+   SIGN UP
+===================================================== */
+
+.signup-btn {
+  height: 48px;
+
+  padding: 0 17px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #e92c4f;
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.signup-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px
+    rgba(233, 44, 79, 0.25);
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+.login-btn {
+  height: 48px;
+
+  padding: 0 17px;
+
+  border: 1.5px solid #e92c4f;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  color: #e92c4f;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.login-btn:hover {
+  background: #e92c4f;
+
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   MENU BUTTON
+===================================================== */
+
+.menu-btn {
+  width: 48px;
+  height: 48px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #f7f7f7;
+
+  color: #333333;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.menu-btn:hover {
+  background: #eeeeee;
+
+  transform: translateY(-1px);
+}
+
+.menu-btn svg {
+  font-size: 25px;
+}
+
+
+/* =====================================================
+   MOBILE NAVIGATION
+===================================================== */
+
+.mobile-nav-right {
+  display: none;
+}
+
+
+/* =====================================================
+   MENU OVERLAY
+===================================================== */
+
+.navbar-menu-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background:
+    rgba(0, 0, 0, 0.38);
+
+  z-index: 1998;
+}
+
+
+/* =====================================================
+   MENU PANEL
+===================================================== */
+
+.navbar-menu {
+  position: fixed;
+
+  top: 0;
+  right: -390px;
+
+  width: 360px;
+  max-width: 88vw;
+
+  height: 100vh;
+
+  background: #ffffff;
+
+  z-index: 1999;
+
+  box-shadow:
+    -10px 0 35px
+    rgba(0, 0, 0, 0.15);
+
+  display: flex;
+  flex-direction: column;
+
+  transition:
+    right 0.3s ease;
+}
+
+.navbar-menu.open {
+  right: 0;
+}
+
+
+/* =====================================================
+   MENU HEADER
+===================================================== */
+
+.navbar-menu-header {
+  padding: 28px 25px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.navbar-menu-title {
+  display: block;
+
+  font-size: 23px;
+  font-weight: 800;
+
+  color: #951d2e;
+}
+
+.navbar-menu-header small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #888888;
+
+  font-size: 13px;
+}
+
+.navbar-menu-close {
+  width: 43px;
+  height: 43px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f5f5f5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.navbar-menu-close svg {
+  font-size: 23px;
+}
+
+
+/* =====================================================
+   MENU ITEMS
+===================================================== */
+
+.navbar-menu-items {
+  padding: 18px 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.navbar-menu-item {
+  width: 100%;
+
+  min-height: 58px;
+
+  padding: 0 14px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  color: #444444;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.navbar-menu-item:hover {
+  background: #fff1f4;
+
+  color: #b21f45;
+
+  transform: translateX(4px);
+}
+
+.menu-item-icon {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+
+  background: #f9f0f3;
+
+  color: #b21f45;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.menu-item-icon svg {
+  font-size: 19px;
+}
+
+
+/* =====================================================
+   MENU FOOTER
+===================================================== */
+
+.navbar-menu-footer {
+  margin-top: auto;
+
+  padding: 22px;
+
+  border-top: 1px solid #eeeeee;
+
+  background: #fff8fa;
+}
+
+.navbar-menu-footer p {
+  margin: 0 0 15px;
+
+  color: #777777;
+
+  font-size: 14px;
+}
+
+.navbar-menu-footer button {
+  width: 100%;
+
+  height: 50px;
+
+  border: none;
+  border-radius: 13px;
+
+  background: #e92c4f;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1150px) {
+
+  .navbar {
+    padding: 0 25px;
+  }
+
+  .desktop-nav-links {
+    gap: 18px;
+
+    margin-right: 18px;
+  }
+
+  .desktop-nav-links button {
+    font-size: 15px;
+  }
+
+  .whatsapp-btn,
+  .signup-btn,
+  .login-btn {
+    padding: 0 12px;
+
+    font-size: 14px;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .navbar {
+    height: 76px;
+
+    padding: 0 16px;
+  }
+
+
+  /* LOGO */
+
+  .logo {
+    font-size: 24px;
+
+    gap: 7px;
+  }
+
+  .logo-heart {
+    font-size: 25px;
+  }
+
+
+  /* HIDE DESKTOP */
+
+  .desktop-nav-links,
+  .nav-right {
+    display: none;
+  }
+
+
+  /* MOBILE RIGHT */
+
+  .mobile-nav-right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+  }
+
+
+  /* MOBILE SIGN UP */
+
+  .mobile-signup-btn {
+    height: 40px;
+
+    padding: 0 10px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #e92c4f;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+
+  /* MOBILE LOGIN */
+
+  .mobile-login-btn {
+    height: 40px;
+
+    padding: 0 10px;
+
+    border: 1px solid #e92c4f;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #e92c4f;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+
+  /* MOBILE MENU */
+
+  .mobile-menu-btn {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #f5f5f5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #333333;
+
+    cursor: pointer;
+  }
+
+  .mobile-menu-btn svg {
+    font-size: 23px;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-width: 430px) {
+
+  .navbar {
+    padding: 0 11px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .logo-heart {
+    font-size: 22px;
+  }
+
+  .mobile-nav-right {
+    gap: 4px;
+  }
+
+  .mobile-signup-btn,
+  .mobile-login-btn {
+    height: 37px;
+
+    padding: 0 8px;
+
+    font-size: 12px;
+  }
+
+  .mobile-menu-btn {
+    width: 37px;
+    height: 37px;
+  }
+
+}/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.navbar-logo-img {
+  height: 52px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  display: block;
+}
+/* Inside @media (max-width: 768px) */
+.navbar-logo-img {
+  height: 42px;
+  max-width: 160px;
+}
+
+/* Inside @media (max-width: 430px) */
+.navbar-logo-img {
+  height: 36px;
+  max-width: 140px;
+}
+/* =====================================================
+   LOGO - Proper size
+===================================================== */
+
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.navbar-logo-img {
+  height: 48px !important;
+  width: auto !important;
+  max-width: 180px !important;
+  object-fit: contain !important;
+  display: block;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  .navbar-logo-img {
+    height: 40px !important;
+    max-width: 150px !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .navbar-logo-img {
+    height: 34px !important;
+    max-width: 130px !important;
+  }
+}
+/* LOGO - Force small size */
+.logo {
+  display: flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  max-width: 180px !important;
+  overflow: hidden !important;
+}
+
+.logo img,
+.navbar-logo-img {
+  height: 46px !important;
+  width: auto !important;
+  max-width: 170px !important;
+  max-height: 46px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .logo img,
+  .navbar-logo-img {
+    height: 38px !important;
+    max-width: 140px !important;
+    max-height: 38px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo img,
+  .navbar-logo-img {
+    height: 32px !important;
+    max-width: 120px !important;
+    max-height: 32px !important;
+  }
+}
+html.dark .navbar,
+html.dark .home-navbar,
+html.dark .public-navbar,
+[data-kundwa-theme="dark"] .navbar {
+  background: #1a1028 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+}
+
+html.dark .navbar a,
+html.dark .nav-link,
+[data-kundwa-theme="dark"] .navbar a {
+  color: #e9d5ff !important;
+}
+
+html.dark .navbar a:hover,
+[data-kundwa-theme="dark"] .navbar a:hover {
+  color: #fff !important;
+}
+
+html.dark .navbar-menu-btn,
+[data-kundwa-theme="dark"] .navbar-menu-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e9d5ff;
+}
+/* =====================================================
+   NAVBAR CONTAINER
+===================================================== */
+
+.navbar {
+  width: 100%;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;   /* important */
+  padding: 0 4%;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  position: relative;
+  z-index: 1000;
+  box-sizing: border-box;
+  gap: 20px;
+}
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* =====================================================
+   DESKTOP NAV LINKS (middle)
+===================================================== */
+
+.desktop-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  /* Remove margin-left: auto from here */
+}
+
+/* =====================================================
+   RIGHT SIDE (WhatsApp + Sign Up + Login + Menu)
+===================================================== */
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;          /* this pushes everything to the far right */
+  flex-shrink: 0;
+}
+/* Separate Chat from WhatsApp */
+.desktop-nav-links {
+  margin-right: 28px;   /* creates space before the right side buttons */
+}
+
+.nav-right {
+  margin-left: 12px;
+}
+.desktop-nav-links {
+  margin-right: 40px;
+}
+/* =====================================================
+   TABLET FIX - Hide mobile buttons
+===================================================== */
+@media (min-width: 769px) and (max-width: 1150px) {
+  .mobile-nav-right {
+    display: none !important;
+  }
+
+  .desktop-nav-links,
+  .nav-right {
+    display: flex !important;
+  }
+}
+/* Desktop - bring links closer to the logo */
+@media (min-width: 1151px) {
+  .desktop-nav-links {
+    margin-left: 40px;   /* small space after logo */
+    margin-right: auto;  /* push the right side away */
+    gap: 28px;
+  }
+
+  .nav-right {
+    margin-left: 0;
+  }
+}
+.navbar {
+  width: 100%;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  padding: 0 4%;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  position: relative;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Desktop links */
+.desktop-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Right side buttons */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+/* Mobile right side - hidden by default on desktop */
+.mobile-nav-right {
+  display: none;
+}
+/* Hide WhatsApp button on mobile */
+@media (max-width: 768px) {
+  .whatsapp-btn {
+    display: none !important;
+  }
+}
+/* Desktop - Force Home & About Us next to the logo */
+@media (min-width: 769px) {
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* important */
+    gap: 0;
+  }
+
+  .logo {
+    margin-right: 20px;
+  }
+
+  .desktop-nav-links {
+    display: flex !important;
+    align-items: center;
+    gap: 22px;
+    margin-left: 0 !important;
+    margin-right: auto !important; /* this pushes the right side away */
+  }
+
+  .nav-right {
+    display: flex !important;
+    margin-left: auto !important;
+    gap: 12px;
+  }
+}
+/* =====================================================
+   FORCE DESKTOP LAYOUT - FINAL FIX
+===================================================== */
+@media (min-width: 769px) {
+  .navbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+  }
+
+  .logo {
+    margin-right: 24px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .desktop-nav-links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 22px !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+  }
+
+  .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mobile-nav-right {
+    display: none !important;
+  }
+}
+/* =====================================================
+   HOME & ABOUT US BUTTONS
+   Match the shaded button style
+===================================================== */
+
+.desktop-nav-links button {
+  height: 48px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 14px;
+
+  /* Purple / violet shaded background */
+  background: linear-gradient(
+    135deg,
+    #6d28d9,
+    #0c05da,
+    #05ef3c
+  );
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 18px rgba(109, 40, 217, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+
+/* =====================================================
+   HOME & ABOUT US HOVER
+===================================================== */
+
+.desktop-nav-links button:hover {
+  color: #ffffff;
+
+  transform: translateY(-2px);
+
+  filter: brightness(1.08);
+
+  box-shadow:
+    0 9px 24px rgba(192, 38, 211, 0.32);
+}
+
+
+/* =====================================================
+   ICONS
+===================================================== */
+
+.desktop-nav-links button svg {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   ACTIVE / FOCUS
+===================================================== */
+
+.desktop-nav-links button:focus-visible {
+  outline: 3px solid rgba(236, 72, 153, 0.35);
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (min-width: 769px) and (max-width: 1150px) {
+
+  .desktop-nav-links button {
+    height: 44px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .desktop-nav-links button svg {
+    font-size: 18px;
+  }
+
+}
+

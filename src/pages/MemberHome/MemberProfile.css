@@ -1,0 +1,795 @@
+/* =====================================================
+   MEMBER PROFILE – Final Approved Design
+===================================================== */
+
+.member-profile-page {
+  min-height: 100vh;
+  background: linear-gradient(
+    160deg,
+    #fdf2f8 0%,
+    #fce7f3 35%,
+    #f5d0fe 70%,
+    #ede9fe 100%
+  );
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #3b1f5c;
+  padding-bottom: 60px;
+}
+
+/* ========== TOP BAR ========== */
+.profile-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #6b3fa0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: rgba(167, 139, 250, 0.12);
+  color: #4c1d95;
+}
+
+/* =========================================================
+   UMURANGA LOGO
+   ========================================================= */
+
+/*
+   The logo is an IMAGE now.
+   The old text styling has been removed so it
+   does not interfere with the PNG.
+*/
+
+.profile-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+  height: 100%;
+  line-height: 0;
+}
+
+.profile-logo img {
+  width: 190px;
+  height: auto;
+
+  max-width: 100%;
+  max-height: 76px;
+
+  display: block;
+  object-fit: contain;
+}
+
+/* ========== HERO ========== */
+.profile-hero {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 0;
+  max-width: 980px;
+  margin: 28px auto 36px;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(120, 40, 100, 0.12);
+}
+
+/* Photo side */
+.profile-photo-wrapper {
+  position: relative;
+  background: linear-gradient(145deg, #fce7f3, #e9d5f5);
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.large-profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-online-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #166534;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.photo-online-badge span {
+  width: 8px;
+  height: 8px;
+  background: #16a34a;
+  border-radius: 50%;
+}
+
+.profile-photo-badge {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  width: 46px;
+  height: 46px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9f1239;
+  font-size: 1.25rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+/* Info side */
+.profile-main-info {
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-status-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.online-badge,
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.online-badge {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.verified-badge {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.profile-main-info h1 {
+  margin: 0 0 8px;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #3b1f5c;
+  letter-spacing: -0.4px;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.02rem;
+  color: #6b3fa0;
+  font-weight: 500;
+  margin: 0 0 20px;
+}
+
+.looking-for-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fce7f3;
+  color: #9f1239;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 30px;
+  margin-bottom: 18px;
+  width: fit-content;
+}
+
+/* Action buttons */
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.profile-like-btn,
+.profile-interest-btn,
+.profile-chat-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-like-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.profile-like-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.profile-like-btn.liked {
+  background: #9f1239;
+}
+
+.profile-interest-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.profile-interest-btn:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.profile-interest-btn.interest-sent {
+  background: #4ade80;
+  color: #14532d;
+}
+
+.profile-chat-btn {
+  background: #7c3aed;
+  color: white;
+}
+
+.profile-chat-btn:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
+}
+
+/* Hide the mutual interest message */
+.chat-requirement-message {
+  display: none !important;
+}
+
+/* ========== CONTENT SECTIONS ========== */
+.profile-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.profile-section {
+  background: white;
+  border-radius: 20px;
+  padding: 26px 28px;
+  box-shadow: 0 8px 24px rgba(120, 40, 100, 0.07);
+  border: 1px solid rgba(167, 139, 250, 0.12);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #9f1239;
+}
+
+.section-icon {
+  font-size: 1.35rem;
+}
+
+.profile-section p {
+  margin: 0;
+  line-height: 1.65;
+  color: #4a2a6a;
+  font-size: 1.02rem;
+}
+
+/* Interests pills */
+.profile-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-interests span {
+  background: #fce7f3;
+  color: #9f1239;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 30px;
+}
+
+/* Looking for box */
+.looking-section {
+  background: linear-gradient(135deg, #fdf2f8, #f5d0fe);
+  border: 1px solid rgba(244, 114, 182, 0.2);
+}
+
+.connection-box {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: white;
+  padding: 18px 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.connection-icon {
+  font-size: 1.7rem;
+  flex-shrink: 0;
+}
+
+.connection-box h3 {
+  margin: 0 0 6px;
+  font-size: 1.12rem;
+  color: #9f1239;
+}
+
+.connection-box p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #6b3fa0;
+}
+
+/* Safety */
+.profile-safety {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 18px;
+  padding: 20px 22px;
+}
+
+.safety-icon {
+  color: #16a34a;
+  font-size: 1.45rem;
+  flex-shrink: 0;
+}
+
+.profile-safety strong {
+  display: block;
+  color: #166534;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.profile-safety p {
+  margin: 0;
+  color: #15803d;
+  font-size: 0.95rem;
+}
+
+/* Not found */
+.profile-not-found-card {
+  max-width: 480px;
+  margin: 100px auto;
+  text-align: center;
+  background: white;
+  padding: 50px 40px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(120, 40, 100, 0.1);
+}
+
+.profile-not-found-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+}
+
+.back-to-members-btn {
+  margin-top: 24px;
+  background: #7c3aed;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .profile-hero {
+    grid-template-columns: 1fr;
+    margin: 16px;
+  }
+
+  .profile-photo-wrapper {
+    min-height: 360px;
+  }
+
+  .profile-main-info {
+    padding: 28px 24px;
+  }
+
+  .profile-main-info h1 {
+    font-size: 1.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-topbar {
+    padding: 14px 16px;
+  }
+
+  .profile-content {
+    padding: 0 14px;
+  }
+
+  .profile-section {
+    padding: 22px 18px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .profile-like-btn,
+  .profile-interest-btn,
+  .profile-chat-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ========== ABOUT TEXT – more attractive ========== */
+.profile-section p {
+  margin: 0;
+  line-height: 1.7;
+  color: #4a2a6a;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+}
+
+/* ========== INTERESTS – colorful pills like the design ========== */
+.profile-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.profile-interests span {
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 30px;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+/* Different colors for each interest (matching the proposed design) */
+.profile-interests span:nth-child(1) {
+  background: #ec4899;
+}
+
+.profile-interests span:nth-child(2) {
+  background: #8b5cf6;
+}
+
+.profile-interests span:nth-child(3) {
+  background: #f472b6;
+}
+
+.profile-interests span:nth-child(4) {
+  background: #7c3aed;
+}
+
+.profile-interests span:nth-child(5) {
+  background: #db2777;
+}
+
+.profile-interests span:hover {
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MEMBER PROFILE HEADER
+   ========================================================= */
+
+.profile-header {
+  width: 100%;
+  height: 92px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
+
+  position: relative;
+  z-index: 10;
+
+  border-bottom: 1px solid #f1edf4;
+}
+
+
+/* =========================================================
+   BACK TO DISCOVERY BUTTON
+   ========================================================= */
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #7045b8;
+
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 400;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-button svg {
+  width: 21px;
+  height: 21px;
+
+  stroke-width: 2;
+}
+
+.back-button:hover {
+  color: #5c349f;
+  transform: translateX(-2px);
+}
+
+.back-button:active {
+  transform: translateX(0);
+}
+
+
+/* =========================================================
+   UMURANGA LOGO CONTAINER
+   ========================================================= */
+
+.profile-header .profile-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   UMURANGA LOGO IMAGE
+   ========================================================= */
+
+.profile-header .profile-logo img {
+  width: 190px;
+  height: auto;
+
+  max-width: 100%;
+  max-height: 76px;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .profile-header {
+    height: 78px;
+
+    padding: 0 22px;
+  }
+
+  .back-button {
+    font-size: 16px;
+    gap: 7px;
+  }
+
+  .back-button svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .profile-header .profile-logo img {
+    width: 155px;
+    max-height: 58px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .profile-header {
+    height: 70px;
+
+    padding: 0 16px;
+  }
+
+  .back-button {
+    font-size: 14px;
+    gap: 5px;
+  }
+
+  .back-button svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .profile-header .profile-logo img {
+    width: 125px;
+    max-height: 48px;
+  }
+}
+/* ========== PHOTO GALLERY ========== */
+.profile-photo-wrapper {
+  position: relative;
+  background: linear-gradient(145deg, #fce7f3, #e9d5f5);
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.large-profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.large-profile-photo.placeholder,
+.large-profile-photo.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #fce7f3, #e9d5f5);
+  color: #9b6bb5;
+  font-size: 1.2rem;
+}
+
+/* Navigation arrows */
+.photo-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(91, 33, 182, 0.9);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.photo-nav-btn:hover {
+  background: #5b21b6;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.photo-prev {
+  left: 16px;
+}
+
+.photo-next {
+  right: 16px;
+}
+
+/* Dots */
+.photo-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.photo-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.photo-dot.active {
+  background: white;
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px rgba(91, 33, 182, 0.4);
+}
+
+.photo-dot:hover {
+  background: rgba(255, 255, 255, 0.85);
+}

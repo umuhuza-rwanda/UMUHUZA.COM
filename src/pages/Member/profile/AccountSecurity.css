@@ -1,0 +1,1190 @@
+/* =====================================================
+   KUNDWA ACCOUNT SECURITY
+   ===================================================== */
+
+.security-page {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      135deg,
+      #fff7fa 0%,
+      #ffffff 45%,
+      #f8f7ff 100%
+    );
+
+  color: #292332;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+.security-header {
+  min-height: 72px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 0 40px;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border-bottom: 1px solid #eee8ef;
+
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  box-shadow:
+    0 4px 20px rgba(48, 25, 52, 0.04);
+}
+
+
+.security-back-btn {
+  justify-self: start;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  border: none;
+  background: transparent;
+
+  color: #62586c;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  padding: 10px 0;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.security-back-btn:hover {
+  color: #d6336c;
+  transform: translateX(-2px);
+}
+
+
+.security-back-btn svg {
+  font-size: 18px;
+}
+
+
+.security-brand {
+  justify-self: center;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+
+  color: #d6336c;
+}
+
+
+.security-header-title {
+  justify-self: end;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #504659;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+
+.security-header-title svg {
+  color: #d6336c;
+  font-size: 18px;
+}
+
+
+/* =====================================================
+   MAIN
+   ===================================================== */
+
+.security-main {
+  width: min(960px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding:
+    42px
+    0
+    70px;
+}
+
+
+/* =====================================================
+   INTRO
+   ===================================================== */
+
+.security-intro {
+  display: flex;
+  align-items: center;
+
+  gap: 22px;
+
+  margin-bottom: 30px;
+}
+
+
+.security-intro-icon {
+  width: 68px;
+  height: 68px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffe1ec,
+      #f3e5ff
+    );
+
+  color: #d6336c;
+
+  box-shadow:
+    0 10px 28px rgba(214, 51, 108, 0.10);
+}
+
+
+.security-intro-icon svg {
+  font-size: 31px;
+}
+
+
+.security-eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #d6336c;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+
+.security-intro h1 {
+  margin: 0;
+
+  font-size: clamp(26px, 4vw, 34px);
+
+  line-height: 1.2;
+
+  color: #292332;
+}
+
+
+.security-intro p {
+  margin: 8px 0 0;
+
+  color: #756b7c;
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   MESSAGES
+   ===================================================== */
+
+.security-success,
+.security-error {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  padding: 15px 18px;
+
+  margin-bottom: 20px;
+
+  border-radius: 13px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.security-success {
+  background: #effbf4;
+  border: 1px solid #ccefd9;
+  color: #207443;
+}
+
+
+.security-success svg {
+  font-size: 19px;
+}
+
+
+.security-error {
+  background: #fff2f2;
+  border: 1px solid #f3cccc;
+  color: #b4232c;
+}
+
+
+.security-error svg {
+  font-size: 19px;
+}
+
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+
+.security-card {
+  background: #ffffff;
+
+  border: 1px solid #eee8ef;
+
+  border-radius: 20px;
+
+  margin-bottom: 20px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 8px 30px rgba(42, 24, 49, 0.055);
+}
+
+
+.security-card-heading {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 24px 26px;
+
+  border-bottom: 1px solid #f0ebf1;
+}
+
+
+.security-card-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  font-size: 20px;
+}
+
+
+.security-card-icon.account {
+  background: #fff0f5;
+  color: #d6336c;
+}
+
+
+.security-card-icon.verification {
+  background: #eefbf4;
+  color: #2b9a66;
+}
+
+
+.security-card-icon.password {
+  background: #f1edff;
+  color: #6956c7;
+}
+
+
+.security-card-heading h2 {
+  margin: 0 0 4px;
+
+  color: #302936;
+
+  font-size: 18px;
+}
+
+
+.security-card-heading p {
+  margin: 0;
+
+  color: #827887;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   ACCOUNT INFORMATION
+   ===================================================== */
+
+.security-info-list {
+  padding: 0 26px;
+}
+
+
+.security-info-row {
+  min-height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 25px;
+
+  border-bottom: 1px solid #f2eef3;
+}
+
+
+.security-info-row:last-child {
+  border-bottom: none;
+}
+
+
+.security-info-label {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  color: #665d6d;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.security-info-label svg {
+  color: #a69daa;
+
+  font-size: 17px;
+}
+
+
+.security-info-value {
+  text-align: right;
+
+  color: #342d39;
+
+  font-size: 14px;
+}
+
+
+.security-info-value strong {
+  font-weight: 650;
+}
+
+
+.security-uid {
+  max-width: 360px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #857b88;
+}
+
+
+.security-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 7px 11px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+.security-status.verified {
+  background: #ecfaf2;
+  color: #258252;
+}
+
+
+.security-status.unverified {
+  background: #fff6e9;
+  color: #a96717;
+}
+
+
+.security-status svg {
+  font-size: 14px;
+}
+
+
+/* =====================================================
+   ACTION BOX
+   ===================================================== */
+
+.security-action-box {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 22px 26px;
+}
+
+
+.security-action-icon {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #faf6fa;
+
+  color: #d6336c;
+}
+
+
+.security-action-icon svg {
+  font-size: 19px;
+}
+
+
+.security-action-content {
+  flex: 1;
+}
+
+
+.security-action-content h3 {
+  margin: 0 0 5px;
+
+  color: #342d39;
+
+  font-size: 15px;
+}
+
+
+.security-action-content p {
+  margin: 0;
+
+  color: #817782;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+.security-action-btn {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #ead7e0;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #c72d63;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.security-action-btn:hover:not(:disabled) {
+  background: #fff4f8;
+  border-color: #e5b9c9;
+
+  transform: translateY(-1px);
+}
+
+
+.security-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   SECURITY TIPS
+   ===================================================== */
+
+.security-tips-card {
+  display: flex;
+
+  gap: 18px;
+
+  padding: 23px 25px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid #e5ddf2;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #faf8ff,
+      #ffffff
+    );
+}
+
+
+.security-tips-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #eee9ff;
+
+  font-size: 22px;
+}
+
+
+.security-tips-card h2 {
+  margin: 0 0 10px;
+
+  color: #3d3450;
+
+  font-size: 16px;
+}
+
+
+.security-tips-card ul {
+  margin: 0;
+
+  padding-left: 19px;
+
+  color: #71677b;
+
+  font-size: 13px;
+
+  line-height: 1.8;
+}
+
+
+/* =====================================================
+   DANGER ZONE
+   ===================================================== */
+
+.security-danger-card {
+  padding: 25px 26px;
+
+  border: 1px solid #f0d6d8;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffafa,
+      #ffffff
+    );
+}
+
+
+.security-danger-heading {
+  display: flex;
+
+  gap: 16px;
+
+  align-items: flex-start;
+}
+
+
+.security-danger-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #ffeded;
+
+  color: #c92a35;
+
+  font-size: 20px;
+}
+
+
+.security-danger-heading span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #c92a35;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+}
+
+
+.security-danger-heading h2 {
+  margin: 0 0 5px;
+
+  color: #392d31;
+
+  font-size: 18px;
+}
+
+
+.security-danger-heading p {
+  margin: 0;
+
+  color: #837579;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+.security-delete-btn {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 22px;
+
+  min-height: 42px;
+
+  padding: 0 17px;
+
+  border: 1px solid #e8bfc3;
+
+  border-radius: 11px;
+
+  background: #fff;
+
+  color: #c62835;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.security-delete-btn:hover:not(:disabled) {
+  background: #fff0f1;
+  border-color: #dc9ba1;
+}
+
+
+.security-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   DELETE CONFIRMATION
+   ===================================================== */
+
+.delete-confirmation {
+  margin-top: 22px;
+
+  padding: 18px;
+
+  border: 1px solid #f0c9cc;
+
+  border-radius: 14px;
+
+  background: #fff5f5;
+}
+
+
+.delete-warning {
+  display: flex;
+
+  gap: 12px;
+}
+
+
+.delete-warning > svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #c62835;
+
+  font-size: 20px;
+}
+
+
+.delete-warning strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #8f1e28;
+
+  font-size: 14px;
+}
+
+
+.delete-warning p {
+  margin: 0;
+
+  color: #795c60;
+
+  font-size: 13px;
+
+  line-height: 1.55;
+}
+
+
+.delete-confirmation-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 17px;
+}
+
+
+.cancel-delete-btn,
+.confirm-delete-btn {
+  min-height: 40px;
+
+  padding: 0 15px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.cancel-delete-btn {
+  border: 1px solid #ddd3d6;
+
+  background: #fff;
+
+  color: #665b60;
+}
+
+
+.confirm-delete-btn {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 7px;
+
+  border: 1px solid #c62835;
+
+  background: #c62835;
+
+  color: #fff;
+}
+
+
+.cancel-delete-btn:hover:not(:disabled) {
+  background: #f8f5f6;
+}
+
+
+.confirm-delete-btn:hover:not(:disabled) {
+  background: #a91f2a;
+}
+
+
+.cancel-delete-btn:disabled,
+.confirm-delete-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.security-footer {
+  padding-top: 42px;
+
+  text-align: center;
+
+  color: #918692;
+}
+
+
+.security-footer-heart {
+  margin-bottom: 7px;
+
+  font-size: 22px;
+}
+
+
+.security-footer strong {
+  display: block;
+
+  color: #d6336c;
+
+  font-size: 15px;
+
+  letter-spacing: 1px;
+}
+
+
+.security-footer p {
+  margin: 5px 0;
+
+  font-size: 12px;
+}
+
+
+.security-footer small {
+  font-size: 11px;
+
+  color: #aaa0aa;
+}
+
+
+/* =====================================================
+   EMPTY / LOADING
+   ===================================================== */
+
+.security-empty-card,
+.security-loading-card {
+  width: min(480px, calc(100% - 40px));
+
+  margin: 100px auto;
+
+  padding: 45px 35px;
+
+  text-align: center;
+
+  background: #fff;
+
+  border: 1px solid #eee8ef;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 15px 45px rgba(42, 24, 49, 0.07);
+}
+
+
+.security-empty-icon,
+.security-loading-icon {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 20px;
+
+  background: #fff0f5;
+
+  font-size: 30px;
+}
+
+
+.security-empty-card h2,
+.security-loading-card h2 {
+  margin: 0 0 8px;
+
+  color: #302936;
+
+  font-size: 21px;
+}
+
+
+.security-empty-card p,
+.security-loading-card p {
+  margin: 0 auto 24px;
+
+  max-width: 350px;
+
+  color: #817782;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+.security-primary-btn {
+  min-height: 44px;
+
+  padding: 0 22px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #d6336c;
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.security-primary-btn:hover {
+  background: #c52c61;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 760px) {
+
+  .security-header {
+    grid-template-columns: auto 1fr;
+
+    padding: 0 18px;
+  }
+
+
+  .security-brand {
+    justify-self: end;
+  }
+
+
+  .security-header-title {
+    display: none;
+  }
+
+
+  .security-main {
+    width: min(
+      100% - 24px,
+      650px
+    );
+
+    padding-top: 28px;
+  }
+
+
+  .security-intro {
+    align-items: flex-start;
+  }
+
+
+  .security-intro-icon {
+    width: 54px;
+    height: 54px;
+
+    border-radius: 16px;
+  }
+
+
+  .security-intro-icon svg {
+    font-size: 24px;
+  }
+
+
+  .security-intro h1 {
+    font-size: 25px;
+  }
+
+
+  .security-intro p {
+    font-size: 13px;
+  }
+
+
+  .security-card-heading {
+    padding: 20px;
+  }
+
+
+  .security-info-list {
+    padding: 0 20px;
+  }
+
+
+  .security-info-row {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    padding: 16px 0;
+  }
+
+
+  .security-info-value {
+    text-align: left;
+  }
+
+
+  .security-uid {
+    max-width: 100%;
+  }
+
+
+  .security-action-box {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 20px;
+  }
+
+
+  .security-action-btn {
+    width: 100%;
+  }
+
+
+  .security-tips-card {
+    padding: 20px;
+  }
+
+
+  .security-danger-card {
+    padding: 20px;
+  }
+
+
+  .delete-confirmation-actions {
+    flex-direction: column;
+  }
+
+
+  .cancel-delete-btn,
+  .confirm-delete-btn {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .security-back-btn span {
+    display: none;
+  }
+
+
+  .security-brand {
+    font-size: 18px;
+  }
+
+
+  .security-main {
+    width: calc(100% - 18px);
+
+    padding-bottom: 45px;
+  }
+
+
+  .security-intro {
+    gap: 13px;
+  }
+
+
+  .security-intro h1 {
+    font-size: 22px;
+  }
+
+
+  .security-card,
+  .security-danger-card {
+    border-radius: 16px;
+  }
+
+
+  .security-card-heading {
+    gap: 12px;
+  }
+
+
+  .security-card-icon {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 11px;
+  }
+
+
+  .security-tips-card {
+    border-radius: 16px;
+  }
+
+}

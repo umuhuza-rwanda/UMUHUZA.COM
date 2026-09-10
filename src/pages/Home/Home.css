@@ -1,0 +1,102 @@
+.featured-members{
+
+    padding:80px 8%;
+
+    background:#fff;
+}
+
+.featured-members h2{
+
+    text-align:center;
+
+    font-size:38px;
+
+    color:#8B1E24;
+
+    margin-bottom:15px;
+}
+
+.featured-members p{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:50px;
+
+    font-size:18px;
+}
+
+.members-grid{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    flex-wrap:wrap;
+}
+/* =========================================================
+   HOME — dark blue behind member cards
+========================================================= */
+
+.featured-members {
+  background: #020617 !important; /* dark blue page behind cards */
+  color: #e2e8f0;
+  padding: 48px 20px 64px;
+  text-align: center;
+}
+
+.featured-members h2 {
+  margin: 0 0 10px;
+  color: #f8fafc !important;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+}
+
+.featured-members > p {
+  margin: 0 auto 32px;
+  max-width: 520px;
+  color: #94a3b8 !important;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* Optional: whole home page dark if anything above/below is white */
+.home-page {
+  background: #020617;
+  min-height: 100%;
+}
+/* Section BEHIND the member cards */
+.featured-members {
+  background: #020617 !important;
+  color: #e2e8f0;
+  padding: 48px 20px 64px;
+  text-align: center;
+}
+
+.featured-members h2 {
+  color: #f8fafc !important;
+  margin: 0 0 10px;
+}
+
+.featured-members > p {
+  color: #94a3b8 !important;
+  margin: 0 auto 32px;
+  max-width: 560px;
+}
+
+.members-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+}
