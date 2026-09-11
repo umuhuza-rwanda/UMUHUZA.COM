@@ -41,8 +41,8 @@ import DatingPreferences from "./pages/Member/profile/DatingPreferences";
 import LocationDiscovery from "./pages/Member/profile/LocationDiscovery";
 import NotificationSettings from "./pages/Member/profile/NotificationSettings";
 import AccountSecurity from "./pages/Member/profile/AccountSecurity";
-import Privacy from "./pages/Member/Profile/Privacy";
-import NewAppPreferences from "./pages/Member/Profile/NewAppPreferences";
+import Privacy from "./pages/Member/profile/Privacy";
+import NewAppPreferences from "./pages/Member/profile/NewAppPreferences";
 import HelpSupport from "./pages/Member/profile/HelpSupport";
 
 // =========================
