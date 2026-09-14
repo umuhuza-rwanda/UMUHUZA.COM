@@ -314,3 +314,16 @@ html.dark .why-card,
   border: none;
   text-align: center;
 }
+/* =========================================================
+   MOBILE FIX — SHOW THE COMPLETE SUCCESS STORY IMAGE
+   Desktop remains unchanged
+========================================================= */
+
+@media (max-width: 700px) {
+  .success-card img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+}
