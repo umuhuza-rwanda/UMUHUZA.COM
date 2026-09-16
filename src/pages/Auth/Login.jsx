@@ -1,6 +1,7 @@
 import "./Login.css";
 
 import { useState } from "react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
 import { supabase } from "../../lib/supabase";
@@ -14,6 +15,7 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -473,19 +475,44 @@ function Login() {
 
             </div>
 
-            <input
-              id="login-password"
-              type="password"
-              placeholder="Enter your password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
-              disabled={loading}
-            />
+  <input
+    id="login-password"
+    type={showPassword ? "text" : "password"}
+    placeholder="Enter your password"
+    autoComplete="current-password"
+    value={password}
+    onChange={(event) =>
+      setPassword(event.target.value)
+    }
+    disabled={loading}
+  />
 
-          </div>
+  <button
+    type="button"
+    className="password-toggle"
+    onClick={() =>
+      setShowPassword((previous) => !previous)
+    }
+    disabled={loading}
+    aria-label={
+      showPassword
+        ? "Hide password"
+        : "Show password"
+    }
+    title={
+      showPassword
+        ? "Hide password"
+        : "Show password"
+    }
+  >
+    {showPassword ? (
+      <FiEyeOff />
+    ) : (
+      <FiEye />
+    )}
+  </button>
+
+</div>
 
           {/* =================================================
               LOGIN BUTTON

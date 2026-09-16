@@ -2373,7 +2373,7 @@ const handleStartChat = (member) => {
         </div>
 
         <div className="umuhuza-menu-text">
-          <strong>My Profile</strong>
+          <strong>{t("nav.myProfile") || "My Profile"}</strong>
           <span>View and edit your profile</span>
         </div>
 
@@ -2398,7 +2398,7 @@ const handleStartChat = (member) => {
         </div>
 
         <div className="umuhuza-menu-text">
-          <strong>Invite Friends</strong>
+          <strong>{t("nav.inviteFriends") || "Invite Friends"}</strong>
           <span>Invite friends to join UMUHUZA</span>
         </div>
 
@@ -2425,7 +2425,7 @@ const handleStartChat = (member) => {
         </div>
 
         <div className="umuhuza-menu-text">
-          <strong>Account Settings</strong>
+          <strong>{t("nav.accountSettings") || "Account Settings"}</strong>
           <span>Privacy, security and preferences</span>
         </div>
 
@@ -2467,7 +2467,7 @@ const handleStartChat = (member) => {
         </span>
       )}
     </div>
-    <span>Messages</span>
+    <span>{t("nav.messages") || "Messages"}</span>
   </button>
 
   {/* Connections */}
@@ -2484,7 +2484,7 @@ const handleStartChat = (member) => {
         </span>
       )}
     </div>
-    <span>Connections</span>
+    <span>{t("nav.connections") || "Connections"}</span>
   </button>
 
   {/* Notifications */}
@@ -2503,9 +2503,7 @@ const handleStartChat = (member) => {
     />
   </div>
 
-  <span>
-    Notifications
-  </span>
+<span>{t("nav.notifications") || "Notifications"}</span>
 
   {unreadNotificationCount > 0 && (
     <span className="secondary-notification-badge">
@@ -2524,7 +2522,7 @@ const handleStartChat = (member) => {
     <div className="nav-icon-box">
       <FiDollarSign size={22} color="white" />
     </div>
-    <span>Premium</span>
+    <span>{t("nav.premium") || "Premium"}</span>
   </button>
 
   {/* WhatsApp */}
@@ -2536,7 +2534,7 @@ const handleStartChat = (member) => {
   <div className="nav-icon-box">
     <span style={{ fontSize: 18, color: "white" }}>🟢</span>
   </div>
-  <span>WhatsApp</span>
+  <span>{t("nav.whatsapp") || "WhatsApp"}</span>
 </button>
 
 </nav>
@@ -2545,67 +2543,47 @@ const handleStartChat = (member) => {
       ================================================= */}
 
       <main className="member-main">
+<section className="member-welcome">
+  <div>
+    <span className="welcome-label">
+      ❤️ {t("home.welcome") || "WELCOME TO UMUHUZA"}
+    </span>
 
-        <section className="member-welcome">
+    <h1>
+      {t("home.discoverTitle") || "Discover Someone"}
+      <br />
+      <span>{t("home.discoverSubtitle") || "special today"}</span>
+    </h1>
 
-          <div>
+    <p>
+      {t("home.discoverDescription") ||
+        "Meet genuine people looking for meaningful relationships, friendship and love."}
+    </p>
 
-            <span className="welcome-label">
-              ❤️ WELCOME TO UMUHUZA
-            </span>
+    {currentUserProfile && (
+      <div className="member-location-summary">
+        📍 {t("home.near") || "Near"}{" "}
+        <strong>
+          {currentUserProfile.city || "You"}
+        </strong>
+        {currentUserProfile.country
+          ? `, ${currentUserProfile.country}`
+          : ""}
+      </div>
+    )}
+  </div>
 
-            <h1>
-              Discover Someone
-              <br />
+  <div className="member-search">
+    <FiSearch />
+    <input
+      type="text"
+      placeholder={t("home.searchPlaceholder") || "Search members..."}
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+  </div>
+</section>
 
-              <span>
-                special today
-              </span>
-            </h1>
-
-            <p>
-              "Iminsi yo kuba wenyine irarangiye! Shakira umukunzi w'inzozi zawe hano maze mwubake ejo hazaza hawe n'uwo mukwiranye
-            </p>
-
-            {currentUserProfile && (
-              <div className="member-location-summary">
-
-                📍 Near{" "}
-
-                <strong>
-                  {
-                    currentUserProfile.city ||
-                    "You"
-                  }
-                </strong>
-
-                {currentUserProfile.country
-                  ? `, ${currentUserProfile.country}`
-                  : ""}
-
-              </div>
-            )}
-
-          </div>
-
-          <div className="member-search">
-
-            <FiSearch />
-
-            <input
-              type="text"
-              placeholder="Shaka umukunzi ..."
-              value={search}
-              onChange={(e) =>
-                setSearch(
-                  e.target.value
-                )
-              }
-            />
-
-          </div>
-
-        </section>
 
         {error && (
           <div className="member-error">
@@ -2618,125 +2596,64 @@ const handleStartChat = (member) => {
         ================================================= */}
 
         <section className="member-section">
+<div className="section-heading">
+  <div>
+    <h2>
+      💕 {t("home.discoverPeople") || "Discover People"}
+    </h2>
+    <p>
+      {t("home.meaningfulConnection") ||
+        "Find people who could be a meaningful connection."}
+    </p>
+  </div>
 
-          <div className="section-heading">
-
-            <div>
-
-              <h2>
-                {" "}
-                {t(
-                  "Shakisha umukunzi"
-                ) ||
-                  "Discover People"}
-              </h2>
-
-              <p>
-                {t(
-                  "igihe cyawe niki"
-                ) ||
-                  "Find people who could be a meaningful connection."}
-              </p>
-
-            </div>
-
-            <div className="member-result-count">
-              {
-                filteredMembers.length
-              }{" "}
-              {
-                filteredMembers.length ===
-                1
-                  ? "person"
-                  : "people"
-              }
-            </div>
-
-          </div>
+  <div className="member-result-count">
+    {filteredMembers.length}{" "}
+    {filteredMembers.length === 1 ? "person" : "people"}
+  </div>
+</div>
 
           {/* =================================================
               DISCOVERY TABS
           ================================================= */}
 
           <div className="discovery-tabs">
+{[
+  { key: "recommended", label: `💕 ${t("category.recommended") || "Recommended"}` },
+  { key: "online", label: `🟢 ${t("category.online") || "Online"}` },
+  { key: "diaspora", label: `🌍 ${t("category.diaspora") || "Diaspora"}` },
+  { key: "new", label: `✨ ${t("category.new") || "New"}` },
+  { key: "verified", label: `✓ ${t("category.verified") || "Verified"}` },
+  { key: "nearby", label: `📍 ${t("category.nearby") || "Nearby"}` },
+].map((tab) => (
+  <button
+    key={tab.key}
+    className={`discovery-tab ${activeCategory === tab.key ? "active" : ""}`}
+    onClick={() => setActiveCategory(tab.key)}
+  >
+    {tab.label}
+  </button>
 
-            {[
-              {
-                key:
-                  "recommended",
-                label:
-                  "💕 Recommended",
-              },
-              {
-                key:
-                  "online",
-                label:
-                  "🟢 Online",
-              },
-              {
-                key:
-                  "diaspora",
-                label:
-                  "🌍 Diaspora",
-              },
-              {
-                key:
-                  "new",
-                label:
-                  "✨ New",
-              },
-              {
-                key:
-                  "verified",
-                label:
-                  "✓ Verified",
-              },
-              {
-                key:
-                  "nearby",
-                label:
-                  "📍 Nearby",
-              },
-            ].map(
-              (tab) => (
-                <button
-                  key={
-                    tab.key
-                  }
-                  className={`discovery-tab ${
-                    activeCategory ===
-                    tab.key
-                      ? "active"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    setActiveCategory(
-                      tab.key
-                    )
-                  }
-                >
-                  {
-                    tab.label
-                  }
-                </button>
               )
             )}
 
           </div>
+
+
 
  {/* =================================================
     MEMBER CARDS
 ================================================= */}
 
 {refreshableMembers.length === 0 ? (
-  <div className="no-members-card">
-    <div className="no-members-icon">💕</div>
-    <h3>Nta bantu bahagije umfite komeza ushake ishuti</h3>
-    <p>
-      Shakira mubindi byiciro cyangwa 
-      wongere ugaruke mukanya.
-    </p>
-  </div>
+<div className="no-members-card">
+  <div className="no-members-icon">💕</div>
+  <h3>{t("home.noMembers") || "No matching members yet"}</h3>
+  <p>
+    {t("home.tryAnother") ||
+      "We're still growing the UMUHUZA community. Try another category."}
+  </p>
+</div>
 ) : (
   <div className="member-discovery-grid">
     {refreshableMembers.map((member) => {
@@ -2813,56 +2730,55 @@ const handleStartChat = (member) => {
             </p>
 
             {/* VIEW PROFILE */}
+{/* VIEW PROFILE */}
 <button
   className="member-action-btn"
   onClick={() => {
     const memberId = member.id || member.uid;
     navigate(`/member-profile/${memberId}`, {
-      state: { member: member }   // still pass the full object for faster loading
+      state: { member },
     });
   }}
 >
-  👤 View Profile
+  👤 {t("home.viewProfile") || "View Profile"}
 </button>
 
-            {/* LIKE */}
-            <button
-              className={`member-action-btn like-btn ${
-                likedMembers.includes(member.id) ? "liked" : ""
-              }`}
-              onClick={() => handleLike(member)}
-            >
-              {likedMembers.includes(member.id) ? "❤️ Liked" : "♡ Like"}
-            </button>
+{/* LIKE */}
+<button
+  className={`member-action-btn like-btn ${
+    likedMembers.includes(member.id) ? "liked" : ""
+  }`}
+  onClick={() => handleLike(member)}
+>
+  {likedMembers.includes(member.id)
+    ? `❤️ ${t("home.liked") || "Liked"}`
+    : `♡ ${t("home.like") || "Like"}`}
+</button>
 
-            {/* SEND INTEREST */}
-            <button
-              className={`member-action-btn interest-btn ${
-                isPending || isConnected ? "sent" : ""
-              }`}
-              onClick={() => handleInterest(member)}
-              disabled={
-                isPending ||
-                isConnected ||
-                interestLoading === member.id
-              }
-            >
-              {interestLoading === member.id
-                ? "Sending..."
-                : isConnected
-                ? "🤝 Connected"
-                : isPending
-                ? "✓ Interest Sent"
-                : "💕 Send Interest"}
-            </button>
+{/* SEND INTEREST */}
+<button
+  className={`member-action-btn interest-btn ${
+    isPending || isConnected ? "sent" : ""
+  }`}
+  onClick={() => handleInterest(member)}
+  disabled={isPending || isConnected || interestLoading === member.id}
+>
+  {interestLoading === member.id
+    ? "Sending..."
+    : isConnected
+    ? `🤝 ${t("home.connected") || "Connected"}`
+    : isPending
+    ? `✓ ${t("home.interestSent") || "Interest Sent"}`
+    : `💕 ${t("home.sendInterest") || "Send Interest"}`}
+</button>
 
-            {/* START CHAT */}
-            <button
-              className="member-action-btn chat-btn"
-              onClick={() => handleStartChat(member)}
-            >
-              💬 Start Chat
-            </button>
+{/* START CHAT */}
+<button
+  className="member-action-btn chat-btn"
+  onClick={() => handleStartChat(member)}
+>
+  💬 {t("home.startChat") || "Start Chat"}
+</button>
           </div>
         </div>
       );

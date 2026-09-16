@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 
 import SupabaseTest from "./SupabaseTest";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { supabase } from "./lib/supabase";
 
 
 // =========================
@@ -86,6 +89,122 @@ import MemberLayout from "./components/MemberLayout";
 // ======================================================
 // HOME PAGE
 // ======================================================
+
+
+
+// ======================================================
+// SESSION STARTUP CHECK
+// ======================================================
+
+function SessionStartup() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [checkingSession, setCheckingSession] =
+    useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const checkSavedSession = async () => {
+      console.log(
+        "🔐 UMUHUZA: Checking saved Supabase session..."
+      );
+
+      const {
+        data,
+        error,
+      } = await supabase.auth.getSession();
+
+      if (!mounted) return;
+
+      if (error) {
+        console.error(
+          "❌ UMUHUZA session check error:",
+          error
+        );
+
+        setCheckingSession(false);
+        return;
+      }
+
+      const session = data?.session;
+
+      console.log(
+        "🔐 UMUHUZA saved session:",
+        session ? "FOUND ✅" : "NOT FOUND ❌"
+      );
+
+      if (session?.user) {
+        console.log(
+          "👤 UMUHUZA saved user:",
+          session.user.id
+        );
+
+        if (location.pathname === "/") {
+          console.log(
+            "🏠 → 👤 Existing session detected."
+          );
+
+          console.log(
+            "➡️ Redirecting to Member Home..."
+          );
+
+          navigate(
+            "/member-home",
+            {
+              replace: true,
+            }
+          );
+        }
+      }
+
+      setCheckingSession(false);
+    };
+
+    checkSavedSession();
+
+    return () => {
+      mounted = false;
+    };
+  }, [navigate, location.pathname]);
+
+  if (checkingSession) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: "12px",
+          background: "#fff",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "40px",
+          }}
+        >
+          ❤️
+        </div>
+
+        <div
+          style={{
+            fontSize: "18px",
+            fontWeight: "600",
+          }}
+        >
+          Loading UMUHUZA...
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 
 function Home() {
   return (
@@ -181,6 +300,8 @@ function App() {
   
 
       <BrowserRouter>
+
+      <SessionStartup />
 
         <Routes>
 

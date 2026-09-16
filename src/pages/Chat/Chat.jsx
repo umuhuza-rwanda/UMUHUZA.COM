@@ -84,6 +84,17 @@ const isExpiredImageMessage =
     );
   };
 
+  const t = (key) => {
+  if (!translations || !translations[language]) {
+    return key;
+  }
+
+  return (
+    translations[language][key] ||
+    translations.en?.[key] ||
+    key
+  );
+};
 
 // =====================================================
 // FILTER EXPIRED IMAGE MESSAGES
@@ -3318,15 +3329,9 @@ const mergeServerMessages = (serverMessages) => {
             💕
           </div>
 
-          <h2>
-            {t("No members available")}
-          </h2>
+<h2>{t("noMembers") || "No members available"}</h2>
 
-          <p>
-            {t(
-              " There are currently no other KUNDWA members"
-            )}
-          </p>
+<p>{t("noMembersDesc") || "There are currently no other UMUHUZA members."}</p>
 
           <button
             type="button"
@@ -3336,8 +3341,8 @@ const mergeServerMessages = (serverMessages) => {
               )
             }
           >
-            {t("discoverPeople")}
-          </button>
+  {t("home.discoverPeople") || "Discover People"}
+</button>
 
         </div>
 
@@ -3373,9 +3378,7 @@ const mergeServerMessages = (serverMessages) => {
 
           <FiArrowLeft />
 
-          <span>
-            {t("back")}
-          </span>
+<span>{t("back") || "Back"}</span>
 
         </button>
 
@@ -3413,12 +3416,10 @@ const mergeServerMessages = (serverMessages) => {
 
             <div>
 
-              <h2>
-                {t("messages")}
-              </h2>
+<h2>{t("nav.messages") || "Messages"}</h2>
 
               <p>
-                {t("People you can message")}
+                {t("chat.peopleYouCanMessage") || "People you can message"}
               </p>
 
             </div>
@@ -3443,11 +3444,7 @@ const mergeServerMessages = (serverMessages) => {
 
             <input
               type="text"
-              placeholder={
-                t(
-                  "searchConversations"
-                )
-              }
+   placeholder={t("chat.searchConversations") || "Search conversations..."}
               value={search}
               onChange={(event) =>
                 setSearch(
@@ -3473,11 +3470,7 @@ const mergeServerMessages = (serverMessages) => {
                   🔍
                 </span>
 
-                <p>
-                  {t(
-                    "noConversationsFound"
-                  )}
-                </p>
+{t("chat.noConversationsFound") || "No conversations found"}
 
               </div>
 
@@ -3584,13 +3577,9 @@ const mergeServerMessages = (serverMessages) => {
 
                         <p>
 
-                          {person.online
-                            ? `🟢 ${t(
-                                "onlineNow"
-                              )}`
-                            : formatLastSeen(
-                                lastSeen
-                              )}
+{person.online
+  ? `🟢 ${t("chat.onlineNow") || "Online now"}`
+  : formatLastSeen(lastSeen)}
 
                         </p>
 
@@ -3747,7 +3736,7 @@ const mergeServerMessages = (serverMessages) => {
                     </div>
 
                     <p>
-                      Loading messages...
+                      <p>{t("chat.pleaseWait") || "Please wait..."}</p>
                     </p>
 
                   </div>
@@ -3760,11 +3749,10 @@ const mergeServerMessages = (serverMessages) => {
                       💕
                     </div>
 
-                    <p>
-                      Start your conversation
-                      with{" "}
-                      {selectedName}.
-                    </p>
+<p>
+  {t("chat.startConversation") || "Start your conversation with"}{" "}
+  {selectedName}.
+</p>
 
                   </div>
 
@@ -4237,10 +4225,9 @@ const mergeServerMessages = (serverMessages) => {
               <h2>
                 {t("messages")}
               </h2>
-
-              <p>
-                Select a person to start chatting.
-              </p>
+<p>
+  {t("chat.selectPerson") || "Select a person to start chatting."}
+</p>
 
             </div>
 
