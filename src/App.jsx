@@ -6,6 +6,8 @@ import {
   Route,
 } from "react-router-dom";
 
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
 import SupabaseTest from "./SupabaseTest";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -302,6 +304,7 @@ function App() {
       <BrowserRouter>
 
       <SessionStartup />
+      <SpeedInsights />
 
         <Routes>
 
