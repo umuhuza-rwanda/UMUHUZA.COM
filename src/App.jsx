@@ -8,6 +8,7 @@ import {
 
 import SupabaseTest from "./SupabaseTest";
 import { useEffect, useState } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
 
@@ -289,6 +290,41 @@ function Home() {
 }
 
 // ======================================================
+// ANDROID BACK BUTTON
+// ======================================================
+
+function AndroidBackButtonHandler() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleBackButton = async () => {
+      // If there is browser/router history available,
+      // go back to the previous UMUHUZA page.
+      if (window.history.length > 1) {
+        navigate(-1);
+        return;
+      }
+
+      // If already at the first page, minimize the Android app
+      // instead of unexpectedly closing it.
+      await CapacitorApp.minimizeApp();
+    };
+
+    const listener = CapacitorApp.addListener(
+      "backButton",
+      handleBackButton
+    );
+
+    return () => {
+      listener.then((handle) => handle.remove());
+    };
+  }, [navigate, location.pathname]);
+
+  return null;
+}
+
+// ======================================================
 // APP
 // ======================================================
 
@@ -302,6 +338,8 @@ function App() {
       <BrowserRouter>
 
       <SessionStartup />
+      
+      <AndroidBackButtonHandler />
 
         <Routes>
 

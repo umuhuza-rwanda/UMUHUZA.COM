@@ -271,9 +271,9 @@ function Interests() {
 
       if (!currentUser?.email) {
 
-        setVerificationMessage(
-          "Please log in again."
-        );
+setVerificationMessage(
+  t("verification.loginAgain")
+);
 
         return;
       }
@@ -302,9 +302,9 @@ function Interests() {
         }
 
 
-        setVerificationMessage(
-          "Verification email sent successfully."
-        );
+setVerificationMessage(
+  t("verification.emailSent")
+);
 
       } catch (supabaseError) {
 
@@ -315,7 +315,7 @@ function Interests() {
 
 
         setVerificationMessage(
-          "Unable to send verification email."
+          t("verification.emailSent")
         );
 
       } finally {
@@ -360,7 +360,7 @@ function Interests() {
 
 
           setVerificationMessage(
-            "Email verified successfully."
+            t("verification.emailVerified")
           );
 
         } else {
@@ -368,9 +368,9 @@ function Interests() {
           setEmailVerified(false);
 
 
-          setVerificationMessage(
-            "Email is not verified yet."
-          );
+setVerificationMessage(
+  t("verification.notVerified")
+);
 
         }
 
@@ -383,7 +383,7 @@ function Interests() {
 
 
         setVerificationMessage(
-          "Unable to check verification status."
+          t("verification.unableToCheck")
         );
 
       } finally {
@@ -476,13 +476,13 @@ function Interests() {
           ) {
 
             setError(
-              "The Supabase interests table was not found. Please create the interests table in Supabase."
+              t("interests.tableNotFound")
             );
 
           } else {
 
             setError(
-              t("unable To Load Interests")
+              t("interests.unableToLoad")
             );
 
           }
@@ -1270,12 +1270,12 @@ const loadConnectionsAfterAccept = async () => {
 
 
           <h2>
-            {t("please LogIn")}
+            {t("connections.pleaseLogin")}
           </h2>
 
 
           <p>
-            {t("login To View Connections")}
+            {t("connections.loginToView")}
           </p>
 
 
@@ -1286,7 +1286,7 @@ const loadConnectionsAfterAccept = async () => {
               navigate("/login")
             }
           >
-            {t("goToLogin")}
+            {t("chat.goToLogin")}
           </button>
 
         </div>
@@ -1319,13 +1319,13 @@ const loadConnectionsAfterAccept = async () => {
 
 
           <h2>
-            {t("loading YourConnections")}
+            {t("connections.loading")}
           </h2>
 
 
           <p>
             {t(
-              "preparing Connections Interests"
+              "connections.preparing"
             )}
           </p>
 
@@ -1367,7 +1367,7 @@ const loadConnectionsAfterAccept = async () => {
           <FiArrowLeft />
 
           <span>
-            {t("back")}
+            {t("common.back")}
           </span>
 
         </button>
@@ -1392,7 +1392,7 @@ const loadConnectionsAfterAccept = async () => {
           <FiUsers />
 
           <span>
-            {t("connections&Interests")}
+            {t("connections.title")}
           </span>
 
         </div>
@@ -1416,18 +1416,18 @@ const loadConnectionsAfterAccept = async () => {
           <div>
 
             <span className="interests-label">
-              💕 {t("Umuhuza Connections")}
+              💕 {t("connections.label")}
             </span>
 
 
             <h1>
-              {t("Abo Mwahuje ")}
+              {t("connections.heading")}
             </h1>
 
 
             <p>
               {t(
-                "manage Connections Description"
+                "connections.description"
               )}
             </p>
 
@@ -1442,7 +1442,7 @@ const loadConnectionsAfterAccept = async () => {
 
 
             <span>
-              {t("Abo mwahuje/connections")}
+              {t("connections.total")}
             </span>
 
           </div>
@@ -1473,7 +1473,7 @@ const loadConnectionsAfterAccept = async () => {
                     "/member-home"
                   )
                 }
-                aria-label="Close"
+                aria-label={t("verification.close")}
               >
 
                 <FiX />
@@ -1489,17 +1489,13 @@ const loadConnectionsAfterAccept = async () => {
 
 
               <h2>
-                Verify Your Email
+                 {t("verification.title")}
               </h2>
 
 
-              <p className="email-verification-lead">
-
-                Before you can send an interest,
-                you need to verify your email
-                address.
-
-              </p>
+<p className="email-verification-lead">
+  {t("verification.lead")}
+</p>
 
 
               <div className="email-verification-address">
@@ -1513,12 +1509,9 @@ const loadConnectionsAfterAccept = async () => {
               </div>
 
 
-              <p className="email-verification-help">
-
-                We need a verified email to help
-                keep UMUHUZA safe and authentic.
-
-              </p>
+<p className="email-verification-help">
+  {t("verification.help")}
+</p>
 
 
               {verificationMessage && (
@@ -1548,9 +1541,9 @@ const loadConnectionsAfterAccept = async () => {
 
                   <FiMail />
 
-                  {verificationLoading
-                    ? "Please wait..."
-                    : "Send Verification Email"}
+{verificationLoading
+  ? t("verification.pleaseWait")
+  : t("verification.sendEmail")}
 
                 </button>
 
@@ -1568,7 +1561,9 @@ const loadConnectionsAfterAccept = async () => {
 
                   <FiCheck />
 
-                  I Have Verified My Email
+                  <FiCheck />
+
+{t("verification.check")}
 
                 </button>
 
@@ -1624,14 +1619,12 @@ const loadConnectionsAfterAccept = async () => {
                 <div>
 
                   <h2>
-                    {t("your Connections")}
+                    {t("connections.yourConnections")}
                   </h2>
 
 
                   <p>
-                    {t(
-                      "people You Are Connected With"
-                    )}
+                    {t("connections.peopleConnected")}
                   </p>
 
                 </div>
@@ -1662,7 +1655,7 @@ const loadConnectionsAfterAccept = async () => {
 
 
                 <p>
-                  {t("loading Connections")}
+                  {t("connections.loadingConnections")}
                 </p>
 
               </div>
@@ -1677,12 +1670,12 @@ const loadConnectionsAfterAccept = async () => {
 
 
                 <h3>
-                  {t("no Connections Yet")}
+                  {t("connections.noConnections")}
                 </h3>
 
 
                 <p>
-                  {t("new Connection Will Appear")}
+                  {t("connections.newConnection")}
                 </p>
 
 
@@ -1696,7 +1689,7 @@ const loadConnectionsAfterAccept = async () => {
                   }
                 >
 
-                  {t("discoverPeople")}
+                  {t("connections.discoverPeople")}
 
                 </button>
 
@@ -1805,7 +1798,7 @@ const loadConnectionsAfterAccept = async () => {
 
                             <span className="connected-badge">
 
-                              🤝 {t("connected")}
+                              🤝 {t("home.connected")}
 
                             </span>
 
@@ -1841,7 +1834,7 @@ const loadConnectionsAfterAccept = async () => {
 
                             <p className="connection-looking-for">
 
-                              ❤️ {t("lookingFor")}:{" "}
+                              ❤️ {t("connections.lookingFor")}:{" "}
 
                               {profile.lookingFor}
 
@@ -1899,7 +1892,7 @@ const loadConnectionsAfterAccept = async () => {
 >
   <FiUser />
 
-  {t("viewProfile")}
+  {t("home.viewProfile")}
 </button>
 
 
@@ -1921,7 +1914,7 @@ const loadConnectionsAfterAccept = async () => {
 
                               <FiMessageCircle />
 
-                              {t("start Chat")}
+                              {t("connections.startChat")}
 
                             </button>
 
@@ -1967,14 +1960,12 @@ const loadConnectionsAfterAccept = async () => {
                   <div>
 
                     <h2>
-                      {t("pending Interests")}
+                      {t("connections.pendingInterests")}
                     </h2>
 
 
                     <p>
-                      {t(
-                        "waiting For Your Response"
-                      )}
+{t("connections.waitingResponse")}
                     </p>
 
                   </div>
@@ -2001,12 +1992,12 @@ const loadConnectionsAfterAccept = async () => {
 
 
                   <h3>
-                    {t("all Caught Up")}
+                    {t("connections.allCaughtUp")}
                   </h3>
 
 
                   <p>
-                    {t("no Pending Interests")}
+                    {t("connections.noPendingInterests")}
                   </p>
 
                 </div>
@@ -2119,8 +2110,7 @@ const loadConnectionsAfterAccept = async () => {
 
                             <p className="pending-message">
 
-                              {t(
-                                "would Like To Know You"
+                      {t("connections.wouldLikeToKnow"
                               ).replace(
                                 "{name}",
                                 senderName
@@ -2133,7 +2123,7 @@ const loadConnectionsAfterAccept = async () => {
 
                               <small>
 
-                                {t("sent")}{" "}
+                               {t("connections.sent")} {" "}
 
                                 {formatDate(
                                   interest.createdAt
@@ -2164,7 +2154,7 @@ const loadConnectionsAfterAccept = async () => {
 
                                 {processing
                                   ? "..."
-                                  : t("accept")}
+                                  : t("connections.accept")}
 
                               </button>
 
@@ -2217,12 +2207,12 @@ const loadConnectionsAfterAccept = async () => {
 
 
               <h3>
-                {t("lookingForMore")}
+                {t("connections.lookingFor")}
               </h3>
 
 
               <p>
-                {t("discover More Members")}
+                {t("connections.discoverMore")}
               </p>
 
 
@@ -2235,7 +2225,7 @@ const loadConnectionsAfterAccept = async () => {
                 }
               >
 
-                {t("discover People")}
+                {t("connections.discoverPeople")}
 
               </button>
 

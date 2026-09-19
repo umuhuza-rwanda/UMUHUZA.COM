@@ -2,6 +2,7 @@ import "./MemberProfile.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
+import { useAppPreferences } from "../../context/AppPreferencesContext";
 
 import {
   FiArrowLeft,
@@ -17,6 +18,7 @@ import { supabase } from "../../lib/supabase";
 
 function MemberProfile() {
   const navigate = useNavigate();
+  const { t } = useAppPreferences();
   const location = useLocation();
   const { uid } = useParams();
 
@@ -75,7 +77,7 @@ function MemberProfile() {
         });
       } catch (err) {
         console.error("Error loading member:", err);
-        setError("Unable to load this member's profile");
+        setError(t("memberProfile.loadError"));
       } finally {
         setLoading(false);
       }
@@ -133,7 +135,7 @@ function MemberProfile() {
       setInterestSent(true);
     } catch (err) {
       console.error("Interest error:", err);
-      alert("Unable to send interest. Please try again.");
+      alert(t("memberProfile.interestError"));
     } finally {
       setInterestLoading(false);
     }
@@ -197,7 +199,7 @@ const handleChat = () => {
           gap: "12px"
         }}>
           <div style={{ fontSize: 40 }}>❤️</div>
-          <p>Loading profile...</p>
+          <p>{t("memberProfile.loading")}</p>
         </div>
       </div>
     );
@@ -211,16 +213,16 @@ const handleChat = () => {
       <div className="member-profile-page">
         <div className="profile-not-found-card">
           <div className="profile-not-found-icon">❤️</div>
-          <h2>Member profile not found</h2>
-          <p>
-            {error || "We couldn't find this member's profile. Please return to discovery and try again."}
-          </p>
-          <button
-            className="back-to-members-btn"
-            onClick={() => navigate("/member-home")}
-          >
-            <FiArrowLeft /> Back to Members
-          </button>
+<h2>{t("memberProfile.notFound")}</h2>
+<p>
+  {error || t("memberProfile.notFoundDescription")}
+</p>
+<button
+  className="back-to-members-btn"
+  onClick={() => navigate("/member-home")}
+>
+  <FiArrowLeft /> {t("memberProfile.backToMembers")}
+</button>
         </div>
       </div>
     );
@@ -254,7 +256,7 @@ const handleChat = () => {
       {/* Top Bar */}
       <div className="profile-topbar">
         <button className="back-btn" onClick={() => navigate("/member-home")}>
-          <FiArrowLeft /> Back to Discovery
+          <FiArrowLeft /> {t("memberProfile.backToDiscovery")}
         </button>
 
         <div className="profile-logo">
@@ -280,7 +282,7 @@ const handleChat = () => {
 
           {member.online && (
             <div className="photo-online-badge">
-              <span></span> Online Now
+             <span></span> {t("memberProfile.onlineNow")}
             </div>
           )}
         </div>
@@ -290,12 +292,12 @@ const handleChat = () => {
           <div className="profile-status-row">
             {member.online && (
               <span className="online-badge">
-                <span className="status-dot"></span> Online Now
+                <span className="status-dot"></span> {t("memberProfile.onlineNow")}
               </span>
             )}
             {member.verified && (
               <span className="verified-badge">
-                <FiCheckCircle /> Verified
+                <FiCheckCircle /> {t("memberProfile.verified")}
               </span>
             )}
           </div>
@@ -313,7 +315,7 @@ const handleChat = () => {
 
           {member.lookingFor && (
             <div className="looking-for-badge">
-              ❤️ Looking for: {member.lookingFor}
+              ❤️ {t("memberProfile.lookingFor")}: {member.lookingFor}
             </div>
           )}
 
@@ -324,7 +326,7 @@ const handleChat = () => {
               onClick={handleLike}
             >
               <FiHeart />
-              {liked ? "Liked" : "Like"}
+              {liked ? t("memberProfile.liked") : t("memberProfile.like")}
             </button>
 
             <button
@@ -333,15 +335,15 @@ const handleChat = () => {
               disabled={interestSent || interestLoading}
             >
               {interestLoading
-                ? "Sending..."
+                ? t("memberProfile.sending")
                 : interestSent
-                ? "Interest Sent"
-                : "Send Interest"}
+                ? t("memberProfile.interestSent")
+                : t("memberProfile.sendInterest")}
             </button>
 
             <button className="profile-chat-btn" onClick={handleChat}>
               <FiMessageCircle />
-              Start Chat
+              {t("memberProfile.startChat")}
             </button>
           </div>
 
@@ -357,44 +359,45 @@ const handleChat = () => {
         <div className="profile-section">
           <div className="section-title">
             <span className="section-icon">💕</span>
-            <h2>About {name.split(" ")[0]}</h2>
+            {t("memberProfile.about")} {name.split(" ")[0]}
           </div>
-          <p>
-            {member.about ||
-              member.aboutYou ||
-              "I am a kind, positive and genuine person looking for meaningful connections. I enjoy spending time with good people, discovering new experiences and building relationships based on honesty and respect."}
-          </p>
+ <p>
+  {member.about ||
+    member.aboutYou ||
+    t("memberProfile.defaultAbout")}
+</p>
         </div>
 
         {/* Interests */}
         <div className="profile-section">
           <div className="section-title">
             <span className="section-icon">❤️</span>
-            <h2>Interests</h2>
+            <h2>{t("memberProfile.interests")}</h2>
           </div>
-          <div className="profile-interests">
-            <span>🎵 Music</span>
-            <span>✈️ Travel</span>
-            <span>🍳 Cooking</span>
-            <span>🎬 Movies</span>
-            <span>🌿 Nature</span>
-          </div>
+<div className="profile-interests">
+  <span>🎵 {t("memberProfile.music")}</span>
+  <span>✈️ {t("memberProfile.travel")}</span>
+  <span>🍳 {t("memberProfile.cooking")}</span>
+  <span>🎬 {t("memberProfile.movies")}</span>
+  <span>🌿 {t("memberProfile.nature")}</span>
+</div>
         </div>
 
         {/* Looking For */}
         <div className="profile-section looking-section">
           <div className="section-title">
             <span className="section-icon">💕</span>
-            <h2>What {name.split(" ")[0]} Is Looking For</h2>
+            <h2>{t("memberProfile.lookingForTitle")}</h2>
           </div>
           <div className="connection-box">
             <div className="connection-icon">❤️</div>
             <div>
-              <h3>{member.lookingFor || "Meaningful connection"}</h3>
-              <p>
-                Looking for someone genuine, respectful and ready to build
-                something meaningful together.
-              </p>
+          <h3>
+  {member.lookingFor || t("memberProfile.meaningfulConnection")}
+</h3>
+<p>
+  {t("memberProfile.lookingForDescription")}
+</p>
             </div>
           </div>
         </div>
@@ -405,11 +408,10 @@ const handleChat = () => {
             <FiCheckCircle />
           </div>
           <div>
-            <strong>Stay Safe on UMUHUZA</strong>
-            <p>
-              Take your time getting to know someone before sharing personal
-              information.
-            </p>
+<strong>{t("memberProfile.staySafe")}</strong>
+<p>
+  {t("memberProfile.safetyDescription")}
+</p>
           </div>
         </div>
       </section>

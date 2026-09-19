@@ -2556,8 +2556,8 @@ const handleStartChat = (member) => {
     </h1>
 
     <p>
-      {t("home.discoverDescription") ||
-        "Meet genuine people looking for meaningful relationships, friendship and love."}
+      {
+       "Iminsi yo kuba wenyine irarangiye! Shakira umukunzi w'inzozi zawe hano maze mwubake ejo hazaza hawe n'uwo mukwiranye"}
     </p>
 
     {currentUserProfile && (

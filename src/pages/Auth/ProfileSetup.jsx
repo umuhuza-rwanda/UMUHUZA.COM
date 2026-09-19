@@ -2,6 +2,7 @@ import "./Auth.css";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
 import {
   FiCamera,
@@ -441,6 +442,82 @@ function ProfileSetup() {
       });
     };
   }, [photos]);
+
+  // =====================================================
+// TAKE PHOTO WITH PHONE CAMERA
+// =====================================================
+
+const takePhotoWithCamera = async (photoIndex) => {
+  try {
+    setError("");
+
+    const photo = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera,
+    });
+
+    if (!photo.dataUrl) {
+      throw new Error("Unable to capture photo.");
+    }
+
+    // Convert camera photo to File
+    const response = await fetch(photo.dataUrl);
+    const blob = await response.blob();
+
+    const file = new File(
+      [blob],
+      `umuhuza-camera-${Date.now()}.jpg`,
+      {
+        type: "image/jpeg",
+      }
+    );
+
+    // Use the same compression system already used by your website
+    const compressedFile = await compressImage(
+      file,
+      MAX_COMPRESSED_SIZE
+    );
+
+    if (compressedFile.size > MAX_COMPRESSED_SIZE) {
+      throw new Error(
+        "The captured photo is still too large. Please try another photo."
+      );
+    }
+
+    // Create preview
+    const previewUrl = URL.createObjectURL(compressedFile);
+
+    setPhotos((currentPhotos) => {
+      const updatedPhotos = [...currentPhotos];
+
+      // Remove previous preview URL
+      if (updatedPhotos[photoIndex]?.preview) {
+        URL.revokeObjectURL(updatedPhotos[photoIndex].preview);
+      }
+
+      updatedPhotos[photoIndex] = {
+        file: compressedFile,
+        preview: previewUrl,
+      };
+
+      return updatedPhotos;
+    });
+
+  } catch (error) {
+    console.error("Camera error:", error);
+
+    if (error?.message?.includes("cancel")) {
+      return;
+    }
+
+    setError(
+      error?.message ||
+      "Unable to take a photo. Please check your camera permission."
+    );
+  }
+};
 
   // =====================================================
   // PHOTO CHANGE

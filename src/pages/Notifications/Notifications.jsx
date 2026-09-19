@@ -105,10 +105,9 @@ function Notifications() {
             fetchError
           );
 
-          setError(
-            "Unable to load your notifications."
-          );
-
+setError(
+  t("notifications.unableToLoad")
+);
           setLoading(false);
           return;
         }
@@ -186,12 +185,12 @@ function Notifications() {
               related_user_id: relatedUserId,
 
               // Sender name
-              sender_name:
-                profile?.full_name ||
-                notification.sender_name ||
-                notification.from_user_name ||
-                notification.fromUserName ||
-                "UMUHUZA Member",
+sender_name:
+  profile?.full_name ||
+  notification.sender_name ||
+  notification.from_user_name ||
+  notification.fromUserName ||
+  t("notifications.member"),
 
               // Sender photo
               sender_photo:
@@ -368,9 +367,9 @@ function Notifications() {
         updateError
       );
 
-      setError(
-        "Unable to mark all notifications as read."
-      );
+setError(
+  t("notifications.markAllFailed")
+);
 
       // Reload from database
       const { data } = await supabase
@@ -401,9 +400,9 @@ function Notifications() {
       notification?.fromUserId;
 
     if (!otherUserId) {
-      setError(
-        "Unable to identify this member."
-      );
+ setError(
+  t("notifications.identifyMember")
+);
       return;
     }
 
@@ -418,7 +417,7 @@ function Notifications() {
       const myName =
         currentUser.user_metadata?.full_name ||
         currentUser.user_metadata?.name ||
-        "UMUHUZA Member";
+        t("notifications.member")
 
       // -------------------------------------------------
       // 1. Mark original notification as accepted
@@ -430,8 +429,9 @@ function Notifications() {
         .update({
           is_read: true,
           type: "interest_accepted",
-          title: "Interest accepted ❤️",
-          message: `${myName} accepted your interest ❤️`,
+title: t("notifications.interestAccepted"),
+message: t("notifications.interestAcceptedMessage")
+  .replace("{name}", myName),
         })
         .eq("id", notification.id)
         .eq("user_id", currentUser.id);
@@ -632,32 +632,34 @@ function Notifications() {
       return notification.text;
     }
 
-    const name =
-      notification?.sender_name ||
-      notification?.from_user_name ||
-      "UMUHUZA Member";
+const name =
+  notification?.sender_name ||
+  notification?.from_user_name ||
+  t("notifications.member");
 
-    if (notification.type === "interest") {
-      return `${name} would like to get to know you. ❤️`;
-    }
+if (notification.type === "interest") {
+  return t("notifications.newInterest")
+    .replace("{name}", name);
+}
 
-    if (
-      notification.type ===
-        "interest_accepted" ||
-      notification.type === "accepted"
-    ) {
-      return `${name} accepted your interest. ❤️`;
-    }
+if (
+  notification.type === "interest_accepted" ||
+  notification.type === "accepted"
+) {
+  return t("notifications.acceptedInterest")
+    .replace("{name}", name);
+}
 
-    if (notification.type === "message") {
-      return "You have a new message.";
-    }
+if (notification.type === "message") {
+  return t("notifications.newMessage");
+}
 
-    if (notification.type === "like") {
-      return `${name} liked you. ❤️`;
-    }
+if (notification.type === "like") {
+  return t("notifications.likedYou")
+    .replace("{name}", name);
+}
 
-    return "You have a new notification.";
+return t("notifications.newNotification");
   };
 
   // =====================================================
@@ -671,23 +673,20 @@ function Notifications() {
             ❤️
           </div>
 
-          <h2>
-            {t("pleaseLogIn") ||
-              "Please log in"}
-          </h2>
+<h2>
+  {t("notifications.loginRequired")}
+</h2>
 
-          <p>
-            {t("loginToNotifications") ||
-              "Log in to view your notifications."}
-          </p>
+<p>
+  {t("notifications.loginToView")}
+</p>
 
-          <button
-            className="notifications-primary-btn"
-            onClick={() => navigate("/login")}
-          >
-            {t("goToLogin") ||
-              "Go to Login"}
-          </button>
+<button
+  className="notifications-primary-btn"
+  onClick={() => navigate("/login")}
+>
+  {t("notifications.goToLogin")}
+</button>
         </div>
       </div>
     );
@@ -709,7 +708,7 @@ function Notifications() {
           <FiArrowLeft />
 
           <span>
-            {t("back") || "Back"}
+            {t("notifications.back")}
           </span>
         </button>
 
@@ -725,8 +724,7 @@ function Notifications() {
           <FiBell />
 
           <span>
-            {t("notifications") ||
-              "Notifications"}
+{t("notifications.title")}
           </span>
         </div>
       </header>
@@ -737,17 +735,15 @@ function Notifications() {
           <div>
             <span className="notifications-label">
               🔔{" "}
-              {t("yourActivity") ||
-                "YOUR ACTIVITY"}
+             {t("notifications.activity")}
             </span>
 
             <h1>
-              {t("notifications") ||
-                "Notifications"}
+{t("notifications.heading")}
             </h1>
 
             <p>
-              {t("stayUpdatedActivity") ||
+              {t("notifications.stayUpdated") ||
                 "Stay updated with your activity."}
             </p>
 
@@ -759,8 +755,7 @@ function Notifications() {
                 onClick={markAllAsRead}
               >
                 <FiCheck />
-                {t("markAllRead") ||
-                  "Mark all read"}
+                {t("notifications.markAllRead")}
               </button>
             )}
           </div>
@@ -769,7 +764,7 @@ function Notifications() {
             {unreadCount}
 
             <span>
-              {t("unread") || "Unread"}
+              {t("notifications.unread")}
             </span>
           </div>
         </div>
@@ -789,12 +784,11 @@ function Notifications() {
             </div>
 
             <h2>
-              {t("loadingNotifications") ||
-                "Loading notifications..."}
+{t("notifications.loading")}
             </h2>
 
             <p>
-              {t("pleaseWait") ||
+              {t("notifications.pleaseWait") ||
                 "Please wait."}
             </p>
           </div>
@@ -806,15 +800,11 @@ function Notifications() {
             </div>
 
             <h2>
-              {t("noNotificationsYet") ||
-                "No notifications yet"}
+{t("notifications.emptyTitle")}
             </h2>
 
             <p>
-              {t(
-                "notificationEmptyMessage"
-              ) ||
-                "When someone interacts with you, you'll see the notification here."}
+             {t("notifications.emptyMessage")}
             </p>
 
             <button
@@ -823,8 +813,7 @@ function Notifications() {
                 navigate("/member-home")
               }
             >
-              {t("discoverPeople") ||
-                "Discover People"}
+              {t("notifications.discoverPeople")}
             </button>
           </div>
         ) : (
@@ -834,7 +823,7 @@ function Notifications() {
               (notification) => {
                 const notificationName =
                   notification.sender_name ||
-                  "UMUHUZA Member";
+                  t("notifications.member")
 
                 const isInterest =
                   notification.type ===
@@ -920,14 +909,9 @@ function Notifications() {
                           );
                         }}
                       >
-                        {acceptingInterest ===
-                        notification.id
-                          ? t("accepting") ||
-                            "Accepting..."
-                          : `✓ ${
-                              t("accept") ||
-                              "ACCEPT"
-                            }`}
+{acceptingInterest === notification.id
+  ? t("notifications.accepting")
+  : `✓ ${t("notifications.accept")}`}
                       </button>
                     )}
 
@@ -944,9 +928,8 @@ function Notifications() {
                           );
                         }}
                       >
-                        💬{" "}
-                        {t("startChat") ||
-                          "Start Chat"}
+💬{" "}
+{t("notifications.startChat")}
                       </button>
                     )}
 

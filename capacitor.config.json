@@ -1,5 +1,12 @@
 {
   "appId": "com.umuhuza.app",
   "appName": "UMUHUZA",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 2000,
+      "backgroundColor": "#4B176E"
+    }
+  }
 }
