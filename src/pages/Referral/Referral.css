@@ -1,1193 +1,620 @@
-/* =========================================================
-   KUNDWA REFERRAL — professional layout
-========================================================= */
+/* =====================================================
+   REFERRAL PAGE - Modern Gradient Design
+===================================================== */
 
 .referral-page {
-  min-height: 100dvh;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, #f3e8ff 0%, transparent 55%),
-    #faf7fc;
-  color: #2e1065;
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #c91403, #1805ed, #ef0808);
+  color: rgb(55, 246, 7);
+  padding-bottom: 60px;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
 }
 
-/* ---------- Header ---------- */
-
+/* Header */
 .referral-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #efe6f6;
+  padding: 16px 20px;
+  background: rgba(6, 239, 37, 0.872);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(241, 244, 20, 0.929);
 }
 
 .referral-back-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 12px;
-  border: 1px solid #eadcf3;
-  border-radius: 999px;
-  background: #fff;
-  color: #6d28d9;
-  font-weight: 600;
-  font-size: 0.875rem;
+  background: rgba(227, 5, 5, 0.927);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 20px;
   cursor: pointer;
-}
-
-.referral-back-btn:hover {
-  background: #f5f0ff;
+  font-size: 14px;
 }
 
 .referral-logo {
-  font-weight: 800;
-  font-size: 1rem;
-  color: #5b21b6;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.5px;
 }
 
-.referral-header-spacer {
-  width: 88px;
-}
-
-/* ---------- Main ---------- */
-
-.referral-main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 20px 16px 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* ---------- Hero ---------- */
-
+/* Hero */
 .referral-hero {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 24px 22px;
-  border-radius: 24px;
-  background: linear-gradient(145deg, #6d28d9 0%, #a21caf 50%, #db2777 100%);
-  color: #fff;
-  box-shadow: 0 18px 40px rgba(109, 40, 217, 0.28);
+  text-align: center;
+  padding: 40px 20px 30px;
 }
 
 .referral-hero-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.18);
-  font-size: 1.6rem;
-  flex-shrink: 0;
-}
-
-.referral-label {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  opacity: 0.9;
-  margin-bottom: 6px;
-}
-
-.referral-hero h1 {
-  margin: 0 0 8px;
-  font-size: clamp(1.6rem, 4vw, 2rem);
-  font-weight: 800;
-  line-height: 1.15;
-}
-
-.referral-hero p {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.92);
-  max-width: 36ch;
-}
-
-/* ---------- Error / empty / loading ---------- */
-
-.referral-error {
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #b91c1c;
-  font-size: 0.9rem;
-}
-
-.referral-empty-state,
-.referral-loading {
-  max-width: 400px;
-  margin: 10vh auto;
-  text-align: center;
-  padding: 32px 24px;
-  background: #fff;
-  border-radius: 24px;
-  border: 1px solid #efe6f6;
-  box-shadow: 0 12px 32px rgba(63, 23, 101, 0.08);
-}
-
-.referral-empty-icon,
-.referral-loading-icon {
-  font-size: 2.4rem;
+  font-size: 42px;
   margin-bottom: 12px;
 }
 
-.referral-empty-state h2,
-.referral-loading h2 {
-  margin: 0 0 8px;
-  color: #4c1d95;
+.referral-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #dfea0de7;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
-.referral-empty-state p,
-.referral-loading p {
-  margin: 0 0 18px;
-  color: #6b5a78;
+.referral-hero h1 {
+  font-size: 28px;
+  margin: 0 0 10px;
+  background: linear-gradient(90deg, #09fd15f5, #2e06f7, #05f9ac);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.referral-empty-state button {
-  border: none;
-  border-radius: 999px;
-  padding: 12px 22px;
-  background: linear-gradient(135deg, #7c3aed, #a21caf);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
+.referral-hero p {
+  color: #14f708;
+  max-width: 360px;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
-/* ---------- Share cards ---------- */
-
+/* Sharing Cards */
 .referral-sharing-grid {
   display: grid;
-  gap: 12px;
-}
-
-@media (min-width: 640px) {
-  .referral-sharing-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+  gap: 16px;
+  padding: 0 16px;
+  max-width: 500px;
+  margin: 0 auto 24px;
 }
 
 .referral-share-card {
-  background: #fff;
-  border: 1px solid #efe6f6;
+  background: rgb(5, 77, 7);
+  border: 1px solid rgba(245, 8, 8, 0.918);
   border-radius: 20px;
-  padding: 18px;
-  box-shadow: 0 8px 24px rgba(63, 23, 101, 0.05);
+  padding: 20px;
+  backdrop-filter: blur(10px);
 }
 
 .share-card-heading {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .share-card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-size: 1.15rem;
-  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
 }
 
 .share-card-icon.purple {
-  background: linear-gradient(145deg, #7c3aed, #a21caf);
+  background: linear-gradient(135deg, #f905b4, #f54f03);
 }
 
 .share-card-icon.green {
-  background: linear-gradient(145deg, #22c55e, #16a34a);
+  background: linear-gradient(135deg, #6b04f3, #04fa4e);
 }
 
 .share-card-heading span {
   display: block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #8b7a9a;
+  font-size: 12px;
+  color: #0ded05fe;
 }
 
 .share-card-heading strong {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.92rem;
-  color: #3f1765;
+  font-size: 15px;
 }
 
+/* Code Box */
 .referral-code-box {
+  background: rgb(243, 6, 144);
+  border-radius: 16px;
+  padding: 16px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 12px 12px 14px;
-  border-radius: 14px;
-  background: #f8f4fc;
-  border: 1px solid #eadcf3;
+  flex-direction: column;
+  gap: 12px;
+  color: #1707f5;
 }
 
 .referral-code-box span {
+  font-size: 22px;
   font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  color: #5b21b6;
-  word-break: break-all;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
-.referral-code-box button,
-.referral-link-actions button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+.referral-code-box button {
+  background: linear-gradient(90deg, #04f11c, #5cf66b);
+  color: rgb(248, 8, 8);
   border: none;
+  padding: 12px;
   border-radius: 12px;
-  padding: 10px 12px;
-  background: #6d28d9;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
 }
 
-.referral-code-box button:hover,
-.referral-link-actions button:hover {
-  background: #5b21b6;
-}
-
+/* Link Box */
 .referral-link-box {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  background: rgb(250, 5, 127);
+  border-radius: 14px;
+  padding: 14px;
 }
 
 .referral-link-text {
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: #f8f4fc;
-  border: 1px solid #eadcf3;
-  font-size: 0.8rem;
-  color: #5b4a6a;
+  font-size: 13px;
   word-break: break-all;
+  color: #e0e7ff;
+  margin-bottom: 12px;
   line-height: 1.4;
 }
 
 .referral-link-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
-.referral-link-actions .share-button {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+.referral-link-actions button {
+  flex: 1;
+  border: none;
+  padding: 11px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.referral-link-actions .share-button:hover {
-  background: #15803d;
+.referral-link-actions button:first-child {
+  background: rgb(61, 253, 3);
+  color: rgb(255, 254, 254);
 }
 
-/* ---------- Progress ---------- */
+.share-button {
+  background: linear-gradient(90deg, #1cf903, #49f406) !important;
+  color: white !important;
+}
 
+/* Progress Card */
 .referral-progress-card {
-  background: #fff;
-  border: 1px solid #efe6f6;
+  margin: 0 16px 24px;
+  background: linear-gradient(135deg, #185305d2, #056c1bd8);
   border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(63, 23, 101, 0.05);
+  padding: 22px;
+  border: 1px solid rgb(252, 8, 8);
 }
 
 .progress-card-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 .progress-small-label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: #8b7a9a;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #08fa08;
   margin-bottom: 4px;
 }
 
 .progress-card-top h2 {
   margin: 0;
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #4c1d95;
+  font-size: 28px;
 }
 
 .progress-card-top h2 span {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #9b8aab;
-}
-
-.progress-users-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(145deg, #ede9fe, #fce7f3);
-  color: #7c3aed;
-  font-size: 1.25rem;
+  font-size: 18px;
+  color: #0bf732;
+  font-weight: 500;
 }
 
 .progress-bar {
   height: 10px;
-  border-radius: 999px;
-  background: #f0e8f8;
+  background: rgb(255, 54, 4);
+  border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .progress-bar-fill {
   height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #7c3aed, #db2777);
-  transition: width 0.35s ease;
+  background: linear-gradient(90deg, #1905f7, #f408f4, #06e257);
+  border-radius: 20px;
+  transition: width 0.4s ease;
 }
 
 .progress-message {
   display: flex;
-  align-items: flex-start;
   gap: 12px;
-  padding: 12px 14px;
+  align-items: flex-start;
+  background: rgba(118, 9, 95, 0.982);
+  padding: 14px;
   border-radius: 14px;
-  background: #f8f4fc;
-  color: #5b4a6a;
-  font-size: 0.9rem;
 }
 
-.progress-message svg {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: #7c3aed;
+.progress-message.success {
+  background: rgba(236, 6, 236, 0.911);
 }
 
 .progress-message strong {
   display: block;
-  color: #3f1765;
   margin-bottom: 2px;
 }
 
-.progress-message.success {
-  background: #ecfdf5;
-  color: #065f46;
+.progress-message span {
+  font-size: 13px;
+  color: #06f816;
 }
 
-.progress-message.success svg {
-  color: #059669;
-}
-
-/* ---------- Reward unlocked ---------- */
-
+/* Reward Unlocked Card */
 .reward-unlocked-card {
-  display: flex;
-  gap: 14px;
-  padding: 20px;
-  border-radius: 20px;
-  background: linear-gradient(145deg, #faf5ff, #fff1f2);
-  border: 1px solid #f0d9ff;
+  margin: 0 16px 24px;
+  background: linear-gradient(135deg, #fd0606, #3906f0);
+  border-radius: 22px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 15px 40px rgba(109, 40, 217, 0.3);
 }
 
 .reward-unlocked-icon {
-  font-size: 2rem;
-  line-height: 1;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
 .reward-unlocked-label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: #a21caf;
-  margin-bottom: 4px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #c4b5fd;
+  margin-bottom: 6px;
 }
 
 .reward-unlocked-content h2 {
   margin: 0 0 8px;
-  font-size: 1.2rem;
-  color: #4c1d95;
+  font-size: 22px;
 }
 
 .reward-unlocked-content p {
-  margin: 0 0 12px;
-  color: #6b5a78;
-  font-size: 0.92rem;
-  line-height: 1.45;
+  color: #e9d5ff;
+  margin-bottom: 16px;
+  line-height: 1.5;
 }
 
 .reward-benefit {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-bottom: 14px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid #eadcf3;
-  font-size: 0.88rem;
-  color: #5b21b6;
+  background: rgba(244, 6, 6, 0.979);
+  padding: 12px 16px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  font-size: 14px;
 }
 
 .claim-reward-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  width: 100%;
+  background: linear-gradient(90deg, #2304ee, #07f35d);
+  color: rgb(177, 10, 243);
   border: none;
+  padding: 14px;
   border-radius: 14px;
-  padding: 12px 18px;
-  background: linear-gradient(135deg, #7c3aed, #db2777);
-  color: #fff;
   font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(168, 85, 247, 0.3);
 }
 
-.claim-reward-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-/* ---------- Reward levels ---------- */
-
+/* Reward Levels */
 .reward-levels-section {
-  background: #fff;
-  border: 1px solid #efe6f6;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 8px 24px rgba(63, 23, 101, 0.05);
+  padding: 0 16px;
+  max-width: 500px;
+  margin: 0 auto 30px;
 }
 
 .section-heading {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
 }
 
 .section-heading span {
-  display: block;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: #8b7a9a;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #f508d1f7;
 }
 
 .section-heading h2 {
   margin: 4px 0 0;
-  font-size: 1.25rem;
-  color: #4c1d95;
-}
-
-.section-heading > svg {
-  color: #a21caf;
-  font-size: 1.35rem;
+  font-size: 20px;
 }
 
 .reward-levels {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .reward-level {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
+  background: rgba(186, 5, 5, 0.979);
+  border: 1px solid rgba(245, 9, 9, 0.927);
   border-radius: 16px;
-  background: #faf7fc;
-  border: 1px solid #efe6f6;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.25s ease;
 }
 
 .reward-level.unlocked {
-  background: linear-gradient(90deg, #f5f0ff, #fdf4ff);
-  border-color: #e9d5ff;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(99, 102, 241, 0.15));
+  border-color: rgba(74, 222, 128, 0.3);
 }
 
 .reward-level.special {
-  background: linear-gradient(90deg, #fff7ed, #fdf4ff);
+  background: linear-gradient(135deg, rgba(208, 9, 9, 0.856), rgba(7, 247, 67, 0.989));
 }
 
 .reward-level-number {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: #ede9fe;
-  color: #6d28d9;
-  font-weight: 800;
-  font-size: 0.95rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .reward-level.unlocked .reward-level-number {
-  background: #dcfce7;
-  color: #16a34a;
+  background: #22c55e;
+  color: white;
+}
+
+.reward-level-content {
+  flex: 1;
 }
 
 .reward-level-content strong {
   display: block;
-  color: #3f1765;
-  font-size: 0.95rem;
+  font-size: 15px;
+  margin-bottom: 2px;
 }
 
 .reward-level-content span {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.8rem;
-  color: #7a6b8a;
+  font-size: 13px;
+  color: #a5b4fc;
 }
 
 .reward-level-prize {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #7c3aed;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c4b5fd;
   text-align: right;
-  max-width: 9rem;
+  max-width: 120px;
 }
 
-/* ---------- How it works ---------- */
-
+/* How it works */
 .referral-how-card {
+  margin: 0 16px;
+  background: rgba(155, 6, 242, 0.998);
+  border-radius: 18px;
+  padding: 20px;
   display: flex;
   gap: 14px;
   align-items: flex-start;
-  padding: 18px;
-  border-radius: 20px;
-  background: #fff;
-  border: 1px solid #efe6f6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .how-icon {
-  font-size: 1.6rem;
-  line-height: 1;
+  font-size: 28px;
 }
 
 .referral-how-card h3 {
   margin: 0 0 6px;
-  color: #4c1d95;
-  font-size: 1.05rem;
+  font-size: 16px;
 }
 
 .referral-how-card p {
   margin: 0;
-  color: #6b5a78;
-  font-size: 0.9rem;
+  font-size: 14px;
+  color: #c7d2fe;
   line-height: 1.5;
 }
 
-/* ---------- Claim modal ---------- */
-
+/* Claim Modal */
 .claim-modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  background: rgba(15, 10, 40, 0.8);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
   padding: 20px;
-  background: rgba(30, 12, 45, 0.55);
-  backdrop-filter: blur(6px);
 }
 
 .claim-modal {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  padding: 28px 22px 22px;
+  background: linear-gradient(160deg, #1e1b4b, #312e81);
   border-radius: 24px;
-  background: #fff;
-  box-shadow: 0 24px 60px rgba(45, 15, 70, 0.3);
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 380px;
   text-align: center;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .claim-modal-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: #f4eef8;
-  color: #6d6575;
-  display: grid;
-  place-items: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
 .claim-modal-icon {
-  font-size: 2.4rem;
-  margin-bottom: 8px;
+  font-size: 48px;
+  margin-bottom: 12px;
 }
 
 .claim-modal-label {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #a21caf;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #a5b4fc;
+  margin-bottom: 8px;
 }
 
 .claim-modal h2 {
-  margin: 8px 0 12px;
-  color: #3f1765;
-  font-size: 1.35rem;
+  margin: 0 0 16px;
+  font-size: 20px;
 }
 
 .claim-modal-description {
-  margin: 0 0 12px;
-  color: #6b5a78;
-  font-size: 0.92rem;
-  line-height: 1.45;
+  color: #c7d2fe;
+  margin-bottom: 16px;
+  line-height: 1.5;
 }
 
 .claim-modal-benefit {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  text-align: left;
-  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 14px;
   border-radius: 14px;
-  background: #f8f4fc;
-  border: 1px solid #eadcf3;
-  color: #5b21b6;
-  font-size: 0.88rem;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
 }
 
 .claim-confirm-btn,
 .claim-done-btn {
   width: 100%;
-  display: inline-flex;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: none;
-  border-radius: 14px;
-  padding: 13px 16px;
-  font-weight: 700;
-  cursor: pointer;
 }
 
 .claim-confirm-btn {
-  background: linear-gradient(135deg, #7c3aed, #db2777);
-  color: #fff;
-}
-
-.claim-confirm-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  color: white;
 }
 
 .claim-done-btn {
-  background: #f3e8ff;
-  color: #6d28d9;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
 }
 
 .claim-success-message {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 12px;
-  padding: 12px;
-  border-radius: 12px;
-  background: #ecfdf5;
-  color: #065f46;
-  font-size: 0.9rem;
 }
 
 .claim-error-message {
-  margin-bottom: 12px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
   padding: 12px;
   border-radius: 12px;
-  background: #fef2f2;
-  color: #b91c1c;
-  font-size: 0.9rem;
+  margin-bottom: 16px;
 }
-
-/* ---------- Mobile tweaks ---------- */
-
-@media (max-width: 480px) {
-  .referral-hero {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .reward-level {
-    grid-template-columns: auto 1fr;
-  }
-
-  .reward-level-prize {
-    grid-column: 2;
-    text-align: left;
-    max-width: none;
-  }
-
-  .referral-header-spacer {
-    width: 72px;
-  }
-}
-/* =========================================================
-   KUNDWA REFERRAL — panel style (matches invite mock)
-========================================================= */
-
-.referral-page {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: #1a0b2e;
-  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  color: #fff;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Top bar (Back) — dark, minimal */
-.referral-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px;
-  background: transparent;
-}
-
-.referral-back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border-radius: 999px;
-  padding: 8px 12px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.referral-logo {
-  font-weight: 800;
-  color: #fff;
-}
-
-.referral-header-spacer {
-  width: 72px;
-}
-
-/* Main panel */
-.referral-main {
-  width: min(420px, 100%);
-  margin: 0 auto;
-  padding: 8px 14px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-/* Hero = top of purple card */
-.referral-hero {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 18px 8px;
-  border-radius: 28px 28px 0 0;
-  background: linear-gradient(165deg, #c026d3 0%, #9333ea 40%, #6d28d9 100%);
-  margin-bottom: -14px; /* merges visually with sections below */
-  box-shadow: none;
-}
-
-.referral-hero-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.2);
-  font-size: 1.35rem;
-  flex-shrink: 0;
-}
-
-.referral-label {
-  display: none; /* title is enough, like the mock */
-}
-
-.referral-hero h1 {
-  margin: 0;
-  font-size: 1.35rem;
-  font-weight: 800;
-}
-
-.referral-hero p {
-  margin: 4px 0 0;
-  font-size: 0.88rem;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Shared “body” of the purple panel */
-.referral-sharing-grid,
-.referral-progress-card,
-.reward-levels-section,
-.reward-unlocked-card,
-.referral-how-card {
-  background: linear-gradient(180deg, #7c3aed 0%, #5b21b6 55%, #4c1d95 100%);
-  border: none;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-}
-
-.referral-sharing-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 18px 16px 8px;
-  border-radius: 0;
-}
+/* Make everything more rounded */
 
 .referral-share-card {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
+  border-radius: 24px !important;
 }
 
-.share-card-heading {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.share-card-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background: rgba(255, 255, 255, 0.15) !important;
-}
-
-.share-card-heading span {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.78rem;
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 600;
-}
-
-.share-card-heading strong {
-  display: none; /* mock only shows one label line */
-}
-
-/* Code box — white rounded card */
 .referral-code-box {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-  padding: 16px;
-  border-radius: 18px;
-  background: #ffffff;
-  border: none;
+  border-radius: 20px !important;
 }
 
-.referral-code-box span {
-  text-align: center;
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: #4c1d95;
-}
-
-.referral-code-box button {
-  width: 100%;
-  justify-content: center;
-  border-radius: 999px;
-  padding: 12px 16px;
-  background: #f3e8ff;
-  color: #6d28d9;
-  font-weight: 700;
-}
-
-.referral-code-box button:hover {
-  background: #e9d5ff;
-}
-
-/* Link box */
 .referral-link-box {
-  gap: 10px;
+  border-radius: 18px !important;
 }
 
-.referral-link-text {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  padding: 12px 14px;
-  font-size: 0.78rem;
-  text-align: center;
-}
-
-.referral-link-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.referral-link-actions button {
-  justify-content: center;
-  border-radius: 999px;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.16);
-  color: #fff;
-}
-
-.referral-link-actions button:hover {
-  background: rgba(255, 255, 255, 0.24);
-}
-
-.referral-link-actions .share-button {
-  background: #22c55e;
-  color: #fff;
-}
-
-.referral-link-actions .share-button:hover {
-  background: #16a34a;
-}
-
-/* Progress block */
 .referral-progress-card {
-  margin-top: -4px;
-  padding: 8px 16px 20px;
-  border-radius: 0 0 28px 28px;
+  border-radius: 24px !important;
 }
 
-.progress-card-top {
-  display: none; /* replaced by circular style below via progress-message layout */
-}
-
-/* Circular-style progress using conic gradient on the icon area */
-.progress-users-icon {
-  display: none;
-}
-
-.progress-bar {
-  height: 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-  margin: 12px 0 10px;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #4ade80, #22c55e);
-}
-
-.progress-message {
-  display: grid;
-  grid-template-columns: 88px 1fr;
-  align-items: center;
-  gap: 14px;
-  padding: 14px;
-  border-radius: 20px;
-  background: rgba(15, 10, 30, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.progress-message svg {
-  display: none;
-}
-
-.progress-message strong {
-  color: #fff;
-  font-size: 1rem;
-}
-
-.progress-message span {
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 0.88rem;
-}
-
-/* Fake circular counter: put number in ::before via data attribute optional —
-   without JSX change we style the strong line as the highlight */
-.progress-message.success {
-  background: rgba(15, 10, 30, 0.35);
-  color: #fff;
-}
-
-/* Unlocked / levels / how — keep inside same purple language */
-.reward-unlocked-card,
-.reward-levels-section,
-.referral-how-card {
-  margin: 0 14px;
-  border-radius: 20px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #fff;
-}
-
-.reward-unlocked-label,
-.section-heading span {
-  color: #f9a8d4;
-}
-
-.reward-unlocked-content h2,
-.section-heading h2,
-.referral-how-card h3,
-.reward-level-content strong {
-  color: #fff;
-}
-
-.reward-unlocked-content p,
-.referral-how-card p,
-.reward-level-content span {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.reward-benefit {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-.claim-reward-btn {
-  background: #fff;
-  color: #6d28d9;
-  box-shadow: none;
+.reward-unlocked-card {
+  border-radius: 26px !important;
 }
 
 .reward-level {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  border-radius: 20px !important;
 }
 
-.reward-level.unlocked {
-  background: rgba(34, 197, 94, 0.15);
-  border-color: rgba(74, 222, 128, 0.35);
-}
-
-.reward-level-number {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-.reward-level-prize {
-  color: #f9a8d4;
-}
-
-/* Modal */
-.claim-modal-overlay {
-  background: rgba(10, 5, 20, 0.7);
+.referral-how-card {
+  border-radius: 22px !important;
 }
 
 .claim-modal {
-  background: linear-gradient(165deg, #c026d3, #6d28d9);
-  color: #fff;
+  border-radius: 28px !important;
 }
 
-.claim-modal h2,
-.claim-modal-description {
-  color: #fff;
-}
-
-.claim-modal-close {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-.claim-modal-benefit {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-.claim-confirm-btn {
-  background: #fff;
-  color: #6d28d9;
-}
-
+.referral-code-box button,
+.referral-link-actions button,
+.claim-reward-btn,
+.claim-confirm-btn,
 .claim-done-btn {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-/* Empty / loading */
-.referral-empty-state,
-.referral-loading {
-  background: linear-gradient(165deg, #c026d3, #6d28d9);
-  border: none;
-  color: #fff;
-}
-
-.referral-empty-state h2,
-.referral-loading h2 {
-  color: #fff;
-}
-
-.referral-empty-state p,
-.referral-loading p {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.referral-empty-state button {
-  background: #fff;
-  color: #6d28d9;
-}
-
-@media (max-width: 480px) {
-  .referral-main {
-    width: 100%;
-  }
-}
-.progress-ring {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-}
-
-.progress-ring-inner {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  background: #2e1065;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.progress-ring-inner strong {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1;
-}
-
-.progress-ring-inner span {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.75);
-  margin-top: 2px;
+  border-radius: 16px !important;
 }

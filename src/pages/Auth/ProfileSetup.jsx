@@ -1420,16 +1420,15 @@ const takePhotoWithCamera = async (photoIndex) => {
                   UMUHUZA profile.
                 </p>
 
-                <label
-                  htmlFor="profile-photo-0"
-                  className="upload-photo-btn"
-                >
-                  <FiCamera />
-
-                  {photos[0]
-                    ? "Change Photo"
-                    : "Upload Photo"}
-                </label>
+<button
+  type="button"
+  className="upload-photo-btn"
+  onClick={() => takePhotoWithCamera(0)}
+  disabled={loading}
+>
+  <FiCamera />
+  {photos[0] ? "Change Photo" : "Take Photo"}
+</button>
 
                 <input
                   id="profile-photo-0"

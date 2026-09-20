@@ -9,6 +9,7 @@ import {
 import SupabaseTest from "./SupabaseTest";
 import { useEffect, useState } from "react";
 import { App as CapacitorApp } from "@capacitor/app";
+import { PushNotifications } from "@capacitor/push-notifications";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
 
@@ -207,6 +208,8 @@ function SessionStartup() {
 }
 
 
+
+
 function Home() {
   return (
     <>
@@ -325,6 +328,57 @@ function AndroidBackButtonHandler() {
 }
 
 // ======================================================
+// ANDROID NOTIFICATION PERMISSION
+// ======================================================
+
+function AndroidNotificationPermission() {
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      // Only run this on native Android/iOS.
+      if (!Capacitor.isNativePlatform()) {
+        return;
+      }
+
+      // Only request notification permission on Android.
+      if (Capacitor.getPlatform() !== "android") {
+        return;
+      }
+
+      try {
+        const permission =
+          await PushNotifications.checkPermissions();
+
+        console.log(
+          "🔔 UMUHUZA notification permission:",
+          permission.receive
+        );
+
+        // Ask Android to show the notification permission dialog
+        // when permission has not been decided yet.
+        if (permission.receive === "prompt") {
+          const result =
+            await PushNotifications.requestPermissions();
+
+          console.log(
+            "🔔 UMUHUZA notification permission result:",
+            result.receive
+          );
+        }
+      } catch (error) {
+        console.error(
+          "❌ UMUHUZA notification permission error:",
+          error
+        );
+      }
+    };
+
+    requestNotificationPermission();
+  }, []);
+
+  return null;
+}
+
+// ======================================================
 // APP
 // ======================================================
 
@@ -340,6 +394,7 @@ function App() {
       <SessionStartup />
       
       <AndroidBackButtonHandler />
+      <AndroidNotificationPermission />
 
         <Routes>
 
