@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import { useNavigate } from "react-router-dom";
+import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
 
 import {
   FiArrowLeft,
@@ -482,7 +483,13 @@ function Referral() {
           <span>Back</span>
         </button>
 
-        <div className="referral-logo">❤️ UMUHUZA</div>
+        <div className="referral-logo">
+  <img 
+    src={umurangaLogo} 
+    alt="UMUHUZA.COM" 
+    style={{ height: 36, objectFit: "contain" }} 
+  />
+</div>
         <div className="referral-header-spacer" />
       </header>
 

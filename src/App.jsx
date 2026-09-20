@@ -10,6 +10,7 @@ import SupabaseTest from "./SupabaseTest";
 import { useEffect, useState } from "react";
 import { App as CapacitorApp } from "@capacitor/app";
 import { PushNotifications } from "@capacitor/push-notifications";
+import FloatingInviteButton from "./components/FloatingInviteButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
 
@@ -394,6 +395,7 @@ function App() {
       <SessionStartup />
       
       <AndroidBackButtonHandler />
+      <FloatingInviteButton />
       <AndroidNotificationPermission />
 
         <Routes>

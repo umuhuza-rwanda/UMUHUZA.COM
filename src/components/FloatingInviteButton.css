@@ -1,0 +1,42 @@
+.floating-invite-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 999;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: linear-gradient(135deg, #fa2100, #8a03ff);
+  color: rgb(23, 7, 241);
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+
+  box-shadow: 0 8px 25px rgba(5, 252, 18, 0.989);
+  transition: all 0.2s ease;
+}
+
+.floating-invite-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(9, 232, 24, 0.984);
+}
+
+.floating-invite-btn:active {
+  transform: scale(0.96);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .floating-invite-btn {
+    bottom: 20px;
+    right: 16px;
+    padding: 13px 18px;
+    font-size: 14px;
+  }
+}

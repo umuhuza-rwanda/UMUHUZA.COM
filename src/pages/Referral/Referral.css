@@ -618,3 +618,9 @@
 .claim-done-btn {
   border-radius: 16px !important;
 }
+.referral-logo img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
