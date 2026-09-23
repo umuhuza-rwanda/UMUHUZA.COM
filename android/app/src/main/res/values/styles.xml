@@ -13,8 +13,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
-        <item name="android:statusBarColor">#FFFFFF</item>
-        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Android status bar -->
+        <item name="android:statusBarColor">#F5EBDD</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- UMUHUZA splash screen -->
@@ -22,8 +24,10 @@
         <item name="windowSplashScreenBackground">#4B176E</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
-        <item name="android:statusBarColor">#83FFFFFF</item>
-        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Android status bar -->
+        <item name="android:statusBarColor">#F5EBDD</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>

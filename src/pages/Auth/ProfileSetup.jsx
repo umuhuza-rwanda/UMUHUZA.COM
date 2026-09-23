@@ -3,6 +3,7 @@ import "./Auth.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { FiImage } from "react-icons/fi";
 
 import {
   FiCamera,
@@ -1420,15 +1421,39 @@ const takePhotoWithCamera = async (photoIndex) => {
                   UMUHUZA profile.
                 </p>
 
-<button
-  type="button"
-  className="upload-photo-btn"
-  onClick={() => takePhotoWithCamera(0)}
-  disabled={loading}
+<div
+  style={{
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+  }}
 >
-  <FiCamera />
-  {photos[0] ? "Change Photo" : "Take Photo"}
-</button>
+  {/* TAKE PHOTO */}
+  <button
+    type="button"
+    className="upload-photo-btn"
+    onClick={() => takePhotoWithCamera(0)}
+    disabled={loading}
+  >
+    <FiCamera />
+    {photos[0] ? "Retake Photo" : "Take Photo"}
+  </button>
+
+  {/* CHOOSE FROM GALLERY */}
+  <button
+    type="button"
+    className="upload-photo-btn"
+    onClick={() =>
+      document
+        .getElementById("profile-photo-0")
+        ?.click()
+    }
+    disabled={loading}
+  >
+    <FiImage />
+    {photos[0] ? "Change Photo" : "Choose from Gallery"}
+  </button>
+</div>
 
                 <input
                   id="profile-photo-0"
