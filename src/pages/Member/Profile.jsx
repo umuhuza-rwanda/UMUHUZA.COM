@@ -17,6 +17,8 @@ import {
   FiTrash2,
   FiCamera,
   FiChevronRight,
+  FiEdit3,
+  FiEye,
   FiMail,
   FiUpload,
   FiCheckCircle,
@@ -473,29 +475,46 @@ const handlePhotoUpload = async (event) => {
             />
           </div>
 
-          <div className="profile-photo-actions">
-            {profilePhoto ? (
-              <button
-                type="button"
-                className="profile-upload-btn"
-                onClick={handleDeletePhoto}
-                disabled={uploadingPhoto}
-              >
-                <FiTrash2 />
-                {uploadingPhoto ? "Deleting..." : "Delete Profile Photo"}
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="profile-upload-btn"
-                onClick={openPhotoPicker}
-                disabled={uploadingPhoto}
-              >
-                <FiUpload />
-                {uploadingPhoto ? "Uploading..." : "Add Profile Photo"}
-              </button>
-            )}
-          </div>
+<div className="profile-photo-actions">
+
+  {/* CHANGE PHOTO */}
+  <button
+    type="button"
+    className="profile-upload-btn profile-change-photo-btn"
+    onClick={openPhotoPicker}
+    disabled={uploadingPhoto}
+  >
+    <FiCamera />
+    {uploadingPhoto ? "Uploading..." : "Change Photo"}
+  </button>
+
+  {/* DELETE PHOTO */}
+  <button
+    type="button"
+    className="profile-upload-btn profile-delete-photo-btn"
+    onClick={handleDeletePhoto}
+    disabled={uploadingPhoto || !profilePhoto}
+  >
+    <FiTrash2 />
+    {uploadingPhoto ? "Deleting..." : "Delete Photo"}
+  </button>
+
+  {/* VIEW PHOTO */}
+  <button
+    type="button"
+    className="profile-upload-btn profile-view-photo-btn"
+    onClick={() => {
+      if (profilePhoto) {
+        window.open(profilePhoto, "_blank", "noopener,noreferrer");
+      }
+    }}
+    disabled={!profilePhoto}
+  >
+    <FiEye />
+    View Photo
+  </button>
+
+</div>
 
           {photoError && <div className="profile-photo-error">{photoError}</div>}
 

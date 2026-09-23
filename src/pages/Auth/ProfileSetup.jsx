@@ -1308,7 +1308,7 @@ const takePhotoWithCamera = async (photoIndex) => {
           </h1>
 
           <p>
-            Show the real you and let
+            Iminsi yo kuba wenyine irarangiye! Shakira umukunzi w'inzozi zawe hano maze mwubake ejo hazaza hanyu n'uwo mukwiranye / Show the real you and let
             genuine people discover you.
           </p>
 
@@ -1505,9 +1505,9 @@ const takePhotoWithCamera = async (photoIndex) => {
 
               <small>
                 <strong>
-                  Use your real photo.
+                  Use your real photo/ koresha ifoto yawe gusa
                 </strong>{" "}
-                UMUHUZA is for genuine
+                UMUHUZA is for real people seeking real love and 
                 connections. Fake or
                 misleading profile photos
                 are not allowed.
@@ -1518,195 +1518,6 @@ const takePhotoWithCamera = async (photoIndex) => {
             {/* =================================================
                 ADDITIONAL PHOTOS
             ================================================= */}
-
-            <div className="form-group">
-
-              <label>
-                Additional Photos
-
-                <span
-                  style={{
-                    color: "#999",
-                    fontWeight: "400",
-                    marginLeft: "5px",
-                  }}
-                >
-                  (Optional)
-                </span>
-              </label>
-
-              <small className="input-help">
-                You can add up to 3 more
-                photos. Your main photo
-                remains your primary profile
-                picture.
-              </small>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns:
-                    "repeat(3, 1fr)",
-                  gap: "10px",
-                  marginTop: "12px",
-                }}
-              >
-
-                {[1, 2, 3].map(
-                  (photoIndex) => (
-
-                    <div
-                      key={photoIndex}
-                      style={{
-                        position:
-                          "relative",
-                      }}
-                    >
-
-                      <div
-                        style={{
-                          width: "100%",
-                          aspectRatio: "1",
-                          border:
-                            "2px dashed #ddd",
-                          borderRadius:
-                            "14px",
-                          background:
-                            "#fafafa",
-                          overflow:
-                            "hidden",
-                          display:
-                            "flex",
-                          alignItems:
-                            "center",
-                          justifyContent:
-                            "center",
-                        }}
-                      >
-
-                        {photos[
-                          photoIndex
-                        ] ? (
-
-                          <img
-                            src={
-                              photos[
-                                photoIndex
-                              ].preview
-                            }
-                            alt={`Additional profile photo ${photoIndex}`}
-                            style={{
-                              width:
-                                "100%",
-                              height:
-                                "100%",
-                              objectFit:
-                                "cover",
-                            }}
-                          />
-
-                        ) : (
-
-                          <FiCamera
-                            style={{
-                              fontSize:
-                                "24px",
-                              color:
-                                "#bbb",
-                            }}
-                          />
-
-                        )}
-
-                      </div>
-
-                      {photos[
-                        photoIndex
-                      ] ? (
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleRemovePhoto(
-                              photoIndex
-                            )
-                          }
-                          disabled={
-                            loading
-                          }
-                          style={{
-                            position:
-                              "absolute",
-                            top: "-6px",
-                            right:
-                              "-6px",
-                            width:
-                              "28px",
-                            height:
-                              "28px",
-                            borderRadius:
-                              "50%",
-                            border:
-                              "none",
-                            background:
-                              "#E63946",
-                            color:
-                              "white",
-                            display:
-                              "flex",
-                            alignItems:
-                              "center",
-                            justifyContent:
-                              "center",
-                            cursor:
-                              "pointer",
-                          }}
-                        >
-                          <FiX />
-                        </button>
-
-                      ) : (
-
-                        <label
-                          htmlFor={`profile-photo-${photoIndex}`}
-                          style={{
-                            position:
-                              "absolute",
-                            inset: "0",
-                            cursor:
-                              "pointer",
-                          }}
-                        />
-
-                      )}
-
-                      <input
-                        id={`profile-photo-${photoIndex}`}
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        onChange={(event) =>
-                          handlePhotoChange(
-                            event,
-                            photoIndex
-                          )
-                        }
-                        disabled={
-                          loading
-                        }
-                        style={{
-                          display:
-                            "none",
-                        }}
-                      />
-
-                    </div>
-
-                  )
-                )}
-
-              </div>
-
-            </div>
 
             {/* =================================================
                 INTERESTS

@@ -1025,3 +1025,195 @@
   }
 
 }
+/* =========================================================
+   PROFILE ACTION BUTTONS
+   CHANGE PROFILE / DELETE PROFILE / VIEW PROFILE
+   ========================================================= */
+
+.profile-photo-actions {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 22px;
+}
+
+/* Base button */
+.profile-photo-actions .profile-upload-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-height: 48px;
+  padding: 12px 20px;
+
+  border: 1px solid rgba(216, 45, 91, 0.18);
+  border-radius: 14px;
+
+  background: #ffffff;
+  color: #c91f52;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 18px rgba(95, 25, 80, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Icons */
+.profile-photo-actions .profile-upload-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.4;
+  flex-shrink: 0;
+}
+
+/* Hover */
+.profile-photo-actions .profile-upload-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 24px rgba(95, 25, 80, 0.12);
+
+  border-color: rgba(216, 45, 91, 0.35);
+}
+
+/* Click */
+.profile-photo-actions .profile-upload-btn:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   1. CHANGE PROFILE
+   ========================================================= */
+
+.profile-photo-actions .profile-upload-btn:nth-child(1) {
+  background: linear-gradient(
+    135deg,
+    #fff0f6 0%,
+    #ffe4ef 100%
+  );
+
+  color: #d21f57;
+  border-color: #f4bfd2;
+}
+
+.profile-photo-actions .profile-upload-btn:nth-child(1):hover {
+  background: linear-gradient(
+    135deg,
+    #ffe4ef 0%,
+    #ffd7e8 100%
+  );
+
+  color: #b91849;
+}
+
+/* =========================================================
+   2. DELETE PROFILE
+   ========================================================= */
+
+.profile-photo-actions .profile-upload-btn:nth-child(2) {
+  background: #ffffff;
+  color: #b4233f;
+  border-color: #efc3cc;
+}
+
+.profile-photo-actions .profile-upload-btn:nth-child(2):hover {
+  background: #fff1f3;
+  color: #a01936;
+  border-color: #e89bab;
+}
+
+/* =========================================================
+   3. VIEW PROFILE
+   ========================================================= */
+
+.profile-photo-actions .profile-upload-btn:nth-child(3) {
+  background: linear-gradient(
+    135deg,
+    #6f239d 0%,
+    #9226a8 50%,
+    #d42d68 100%
+  );
+
+  color: #ffffff;
+  border-color: transparent;
+
+  box-shadow:
+    0 7px 20px rgba(126, 38, 155, 0.22);
+}
+
+.profile-photo-actions .profile-upload-btn:nth-child(3):hover {
+  background: linear-gradient(
+    135deg,
+    #61208b 0%,
+    #812296 50%,
+    #c9255d 100%
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 11px 27px rgba(126, 38, 155, 0.30);
+}
+
+/* =========================================================
+   DISABLED STATE
+   ========================================================= */
+
+.profile-photo-actions .profile-upload-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .profile-photo-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .profile-photo-actions .profile-upload-btn {
+    width: 100%;
+    min-height: 50px;
+    padding: 13px 18px;
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .profile-photo-actions {
+    gap: 8px;
+  }
+
+  .profile-photo-actions .profile-upload-btn {
+    min-height: 48px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+}
