@@ -8947,3 +8947,20 @@ header.member-navbar {
     box-sizing: border-box;
   }
 }
+.member-location-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.location-separator {
+  color: #9ca3af;
+}
+
+.member-distance {
+  color: #16a34a;          /* green like your reference */
+  font-weight: 600;
+}

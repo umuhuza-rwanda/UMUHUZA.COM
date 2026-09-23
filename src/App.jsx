@@ -10,9 +10,11 @@ import SupabaseTest from "./SupabaseTest";
 import { useEffect, useState } from "react";
 import { App as CapacitorApp } from "@capacitor/app";
 import { PushNotifications } from "@capacitor/push-notifications";
+import { Capacitor } from "@capacitor/core";
 import FloatingInviteButton from "./components/FloatingInviteButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
+import Spin from "./pages/Spin/Spin";
 
 
 // =========================
@@ -75,7 +77,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import MemberCard from "./components/MemberCard/MemberCard";
 import SuccessStories from "./components/SuccessStories/SuccessStories";
-import KundwaFeatures from "./components/KundwaFeatures/KundwaFeatures";
+
 import Footer from "./components/Footer/Footer";
 import AboutUs from "./components/AboutUs/AboutUs";
 import Referral from "./pages/Referral/Referral";
@@ -278,11 +280,7 @@ function Home() {
 
       <SuccessStories />
 
-      {/* =========================
-          UMUHUZA EXPERIENCE
-      ========================= */}
 
-      <KundwaFeatures />
 
       {/* =========================
           FOOTER
@@ -331,22 +329,94 @@ function AndroidBackButtonHandler() {
 // ======================================================
 // ANDROID NOTIFICATION PERMISSION
 // ======================================================
+// ======================================================
+// ANDROID PUSH NOTIFICATIONS
+// ======================================================
 
 function AndroidNotificationPermission() {
+    const navigate = useNavigate();
   useEffect(() => {
-    const requestNotificationPermission = async () => {
-      // Only run this on native Android/iOS.
+    let mounted = true;
+    let authSubscription = null;
+    let registrationListener = null;
+    let registrationErrorListener = null;
+
+    const savePushToken = async (token) => {
+      if (!token) {
+        console.warn("⚠️ UMUHUZA: No push token received.");
+        return;
+      }
+
+      try {
+        const {
+          data: { user },
+          error: sessionError,
+        } = await supabase.auth.getUser();
+
+        if (sessionError) {
+          console.error(
+            "❌ UMUHUZA: Could not get current user:",
+            sessionError
+          );
+          return;
+        }
+
+        if (!user) {
+          console.log(
+            "ℹ️ UMUHUZA: No logged-in user yet. Push token will be saved after login."
+          );
+          return;
+        }
+
+        const { error } = await supabase
+          .from("push_tokens")
+          .upsert(
+            {
+              user_id: user.id,
+              token,
+              platform: "android",
+              updated_at: new Date().toISOString(),
+            },
+            {
+              onConflict: "user_id,token",
+            }
+          );
+
+        if (error) {
+          console.error(
+            "❌ UMUHUZA: Failed to save push token:",
+            error
+          );
+          return;
+        }
+
+        console.log(
+          "✅ UMUHUZA: Push token saved to Supabase."
+        );
+      } catch (error) {
+        console.error(
+          "❌ UMUHUZA: Push token save error:",
+          error
+        );
+      }
+    };
+
+    const setupPushNotifications = async () => {
+      // Only run inside the native Android app.
       if (!Capacitor.isNativePlatform()) {
         return;
       }
 
-      // Only request notification permission on Android.
       if (Capacitor.getPlatform() !== "android") {
         return;
       }
 
       try {
-        const permission =
+        // ------------------------------------------------
+        // CHECK NOTIFICATION PERMISSION
+        // ------------------------------------------------
+
+        let permission =
           await PushNotifications.checkPermissions();
 
         console.log(
@@ -354,31 +424,151 @@ function AndroidNotificationPermission() {
           permission.receive
         );
 
-        // Ask Android to show the notification permission dialog
-        // when permission has not been decided yet.
+        // Ask Android if permission has not been decided yet.
         if (permission.receive === "prompt") {
-          const result =
+          permission =
             await PushNotifications.requestPermissions();
 
           console.log(
             "🔔 UMUHUZA notification permission result:",
-            result.receive
+            permission.receive
           );
         }
+
+        // User denied notifications.
+        if (permission.receive !== "granted") {
+          console.log(
+            "🔕 UMUHUZA: Notification permission not granted."
+          );
+          return;
+        }
+
+        // ------------------------------------------------
+        // FCM TOKEN REGISTRATION
+        // ------------------------------------------------
+
+        registrationListener =
+          await PushNotifications.addListener(
+            "registration",
+            async (token) => {
+              console.log(
+                "📲 UMUHUZA FCM registration token received:",
+                token.value
+              );
+
+              await savePushToken(token.value);
+            }
+          );
+
+        // ------------------------------------------------
+        // REGISTRATION ERROR
+        // ------------------------------------------------
+
+        registrationErrorListener =
+          await PushNotifications.addListener(
+            "registrationError",
+            (error) => {
+              console.error(
+                "❌ UMUHUZA FCM registration error:",
+                error
+              );
+            }
+          );
+
+                  // ------------------------------------------------
+        // HANDLE NOTIFICATION TAP
+        // ------------------------------------------------
+
+        const notificationActionListener =
+          await PushNotifications.addListener(
+            "pushNotificationActionPerformed",
+            (action) => {
+              console.log(
+                "🔔 UMUHUZA notification tapped:",
+                action
+              );
+
+              navigate("/notifications");
+            }
+          );
+
+        // Store the listener so it can be removed later.
+        window.umuhuzaNotificationActionListener =
+          notificationActionListener;
+
+        // ------------------------------------------------
+        // REGISTER DEVICE WITH FCM
+        // ------------------------------------------------
+
+        await PushNotifications.register();
+
+        console.log(
+          "✅ UMUHUZA: Device registered for push notifications."
+        );
+
+        // ------------------------------------------------
+        // SAVE TOKEN AFTER LOGIN
+        // ------------------------------------------------
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          console.log(
+            "👤 UMUHUZA: Logged-in user ready for push notifications:",
+            user.id
+          );
+        }
+
+        authSubscription =
+          supabase.auth.onAuthStateChange(
+            async (event, session) => {
+              if (!mounted) return;
+
+              if (
+                event === "SIGNED_IN" &&
+                session?.user
+              ) {
+                console.log(
+                  "🔐 UMUHUZA: User signed in. Push notifications ready."
+                );
+              }
+            }
+          ).data.subscription;
       } catch (error) {
         console.error(
-          "❌ UMUHUZA notification permission error:",
+          "❌ UMUHUZA push notification setup error:",
           error
         );
       }
     };
 
-    requestNotificationPermission();
+    setupPushNotifications();
+
+    return () => {
+      mounted = false;
+
+      if (registrationListener) {
+        registrationListener.remove();
+      }
+
+      if (registrationErrorListener) {
+        registrationErrorListener.remove();
+      }
+      
+            if (window.umuhuzaNotificationActionListener) {
+        window.umuhuzaNotificationActionListener.remove();
+        window.umuhuzaNotificationActionListener = null;
+      }
+      if (authSubscription) {
+        authSubscription.unsubscribe();
+      }
+    };
   }, []);
 
   return null;
 }
-
 // ======================================================
 // APP
 // ======================================================
@@ -442,6 +632,8 @@ function App() {
             path="/login"
             element={<Login />}
           />
+
+          <Route path="/spin" element={<Spin />} />
 
           <Route
             path="/about-us"
@@ -525,6 +717,7 @@ function App() {
               </MemberLayout>
             }
           />
+         
 
           
           {/* =================================================

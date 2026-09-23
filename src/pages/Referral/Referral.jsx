@@ -1,11 +1,5 @@
 import "./Referral.css";
-
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
 
@@ -23,9 +17,21 @@ import {
 
 import { supabase } from "../../lib/supabase";
 
+const PRIZES = [
+  { id: 1, label: "10,000\nRWF", type: "money", value: 10000, color: "#F59E0B" },
+  { id: 2, label: "Boost\n7 Days", type: "boost", value: 7, color: "#8B5CF6" },
+  { id: 3, label: "1,000\nRWF", type: "money", value: 1000, color: "#22C55E" },
+  { id: 4, label: "3 Days\nPremium", type: "premium", value: 3, color: "#3B82F6" },
+  { id: 5, label: "5,000\nRWF", type: "money", value: 5000, color: "#EAB308" },
+  { id: 6, label: "Try\nAgain", type: "retry", value: 0, color: "#F97316" },
+  { id: 7, label: "+5\nChats", type: "chats", value: 5, color: "#14B8A6" },
+  { id: 8, label: "0\nRWF", type: "lose", value: 0, color: "#6B7280" },
+];
+
 function Referral() {
   const navigate = useNavigate();
 
+  // ========== STATES ==========
   const [currentUser, setCurrentUser] = useState(null);
   const [referralData, setReferralData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,58 +46,86 @@ function Referral() {
   const [claimError, setClaimError] = useState("");
   const [selectedRewardTier, setSelectedRewardTier] = useState(null);
 
+  // Lotto states
+  const [tickets, setTickets] = useState(0);
+  const [walletBalance, setWalletBalance] = useState(0);
+  const [spinning, setSpinning] = useState(false);
+  const [rotation, setRotation] = useState(0);
+  const [lottoMessage, setLottoMessage] = useState("");
+
   // =====================================================
-  // AUTH
+  // AUTH + LOAD DATA
   // =====================================================
   useEffect(() => {
     let mounted = true;
 
-    const loadSession = async () => {
+    const load = async () => {
       try {
-        const { data, error: sessionError } = await supabase.auth.getSession();
+        const { data: { session } } = await supabase.auth.getSession();
+        const user = session?.user ?? null;
 
-        if (sessionError) {
-          console.error("Unable to get Supabase session:", sessionError);
-          if (mounted) {
-            setCurrentUser(null);
-            setReferralData(null);
-            setLoading(false);
-          }
+        if (!mounted) return;
+
+        if (!user) {
+          setCurrentUser(null);
+          setLoading(false);
           return;
         }
 
-        const user = data?.session?.user ?? null;
+        setCurrentUser(user);
 
-        if (mounted) {
-          setCurrentUser(user);
-          if (!user) {
-            setReferralData(null);
-            setLoading(false);
-          }
+        const { data, error: profileError } = await supabase
+          .from("profiles")
+          .select("id, referral_code, successful_referrals, lotto_tickets, wallet_balance")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (!mounted) return;
+
+        if (profileError || !data) {
+          setError(".");
+          setLoading(false);
+          return;
         }
+
+// After you successfully get the profile data
+if (data) {
+  setReferralData(data);
+  setTickets(data.lotto_tickets || 0);
+  setWalletBalance(data.wallet_balance || 0);
+
+  // ===== CREATE REAL REFERRAL CODE IF MISSING =====
+  if (!data.referral_code) {
+    const newCode = `UMUHUZA-${user.id.slice(0, 8).toUpperCase()}`;
+
+    // Save it to the database
+    await supabase
+      .from("profiles")
+      .update({ referral_code: newCode })
+      .eq("id", user.id);
+
+    // Update the local state
+    setReferralData((prev) => ({
+      ...prev,
+      referral_code: newCode,
+    }));
+  }
+}
       } catch (err) {
-        console.error("Supabase session error:", err);
+        console.error(err);
         if (mounted) {
-          setCurrentUser(null);
-          setReferralData(null);
+          setError(".");
           setLoading(false);
         }
       }
     };
 
-    loadSession();
+    load();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (!mounted) return;
-        const user = session?.user ?? null;
-        setCurrentUser(user);
-        if (!user) {
-          setReferralData(null);
-          setLoading(false);
-        }
-      }
-    );
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+      setCurrentUser(session?.user ?? null);
+    });
 
     return () => {
       mounted = false;
@@ -100,89 +134,14 @@ function Referral() {
   }, []);
 
   // =====================================================
-  // LOAD REFERRAL DATA
-  // =====================================================
-  useEffect(() => {
-    if (!currentUser) return;
-
-    let mounted = true;
-
-    const loadReferralData = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const { data, error: profileError } = await supabase
-          .from("profiles")
-          .select("id, referral_code, successful_referrals")
-          .eq("id", currentUser.id)
-          .maybeSingle();
-
-        if (!mounted) return;
-
-        if (profileError || !data) {
-          console.error("Referral profile error:", profileError);
-          setReferralData(null);
-          setError("Unable to load your referral information.");
-          setLoading(false);
-          return;
-        }
-
-        setReferralData(data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Referral loading error:", err);
-        if (mounted) {
-          setError("Unable to load your referral information.");
-          setLoading(false);
-        }
-      }
-    };
-
-    loadReferralData();
-
-    const channel = supabase
-      .channel(`referral-profile-${currentUser.id}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "profiles",
-          filter: `id=eq.${currentUser.id}`,
-        },
-        async () => {
-          const { data } = await supabase
-            .from("profiles")
-            .select("id, referral_code, successful_referrals")
-            .eq("id", currentUser.id)
-            .maybeSingle();
-
-          if (data && mounted) {
-            setReferralData(data);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      mounted = false;
-      supabase.removeChannel(channel);
-    };
-  }, [currentUser]);
-
-  // =====================================================
   // VALUES
   // =====================================================
   const referralCode = referralData?.referral_code || "UMUHUZA-XXXXXX";
   const successfulReferrals = Number(referralData?.successful_referrals ?? 0);
 
-  // Fixed referral link (no localhost)
   const productionDomain = "https://umuhuza-com-a1xv.vercel.app";
   const referralLink = `${
-    window.location.hostname === "localhost"
-      ? productionDomain
-      : window.location.origin
+    window.location.hostname === "localhost" ? productionDomain : window.location.origin
   }/signup?ref=${encodeURIComponent(referralCode)}`;
 
   // =====================================================
@@ -215,63 +174,100 @@ function Referral() {
     },
   };
 
-  // =====================================================
-  // REWARD LEVEL
-  // =====================================================
   const rewardLevel = useMemo(() => {
     if (successfulReferrals >= 15) {
       return {
         type: "special",
         title: "Special Reward Unlocked!",
-        description:
-          "You've successfully invited 15 or more friends. You unlocked 1 Month Unlimited Messaging + Maximum Profile Boost.",
+        description: "You've unlocked 1 Month Unlimited Messaging + Maximum Profile Boost.",
       };
     }
-
     if (successfulReferrals >= 10) {
       return {
         type: "ten",
         title: "10 Friends Reward Unlocked!",
-        description:
-          "You've successfully invited 10 friends. You unlocked Stronger Profile Boost + 10 free chats.",
+        description: "You've unlocked Stronger Profile Boost + 10 free chats.",
       };
     }
-
     if (successfulReferrals >= 5) {
       return {
         type: "five",
         title: "5 Friends Reward Unlocked!",
-        description:
-          "You've successfully invited 5 friends. You unlocked Profile Boost + 2 free chats.",
+        description: "You've unlocked Profile Boost + 2 free chats.",
       };
     }
-
     return {
       type: "progress",
       title: "Keep Inviting!",
-      description:
-        "Invite 5 friends who successfully join UMUHUZA to unlock your first reward.",
+      description: "Invite 5 friends to unlock your first reward.",
     };
   }, [successfulReferrals]);
 
   const currentTarget =
-    successfulReferrals >= 15
-      ? 15
-      : successfulReferrals >= 10
-      ? 15
-      : successfulReferrals >= 5
-      ? 10
-      : 5;
+    successfulReferrals >= 15 ? 15 : successfulReferrals >= 10 ? 15 : successfulReferrals >= 5 ? 10 : 5;
 
   const progressPercentage =
-    currentTarget > 0
-      ? Math.min((successfulReferrals / currentTarget) * 100, 100)
-      : 0;
+    currentTarget > 0 ? Math.min((successfulReferrals / currentTarget) * 100, 100) : 0;
 
   const remaining =
-    successfulReferrals >= 15
-      ? 0
-      : Math.max(currentTarget - successfulReferrals, 0);
+    successfulReferrals >= 15 ? 0 : Math.max(currentTarget - successfulReferrals, 0);
+
+  // =====================================================
+  // SPIN FUNCTION
+  // =====================================================
+  const handleSpin = async () => {
+    if (spinning || tickets <= 0) return;
+
+    setSpinning(true);
+    setLottoMessage("");
+
+    const randomIndex = Math.floor(Math.random() * PRIZES.length);
+    const prize = PRIZES[randomIndex];
+
+    const segmentAngle = 360 / PRIZES.length;
+    const finalRotation =
+      rotation + 5 * 360 + (360 - randomIndex * segmentAngle - segmentAngle / 2);
+
+    setRotation(finalRotation);
+
+    setTimeout(async () => {
+      let newTickets = tickets - 1;
+      let newBalance = walletBalance;
+      let msg = "";
+
+      if (prize.type === "money") {
+        newBalance += prize.value;
+        msg = `🎉 You won ${prize.value.toLocaleString()} RWF!`;
+      } else if (prize.type === "chats") {
+        msg = `🎉 You won +${prize.value} Free Chats!`;
+      } else if (prize.type === "boost") {
+        msg = `🚀 Profile Boost for ${prize.value} days!`;
+      } else if (prize.type === "premium") {
+        msg = `⭐ Unlimited Chat for ${prize.value} days!`;
+      } else if (prize.type === "retry") {
+        newTickets += 1;
+        msg = "🔄 Try Again! Ticket returned.";
+      } else {
+        msg = "😔 0 RWF - Better luck next time!";
+      }
+
+      setTickets(newTickets);
+      setWalletBalance(newBalance);
+      setLottoMessage(msg);
+
+      if (currentUser) {
+        await supabase
+          .from("profiles")
+          .update({
+            lotto_tickets: newTickets,
+            wallet_balance: newBalance,
+          })
+          .eq("id", currentUser.id);
+      }
+
+      setSpinning(false);
+    }, 4500);
+  };
 
   // =====================================================
   // COPY / SHARE
@@ -282,7 +278,7 @@ function Referral() {
       setCopiedCode(true);
       setTimeout(() => setCopiedCode(false), 2000);
     } catch (err) {
-      console.error("Unable to copy referral code:", err);
+      console.error(err);
     }
   };
 
@@ -292,30 +288,22 @@ function Referral() {
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
     } catch (err) {
-      console.error("Unable to copy referral link:", err);
+      console.error(err);
     }
   };
 
   const handleShare = async () => {
-    const shareText = `💕 Join me on UMUHUZA! Find genuine connections and start your journey today.\n\n${referralLink}`;
-
+    const shareText = `💕 Join me on UMUHUZA!\n\n${referralLink}`;
     try {
       if (navigator.share) {
-        await navigator.share({
-          title: "Join UMUHUZA",
-          text: shareText,
-          url: referralLink,
-        });
-        return;
+        await navigator.share({ title: "Join UMUHUZA", text: shareText, url: referralLink });
+      } else {
+        await navigator.clipboard.writeText(shareText);
+        setCopiedLink(true);
+        setTimeout(() => setCopiedLink(false), 2000);
       }
-
-      await navigator.clipboard.writeText(shareText);
-      setCopiedLink(true);
-      setTimeout(() => setCopiedLink(false), 2000);
     } catch (err) {
-      if (err?.name !== "AbortError") {
-        console.error("Unable to share referral:", err);
-      }
+      if (err?.name !== "AbortError") console.error(err);
     }
   };
 
@@ -328,27 +316,19 @@ function Referral() {
 
     try {
       if (!currentUser) {
-        setClaimError("Please log in again before claiming your reward.");
+        setClaimError("Please log in again.");
         setShowClaimModal(true);
         return;
       }
 
-      const { data: claims, error: claimsError } = await supabase
+      const { data: claims } = await supabase
         .from("reward_claims")
         .select("reward_tier")
         .eq("user_id", currentUser.id);
 
-      if (claimsError) {
-        console.error("Unable to load reward claims:", claimsError);
-        setClaimError("Unable to check your reward history. Please try again.");
-        setShowClaimModal(true);
-        return;
-      }
-
       const claimedTiers = new Set((claims || []).map((c) => c.reward_tier));
 
       let availableReward = null;
-
       if (successfulReferrals >= 15 && !claimedTiers.has("fifteen")) {
         availableReward = rewardDefinitions.fifteen;
       } else if (successfulReferrals >= 10 && !claimedTiers.has("ten")) {
@@ -358,7 +338,7 @@ function Referral() {
       }
 
       if (!availableReward) {
-        setClaimError("You have already claimed all rewards currently available to you.");
+        setClaimError("You have already claimed all available rewards.");
         setShowClaimModal(true);
         return;
       }
@@ -366,8 +346,7 @@ function Referral() {
       setSelectedRewardTier(availableReward);
       setShowClaimModal(true);
     } catch (err) {
-      console.error("Unable to check referral rewards:", err);
-      setClaimError("Unable to check your available rewards. Please try again.");
+      setClaimError("Unable to check rewards.");
       setShowClaimModal(true);
     }
   };
@@ -381,10 +360,7 @@ function Referral() {
   };
 
   const handleClaimReward = async () => {
-    if (!currentUser || !selectedRewardTier) {
-      setClaimError("Please log in again before claiming your reward.");
-      return;
-    }
+    if (!currentUser || !selectedRewardTier) return;
 
     const { tier, threshold } = selectedRewardTier;
 
@@ -393,49 +369,31 @@ function Referral() {
       setClaimError("");
       setClaimMessage("");
 
-      const { data, error: rpcError } = await supabase.rpc(
-        "claim_referral_reward",
-        {
-          p_user_id: currentUser.id,
-          p_reward_tier: tier,
-          p_threshold: threshold,
-        }
-      );
+      const { data, error: rpcError } = await supabase.rpc("claim_referral_reward", {
+        p_user_id: currentUser.id,
+        p_reward_tier: tier,
+        p_threshold: threshold,
+      });
 
       if (rpcError) {
-        console.error("Reward claim RPC error:", rpcError);
-        setClaimError("We couldn't complete your reward claim. Please try again.");
+        setClaimError("Could not claim reward. Please try again.");
         return;
       }
 
       if (data?.success === true) {
-        setClaimMessage(
-          `🎉 Your ${threshold}-friend reward has been successfully claimed!`
-        );
-        return;
+        setClaimMessage(`🎉 Your ${threshold}-friend reward has been claimed!`);
+      } else {
+        setClaimError(data?.reason || "Could not claim reward.");
       }
-
-      if (data?.reason === "REWARD_ALREADY_CLAIMED") {
-        setClaimError("This reward has already been claimed.");
-        return;
-      }
-
-      if (data?.reason === "REFERRAL_THRESHOLD_NOT_REACHED") {
-        setClaimError("You have not reached the required referral level yet.");
-        return;
-      }
-
-      setClaimError("We couldn't complete your reward claim. Please try again.");
     } catch (err) {
-      console.error("Reward claim error:", err);
-      setClaimError("We couldn't complete your reward claim. Please try again.");
+      setClaimError("Could not claim reward.");
     } finally {
       setClaimingReward(false);
     }
   };
 
   // =====================================================
-  // NOT LOGGED IN
+  // RENDER
   // =====================================================
   if (!currentUser) {
     return (
@@ -452,24 +410,17 @@ function Referral() {
     );
   }
 
-  // =====================================================
-  // LOADING
-  // =====================================================
   if (loading) {
     return (
       <div className="referral-page">
         <div className="referral-loading">
           <div className="referral-loading-icon">💕</div>
-          <h2>Loading your rewards...</h2>
-          <p>Please wait a moment.</p>
+          <h2>Loading...</h2>
         </div>
       </div>
     );
   }
 
-  // =====================================================
-  // MAIN UI
-  // =====================================================
   return (
     <div className="referral-page">
       {/* HEADER */}
@@ -484,17 +435,77 @@ function Referral() {
         </button>
 
         <div className="referral-logo">
-  <img 
-    src={umurangaLogo} 
-    alt="UMUHUZA.COM" 
-    style={{ height: 36, objectFit: "contain" }} 
-  />
-</div>
+          <img
+            src={umurangaLogo}
+            alt="UMUHUZA.COM"
+            style={{ height: 36, objectFit: "contain" }}
+          />
+        </div>
         <div className="referral-header-spacer" />
       </header>
 
       <main className="referral-main">
-        {/* HERO */}
+        {/* ================= LOTTO SECTION ================= */}
+        <section className="lotto-section">
+          <div className="lotto-title">
+            <div className="lotto-heart">💜</div>
+            <h2>
+              UMUHUZA <span>LOTTO</span>
+            </h2>
+            <p>Spin & Win Real Money + Rewards</p>
+          </div>
+
+          <div className="lotto-stats">
+            <div className="lotto-stat">
+              <span>🎫</span>
+              <div>
+                <small>Tickets</small>
+                <strong>{tickets}</strong>
+              </div>
+            </div>
+            <div className="lotto-stat">
+              <span>👛</span>
+              <div>
+                <small>Wallet</small>
+                <strong>{walletBalance.toLocaleString()} RWF</strong>
+              </div>
+            </div>
+          </div>
+
+          <div className="wheel-container">
+            <div className="wheel-pointer">▼</div>
+            <div className="wheel" style={{ transform: `rotate(${rotation}deg)` }}>
+              {PRIZES.map((prize, index) => {
+                const angle = (360 / PRIZES.length) * index;
+                return (
+                  <div
+                    key={prize.id}
+                    className="wheel-segment"
+                    style={{
+                      transform: `rotate(${angle}deg)`,
+                      background: prize.color,
+                    }}
+                  >
+                    <span className="segment-label">{prize.label}</span>
+                  </div>
+                );
+              })}
+              <div className="wheel-center"></div>
+            </div>
+          </div>
+
+          {lottoMessage && <div className="lotto-result">{lottoMessage}</div>}
+
+          <button
+            className="spin-now-btn"
+            onClick={handleSpin}
+            disabled={spinning || tickets <= 0}
+          >
+            {spinning ? "Spinning..." : tickets <= 0 ? "No Tickets" : "SPIN NOW ▶"}
+          </button>
+        </section>
+
+        {/* ================= INVITE & REWARD ================= */}
         <section className="referral-hero">
           <div className="referral-hero-icon">💕</div>
           <div>
@@ -510,7 +521,6 @@ function Referral() {
 
         {/* CODE + LINK */}
         <section className="referral-sharing-grid">
-          {/* CODE */}
           <div className="referral-share-card">
             <div className="share-card-heading">
               <div className="share-card-icon purple">
@@ -521,7 +531,6 @@ function Referral() {
                 <strong>Share this code with friends</strong>
               </div>
             </div>
-
             <div className="referral-code-box">
               <span>{referralCode}</span>
               <button type="button" onClick={handleCopyCode}>
@@ -531,7 +540,6 @@ function Referral() {
             </div>
           </div>
 
-          {/* LINK */}
           <div className="referral-share-card">
             <div className="share-card-heading">
               <div className="share-card-icon green">
@@ -542,7 +550,6 @@ function Referral() {
                 <strong>Send this link to your friends</strong>
               </div>
             </div>
-
             <div className="referral-link-box">
               <div className="referral-link-text">{referralLink}</div>
               <div className="referral-link-actions">
@@ -585,7 +592,7 @@ function Referral() {
               <FiStar />
               <div>
                 <strong>Amazing! 🎉</strong>
-                <span>You've reached the special 15+ referral reward level.</span>
+                <span>You've reached the special 15+ level.</span>
               </div>
             </div>
           ) : (
@@ -609,15 +616,12 @@ function Referral() {
             <div className="reward-unlocked-icon">
               {successfulReferrals >= 15 ? "⭐" : "🎉"}
             </div>
-
             <div className="reward-unlocked-content">
               <div className="reward-unlocked-label">
                 {successfulReferrals >= 15 ? "SPECIAL REWARD" : "REWARD UNLOCKED"}
               </div>
-
               <h2>{rewardLevel.title}</h2>
               <p>{rewardLevel.description}</p>
-
               <div className="reward-benefit">
                 <FiMessageCircle />
                 <span>
@@ -628,7 +632,6 @@ function Referral() {
                     : "Profile Boost + 2 free chats"}
                 </span>
               </div>
-
               <button
                 type="button"
                 className="claim-reward-btn"
@@ -653,7 +656,6 @@ function Referral() {
           </div>
 
           <div className="reward-levels">
-            {/* 5 */}
             <div className={`reward-level ${successfulReferrals >= 5 ? "unlocked" : ""}`}>
               <div className="reward-level-number">
                 {successfulReferrals >= 5 ? <FiCheckCircle /> : "5"}
@@ -662,12 +664,9 @@ function Referral() {
                 <strong>First Reward</strong>
                 <span>Invite 5 successful members</span>
               </div>
-              <div className="reward-level-prize">
-                🚀 Profile Boost + 2 Free Chats
-              </div>
+              <div className="reward-level-prize">🚀 Profile Boost + 2 Free Chats</div>
             </div>
 
-            {/* 10 */}
             <div className={`reward-level ${successfulReferrals >= 10 ? "unlocked" : ""}`}>
               <div className="reward-level-number">
                 {successfulReferrals >= 10 ? <FiCheckCircle /> : "10"}
@@ -676,17 +675,10 @@ function Referral() {
                 <strong>Double Reward</strong>
                 <span>Invite 10 successful members</span>
               </div>
-              <div className="reward-level-prize">
-                🚀 Stronger Boost + 10 Free Chats
-              </div>
+              <div className="reward-level-prize">🚀 Stronger Boost + 10 Free Chats</div>
             </div>
 
-            {/* 15 */}
-            <div
-              className={`reward-level special ${
-                successfulReferrals >= 15 ? "unlocked" : ""
-              }`}
-            >
+            <div className={`reward-level special ${successfulReferrals >= 15 ? "unlocked" : ""}`}>
               <div className="reward-level-number">
                 {successfulReferrals >= 15 ? <FiCheckCircle /> : <FiStar />}
               </div>
@@ -694,9 +686,7 @@ function Referral() {
                 <strong>Special Reward</strong>
                 <span>Invite 15 or more successful members</span>
               </div>
-              <div className="reward-level-prize">
-                ⭐ 1 Month Unlimited Messaging
-              </div>
+              <div className="reward-level-prize">⭐ 1 Month Unlimited Messaging</div>
             </div>
           </div>
         </section>
@@ -707,9 +697,8 @@ function Referral() {
           <div>
             <h3>How it works</h3>
             <p>
-              Share your unique referral link or code with friends. When they
-              successfully join UMUHUZA, your referral progress increases and you
-              unlock free chats + profile boost.
+              Share your unique referral link or code with friends. When they successfully
+              join UMUHUZA, your progress increases and you unlock free chats + profile boost.
             </p>
           </div>
         </section>
@@ -731,9 +720,7 @@ function Referral() {
             <div className="claim-modal-icon">
               {selectedRewardTier?.icon || "🎁"}
             </div>
-
             <div className="claim-modal-label">UMUHUZA.COM REWARD</div>
-
             <h2>{selectedRewardTier ? selectedRewardTier.title : "Reward"}</h2>
 
             {claimMessage && (
@@ -743,16 +730,13 @@ function Referral() {
               </div>
             )}
 
-            {claimError && (
-              <div className="claim-error-message">{claimError}</div>
-            )}
+            {claimError && <div className="claim-error-message">{claimError}</div>}
 
             {selectedRewardTier && (
               <>
                 <p className="claim-modal-description">
                   {selectedRewardTier.description}
                 </p>
-
                 <div className="claim-modal-benefit">
                   <FiMessageCircle />
                   <span>{selectedRewardTier.benefit}</span>
@@ -766,9 +750,7 @@ function Referral() {
                     disabled={claimingReward}
                   >
                     <FiGift />
-                    {claimingReward
-                      ? "Processing Claim..."
-                      : "Confirm & Claim Reward"}
+                    {claimingReward ? "Processing..." : "Confirm & Claim Reward"}
                   </button>
                 )}
               </>

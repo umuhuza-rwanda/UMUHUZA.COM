@@ -29,6 +29,102 @@ import {
 import { supabase } from "../../lib/supabase";
 import { useAppPreferences } from "../../context/AppPreferencesContext";
 
+// =====================================================
+// SAVE USER LOCATION ONCE
+// =====================================================
+const saveUserLocationOnce = async (userId) => {
+  if (!userId || !navigator.geolocation) return;
+
+  try {
+    // Check if location is already saved
+    const { data: profile, error: fetchError } = await supabase
+      .from("profiles")
+      .select("latitude, longitude")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (fetchError) {
+      console.error("Error checking location:", fetchError);
+      return;
+    }
+
+    // Already has location → do nothing
+    if (profile?.latitude && profile?.longitude) {
+      console.log("Location already saved");
+      return;
+    }
+
+    // Ask browser for current position
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({
+            latitude,
+            longitude,
+          })
+          .eq("id", userId);
+
+        if (updateError) {
+          console.error("Error saving location:", updateError);
+        } else {
+          console.log("Location saved successfully:", latitude, longitude);
+        }
+      },
+      (error) => {
+        console.warn("User denied location or error:", error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  } catch (err) {
+    console.error("Location helper error:", err);
+  }
+};
+
+// =====================================================
+// CALCULATE DISTANCE (Haversine formula)
+// =====================================================
+const calculateDistanceKm = (lat1, lon1, lat2, lon2) => {
+  if (
+    lat1 == null ||
+    lon1 == null ||
+    lat2 == null ||
+    lon2 == null ||
+    isNaN(lat1) ||
+    isNaN(lon1) ||
+    isNaN(lat2) ||
+    isNaN(lon2)
+  ) {
+    return null;
+  }
+
+  const toRad = (value) => (value * Math.PI) / 180;
+  const R = 6371; // Earth radius in km
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+
+  return Math.round(distance * 10) / 10; // 1 decimal place
+};
+
+
+
 
 
 function MemberHome() {
@@ -366,6 +462,7 @@ const unreadNotificationCount =
       return;
     }
 
+
     let active = true;
 
     setProfileLoading(true);
@@ -428,6 +525,15 @@ const unreadNotificationCount =
       supabase.removeChannel(channel);
     };
   }, [currentUser]);
+
+  // =====================================================
+// SAVE LOCATION ONCE   ← put it here (separate)
+// =====================================================
+useEffect(() => {
+  if (currentUser?.id) {
+    saveUserLocationOnce(currentUser.id);
+  }
+}, [currentUser?.id]);
 
   // =====================================================
   // REFERRAL
@@ -1603,9 +1709,9 @@ if (notificationError) {
   );
 }
 
-    if (notificationError) {
-      console.error("Like notification error:", notificationError);
-    }
+if (notificationError) {
+  console.error("Like notification error:", notificationError.message, notificationError);
+}
 
   } catch (err) {
     console.error("Like error:", err);
@@ -2724,10 +2830,27 @@ const handleStartChat = (member) => {
               {age ? `, ${age}` : ""}
             </h3>
 
-            <p>
-              📍 {member.city || "Location not added"}
-              {member.country ? `, ${member.country}` : ""}
-            </p>
+{(() => {
+
+const distanceKm = calculateDistanceKm(
+  currentUserProfile?.latitude,
+  currentUserProfile?.longitude,
+  member.latitude,
+  member.longitude
+);
+  return (
+    <p className="member-location-line">
+📍 {member.city || "Location not added"}
+  {member.country ? `, ${member.country}` : ""}
+  {distanceKm !== null && (
+    <>
+      {" • "}
+      {Number(distanceKm.toFixed(1))} km
+    </>
+  )}
+</p>
+  );
+})()}
 
             {/* VIEW PROFILE */}
 {/* VIEW PROFILE */}
