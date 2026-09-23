@@ -4,6 +4,8 @@ import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
+import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
+
 import { supabase } from "../../lib/supabase";
 
 function Login() {
@@ -389,9 +391,9 @@ function Login() {
             LOGO
         ================================================= */}
 
-        <div className="login-logo">
-          ❤️ UMUHUZA<span>.COM</span>
-        </div>
+<div className="premium-logo">
+  <img src={umurangaLogo} alt="UMUHUZA" />
+</div>
 
         {/* =================================================
             TITLE

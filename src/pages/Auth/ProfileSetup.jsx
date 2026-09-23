@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { FiImage } from "react-icons/fi";
 
+import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
+
 import {
   FiCamera,
   FiUser,
@@ -1297,9 +1299,9 @@ const takePhotoWithCamera = async (photoIndex) => {
 
         <div className="auth-welcome">
 
-          <div className="auth-logo">
-            ❤️ UMUHUZA
-          </div>
+<div className="premium-logo">
+  <img src={umurangaLogo} alt="UMUHUZA" />
+</div>
 
           <h1>
             Create Your

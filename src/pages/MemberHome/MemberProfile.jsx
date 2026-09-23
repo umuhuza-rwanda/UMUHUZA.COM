@@ -15,6 +15,33 @@ import {
 } from "react-icons/fi";
 
 import { supabase } from "../../lib/supabase";
+// =====================================================
+// FORMAT LABELS
+// =====================================================
+const formatLabel = (value) => {
+  if (!value) return null;
+
+  const map = {
+    // Personal Status
+    single: "Single",
+    divorced: "Divorced",
+    widowed: "Widowed",
+    separated: "Separated",
+
+    // Looking for
+    men: "Men",
+    women: "Women",
+    "men-and-women": "Men & Women",
+
+    // Relationship Goal
+    marriage: "Marriage",
+    "serious-relationship": "Serious Relationship",
+    friendship: "Friendship",
+    "getting-to-know": "Getting to Know Someone",
+  };
+
+  return map[value] || value;
+};
 
 function MemberProfile() {
   const navigate = useNavigate();
@@ -348,73 +375,151 @@ const handleChat = () => {
           </div>
 
           <p style={{ marginTop: 12, fontSize: 13, color: "#7c3aed" }}>
-            ❤️ Both people must show interest before chat becomes available.
+            send message to start chat for free
           </p>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="profile-content">
-        {/* About */}
-        <div className="profile-section">
-          <div className="section-title">
-            <span className="section-icon">💕</span>
-            {t("memberProfile.about")} {name.split(" ")[0]}
-          </div>
- <p>
-  {member.about ||
-    member.aboutYou ||
-    t("memberProfile.defaultAbout")}
-</p>
-        </div>
+{/* Content */}
+<section className="profile-content">
 
-        {/* Interests */}
-        <div className="profile-section">
-          <div className="section-title">
-            <span className="section-icon">❤️</span>
-            <h2>{t("memberProfile.interests")}</h2>
-          </div>
-<div className="profile-interests">
-  <span>🎵 {t("memberProfile.music")}</span>
-  <span>✈️ {t("memberProfile.travel")}</span>
-  <span>🍳 {t("memberProfile.cooking")}</span>
-  <span>🎬 {t("memberProfile.movies")}</span>
-  <span>🌿 {t("memberProfile.nature")}</span>
-</div>
-        </div>
+  {/* ===================== ABOUT ===================== */}
+  <div className="profile-section">
+    <div className="section-title">
+      <span className="section-icon">💕</span>
+      {t("memberProfile.about") || "About"} {name.split(" ")[0]}
+    </div>
+    <p>
+      {member.about ||
+        member.aboutYou ||
+        t("memberProfile.defaultAbout") ||
+        "This member hasn't written about themselves yet."}
+    </p>
+  </div>
 
-        {/* Looking For */}
-        <div className="profile-section looking-section">
-          <div className="section-title">
-            <span className="section-icon">💕</span>
-            <h2>{t("memberProfile.lookingForTitle")}</h2>
-          </div>
-          <div className="connection-box">
-            <div className="connection-icon">❤️</div>
-            <div>
-          <h3>
-  {member.lookingFor || t("memberProfile.meaningfulConnection")}
-</h3>
-<p>
-  {t("memberProfile.lookingForDescription")}
-</p>
-            </div>
-          </div>
-        </div>
+  {/* ===================== MORE ABOUT ===================== */}
+  {(member.personal_status ||
+    member.looking_for_gender ||
+    member.relation_goal) && (
+    <div className="profile-section">
+      <div className="section-title">
+        <span className="section-icon">👤</span>
+        More About {name.split(" ")[0]}
+      </div>
 
-        {/* Safety */}
-        <div className="profile-safety">
-          <div className="safety-icon">
-            <FiCheckCircle />
+      <div className="about-details-grid">
+        {member.personal_status && (
+          <div className="about-detail-item">
+            <span className="detail-label">Personal Status</span>
+            <span className="detail-value">
+              {formatLabel(member.personal_status)}
+            </span>
           </div>
-          <div>
-<strong>{t("memberProfile.staySafe")}</strong>
-<p>
-  {t("memberProfile.safetyDescription")}
-</p>
+        )}
+
+        {member.looking_for_gender && (
+          <div className="about-detail-item">
+            <span className="detail-label">Looking For</span>
+            <span className="detail-value">
+              {formatLabel(member.looking_for_gender)}
+            </span>
           </div>
-        </div>
-      </section>
+        )}
+
+        {member.relation_goal && (
+          <div className="about-detail-item">
+            <span className="detail-label">Relationship Goal</span>
+            <span className="detail-value">
+              {formatLabel(member.relation_goal)}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+
+  {/* ===================== INTERESTS (REAL DATA) ===================== */}
+  <div className="profile-section">
+    <div className="section-title">
+      <span className="section-icon">❤️</span>
+      <h2>{t("memberProfile.interests") || "Interests"}</h2>
+    </div>
+
+    <div className="profile-interests">
+      {(() => {
+        // Try different possible column names
+        let interests =
+          member.interests ||
+          member.hobbies ||
+          member.user_interests ||
+          [];
+
+        // If it's a string, turn it into an array
+        if (typeof interests === "string") {
+          interests = interests
+            .split(",")
+            .map((i) => i.trim())
+            .filter(Boolean);
+        }
+
+        // If it's not an array yet
+        if (!Array.isArray(interests)) {
+          interests = [];
+        }
+
+        if (interests.length === 0) {
+          return (
+            <p style={{ color: "#9ca3af", fontSize: 14 }}>
+              No interests added yet.
+            </p>
+          );
+        }
+
+        return interests.map((interest, index) => (
+          <span key={index}>{interest}</span>
+        ));
+      })()}
+    </div>
+  </div>
+
+  {/* ===================== LOOKING FOR ===================== */}
+  <div className="profile-section looking-section">
+    <div className="section-title">
+      <span className="section-icon">💕</span>
+      <h2>{t("memberProfile.lookingForTitle") || "What They're Looking For"}</h2>
+    </div>
+    <div className="connection-box">
+      <div className="connection-icon">❤️</div>
+      <div>
+        <h3>
+          {formatLabel(member.relation_goal) ||
+            member.lookingFor ||
+            t("memberProfile.meaningfulConnection") ||
+            "Meaningful connection"}
+        </h3>
+        <p>
+          {t("memberProfile.lookingForDescription") ||
+            "This person is looking for a genuine and meaningful connection."}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {/* ===================== SAFETY ===================== */}
+  <div className="profile-safety">
+    <div className="safety-icon">
+      <FiCheckCircle />
+    </div>
+    <div>
+      <strong>{t("memberProfile.staySafe") || "Stay Safe"}</strong>
+      <p>
+        {t("memberProfile.safetyDescription") ||
+          "Never share personal financial information and always meet in public places."}
+      </p>
+    </div>
+  </div>
+
+</section>
     </div>
   );
 }

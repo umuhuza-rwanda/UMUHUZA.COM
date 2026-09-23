@@ -220,7 +220,7 @@ const translations = {
   "Both people must show interest before chat becomes available.",
 "memberProfile.about": "About",
 "memberProfile.defaultAbout":
-  "I am a kind, positive and genuine person looking for meaningful connections. I enjoy spending time with good people, discovering new experiences and building relationships based on honesty and respect.",
+  "Ndi umuntu ugwaneza, ubona ibintu mu mucyo kandi utaryarya, ushaka umubano ufite icyo uvuze. Nkunda kumarana igihe n'abantu beza, kuvumbura ibintu bishya, no kubaka umubano ushingiye ku bunyangamugayo no kubahana.",
 "memberProfile.interests": "Interests",
 "memberProfile.music": "Music",
 "memberProfile.travel": "Travel",

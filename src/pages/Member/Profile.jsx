@@ -3,6 +3,7 @@ import "./Profile.css";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
 import {
   FiArrowLeft,
   FiUser,
@@ -430,7 +431,9 @@ const handlePhotoUpload = async (event) => {
           <span>{t("back") || "Back"}</span>
         </button>
 
-        <div className="profile-brand">❤️ UMUHUZA</div>
+        <div className="premium-logo">
+  <img src={umurangaLogo} alt="UMUHUZA" />
+</div>
 
         <div className="profile-header-title">
           <FiUser />

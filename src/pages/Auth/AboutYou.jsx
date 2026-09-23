@@ -3,6 +3,8 @@ import "./Auth.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
+
 import {
   FiHeart,
   FiUser,
@@ -235,9 +237,9 @@ function AboutYou() {
 
         <div className="auth-welcome">
 
-          <div className="auth-logo">
-            ❤️ UMUHUZA
-          </div>
+<div className="premium-logo">
+  <img src={umurangaLogo} alt="UMUHUZA" />
+</div>
 
 
           <h1>

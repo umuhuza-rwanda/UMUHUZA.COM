@@ -569,6 +569,18 @@ function AndroidNotificationPermission() {
 
   return null;
 }
+
+function FloatingInviteButtonWrapper() {
+  const location = useLocation();
+
+  // Only show on Member Home
+  const showButton =
+    location.pathname === "/member-home";
+
+  if (!showButton) return null;
+
+  return <FloatingInviteButton />;
+}
 // ======================================================
 // APP
 // ======================================================
@@ -585,7 +597,8 @@ function App() {
       <SessionStartup />
       
       <AndroidBackButtonHandler />
-      <FloatingInviteButton />
+      {/* Floating EARN button - only on Member Home */}
+<FloatingInviteButtonWrapper />
       <AndroidNotificationPermission />
 
         <Routes>
