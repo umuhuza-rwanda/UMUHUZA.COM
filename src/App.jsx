@@ -52,6 +52,7 @@ import AccountSecurity from "./pages/Member/profile/AccountSecurity";
 import Privacy from "./pages/Member/profile/Privacy";
 import NewAppPreferences from "./pages/Member/profile/NewAppPreferences";
 import HelpSupport from "./pages/Member/profile/HelpSupport";
+import SuccessStoriesPage from "./pages/Public/SuccessStoriesPage";
 
 // =========================
 // MAIN PROFILE
@@ -80,7 +81,11 @@ import SuccessStories from "./components/SuccessStories/SuccessStories";
 
 import Footer from "./components/Footer/Footer";
 import AboutUs from "./components/AboutUs/AboutUs";
+
+import HowItWorks from "./pages/Public/HowItWorks";
+import Contact from "./pages/Public/Contact";
 import Referral from "./pages/Referral/Referral";
+import InstallAppPrompt from "./components/InstallAppPrompt/InstallAppPrompt";
 
 // =========================
 // MEMBER LAYOUT
@@ -599,6 +604,8 @@ function App() {
       <AndroidBackButtonHandler />
       {/* Floating EARN button - only on Member Home */}
 <FloatingInviteButtonWrapper />
+
+<InstallAppPrompt />
       <AndroidNotificationPermission />
 
         <Routes>
@@ -648,10 +655,31 @@ function App() {
 
           <Route path="/spin" element={<Spin />} />
 
-          <Route
-            path="/about-us"
-            element={<AboutUs />}
-          />
+{/* =================================================
+    PUBLIC SEO PAGES
+================================================= */}
+
+
+
+<Route
+  path="/about-us"
+  element={<AboutUs />}
+/>
+
+<Route
+  path="/how-it-works"
+  element={<HowItWorks />}
+/>
+
+<Route
+  path="/success-stories"
+  element={<SuccessStoriesPage />}
+/>
+
+<Route
+  path="/contact"
+  element={<Contact />}
+/>
           <Route
   path="/reset-password"
   element={<ResetPassword />}

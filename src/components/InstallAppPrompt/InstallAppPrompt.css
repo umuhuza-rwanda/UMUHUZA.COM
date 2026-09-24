@@ -1,0 +1,233 @@
+/* =========================================
+   UMUHUZA INSTALL APP PROMPT
+   ========================================= */
+
+.umuhuza-install-banner {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(680px, calc(100% - 24px));
+  z-index: 99999;
+
+  background: linear-gradient(
+    135deg,
+    #4b176e 0%,
+    #7b2cbf 45%,
+    #d62f69 100%
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+
+  box-shadow:
+    0 18px 45px rgba(55, 15, 75, 0.28),
+    0 6px 18px rgba(0, 0, 0, 0.12);
+
+  color: #ffffff;
+
+  animation: umuhuzaInstallSlideDown 0.45s ease-out;
+}
+
+.umuhuza-install-content {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 13px 15px;
+}
+
+.umuhuza-install-icon {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  font-size: 25px;
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.umuhuza-install-text {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.umuhuza-install-text strong {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.umuhuza-install-text span {
+  font-size: 12px;
+  line-height: 1.35;
+  opacity: 0.88;
+}
+
+.umuhuza-install-button {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 40px;
+  padding: 0 16px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #6d1f8f;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.umuhuza-install-button:hover {
+  transform: translateY(-1px);
+
+  background: #fff4fb;
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.2);
+}
+
+.umuhuza-install-button:active {
+  transform: translateY(0);
+}
+
+.umuhuza-install-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.umuhuza-install-close {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.umuhuza-install-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: rotate(90deg);
+}
+
+.umuhuza-install-close svg {
+  width: 17px;
+  height: 17px;
+}
+
+
+/* =========================================
+   ANIMATION
+   ========================================= */
+
+@keyframes umuhuzaInstallSlideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+  .umuhuza-install-banner {
+    top: 10px;
+    width: calc(100% - 16px);
+    border-radius: 16px;
+  }
+
+  .umuhuza-install-content {
+    gap: 10px;
+    padding: 11px;
+  }
+
+  .umuhuza-install-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+    border-radius: 12px;
+    font-size: 21px;
+  }
+
+  .umuhuza-install-text strong {
+    font-size: 13px;
+  }
+
+  .umuhuza-install-text span {
+    font-size: 10.5px;
+  }
+
+  .umuhuza-install-button {
+    min-height: 36px;
+    padding: 0 11px;
+    font-size: 11px;
+  }
+
+  .umuhuza-install-button svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .umuhuza-install-close {
+    width: 29px;
+    height: 29px;
+    flex-basis: 29px;
+  }
+
+  .umuhuza-install-close svg {
+    width: 14px;
+    height: 14px;
+  }
+}

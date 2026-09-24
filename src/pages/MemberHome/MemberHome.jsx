@@ -159,6 +159,8 @@ function MemberHome() {
 
   const [activeCategory, setActiveCategory] =
     useState("recommended");
+    const [currentPage, setCurrentPage] = useState(1);
+const membersPerPage = 9;
 
   const [likedMembers, setLikedMembers] =
     useState([]);
@@ -810,55 +812,34 @@ useEffect(() => {
 
     setLoading(true);
     setError("");
+const load = async () => {
+  const {
+    data,
+    error,
+  } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("profile_completed", true);   // only completed profiles
 
-    const load = async () => {
-      const {
-        data,
-        error,
-      } = await supabase
-        .from("profiles")
-        .select("*");
+  if (!active) return;
 
-      if (!active) return;
+  if (error) {
+    console.error("Supabase members error:", error);
+    setError("Unable to load members.");
+    setAllMembers([]);
+    setLoading(false);
+    return;
+  }
 
-      if (error) {
-        console.error(
-          "Supabase members error:",
-          error
-        );
+  const normalizedMembers = (data || [])
+    .map(normalizeMemberProfile)
+    .filter((member) => member.id !== currentUser.id);
 
-        setError(
-          "Unable to load members."
-        );
+  console.log("UMUHUZA members loaded:", normalizedMembers);
 
-        setAllMembers([]);
-        setLoading(false);
-
-        return;
-      }
-
-      const normalizedMembers =
-        (data || [])
-          .map(
-            normalizeMemberProfile
-          )
-          .filter(
-            (member) =>
-              member.id !==
-              currentUser.id
-          );
-
-      console.log(
-        "UMUHUZA members loaded:",
-        normalizedMembers
-      );
-
-      setAllMembers(
-        normalizedMembers
-      );
-
-      setLoading(false);
-    };
+  setAllMembers(normalizedMembers);
+  setLoading(false);
+};
 
     load();
 
@@ -1310,6 +1291,22 @@ useEffect(() => {
   };
 
   // =====================================================
+// FORCE PROFILE COMPLETION
+// =====================================================
+useEffect(() => {
+  if (!currentUser || profileLoading) return;
+
+  // If profile is not completed → send them back to Profile Setup
+  if (
+    currentUserProfile &&
+    currentUserProfile.profile_completed !== true
+  ) {
+    console.log("Profile not completed → redirecting to Profile Setup");
+    navigate("/profile-setup", { replace: true });
+  }
+}, [currentUser, currentUserProfile, profileLoading, navigate]);
+
+  // =====================================================
 // CHECK IF USER CAN START CHAT WITH A NEW PERSON
 // =====================================================
 const getOrCreateConversation = async (person) => {
@@ -1577,8 +1574,7 @@ const saveSeenMemberIds = (ids) => {
   }
 };
 
-
-// Select a fresh group of people whenever the page loads.
+// Select members for display (pagination will handle showing 9 at a time)
 const refreshableMembers = useMemo(() => {
   if (!currentUser?.id || filteredMembers.length === 0) {
     return [];
@@ -1588,37 +1584,45 @@ const refreshableMembers = useMemo(() => {
 
   // People who haven't appeared recently
   let unseenMembers = filteredMembers.filter(
-    member => !seenIds.includes(member.id)
+    (member) => !seenIds.includes(member.id)
   );
 
-  // If we have already seen everybody,
-  // start a new rotation.
+  // If we have already seen everybody, start a new rotation
   if (unseenMembers.length === 0) {
     seenIds = [];
     unseenMembers = [...filteredMembers];
-
     saveSeenMemberIds([]);
   }
 
   // Shuffle the fresh people
   const shuffled = shuffleMembers(unseenMembers);
 
-  // Select only a limited number for this refresh
-  const selected = shuffled.slice(
-    0,
-    MEMBERS_PER_REFRESH
-  );
+  // IMPORTANT: Do NOT slice here.
+  // Let pagination show 9 members at a time.
+  const selected = shuffled;   // ← changed (removed the slice)
 
-  // Remember these people
+  // Remember these people (optional – you can keep or remove this)
   const newSeenIds = [
     ...seenIds,
-    ...selected.map(member => member.id),
+    ...selected.map((member) => member.id),
   ];
-
   saveSeenMemberIds(newSeenIds);
 
   return selected;
 }, [filteredMembers, currentUser]);
+// =====================================================
+// PAGINATION
+// =====================================================
+const totalPages = Math.ceil(refreshableMembers.length / membersPerPage) || 1;
+const startIndex = (currentPage - 1) * membersPerPage;
+const currentMembers = refreshableMembers.slice(startIndex, startIndex + membersPerPage);
+console.log("Total members:", refreshableMembers.length);
+console.log("Current page members:", currentMembers.length);
+console.log("Total pages:", totalPages);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [activeCategory, search]);
 
 // =====================================================
 // LIKE / UNLIKE MEMBER
@@ -2746,168 +2750,181 @@ const handleStartChat = (member) => {
           </div>
 
 
-
- {/* =================================================
+{/* =================================================
     MEMBER CARDS
 ================================================= */}
 
 {refreshableMembers.length === 0 ? (
-<div className="no-members-card">
-  <div className="no-members-icon">💕</div>
-  <h3>{t("home.noMembers") || "No matching members yet"}</h3>
-  <p>
-    {t("home.tryAnother") ||
-      "We're still growing the UMUHUZA community. Try another category."}
-  </p>
-</div>
+  <div className="no-members-card">
+    <div className="no-members-icon">💕</div>
+    <h3>{t("home.noMembers") || "No matching members yet"}</h3>
+    <p>
+      {t("home.tryAnother") ||
+        "We're still growing the UMUHUZA community. Try another category."}
+    </p>
+  </div>
 ) : (
-  <div className="member-discovery-grid">
-    {refreshableMembers.map((member) => {
-      // ==============================
-      // MEMBER NAME
-      // ==============================
-      const name =
-        member.full_name ||
-        member.name ||
-        [member.firstName, member.lastName].filter(Boolean).join(" ") ||
-        "UMUHUZA Member";
+  <>
+    <div className="member-discovery-grid">
+      {currentMembers.map((member) => {
+        const name =
+          member.full_name ||
+          member.name ||
+          [member.firstName, member.lastName].filter(Boolean).join(" ") ||
+          "UMUHUZA Member";
 
-      // ==============================
-      // MEMBER PHOTO
-      // ==============================
-      const photo =
-        member.profile_photo_url ||
-        member.profilePhoto ||
-        member.profile_photo ||
-        member.photoURL ||
-        member.photo_url ||
-        member.avatar ||
-        member.image ||
-        "";
+        const photo =
+          member.profile_photo_url ||
+          member.profilePhoto ||
+          member.profile_photo ||
+          member.photoURL ||
+          member.photo_url ||
+          member.avatar ||
+          member.image ||
+          "";
 
-      // ==============================
-      // MEMBER AGE
-      // ==============================
-      const age =
-        member.age ||
-        calculateMemberAge(
-          member.date_of_birth ||
-            member.dateOfBirth ||
-            member.birth_date ||
-            member.birthDate
+        const age =
+          member.age ||
+          calculateMemberAge(
+            member.date_of_birth ||
+              member.dateOfBirth ||
+              member.birth_date ||
+              member.birthDate
+          );
+
+        const interest = getInterestForMember(member.id);
+        const isPending = interest?.status === "pending";
+        const isConnected = interest?.status === "accepted";
+
+        return (
+          <div className="member-card" key={member.id}>
+            <div className="member-photo-wrapper">
+              {photo ? (
+                <img src={photo} alt={name} className="member-photo" />
+              ) : (
+                <div className="member-photo-placeholder">
+                  <FiUser size={48} />
+                </div>
+              )}
+
+              {member.online && (
+                <span className="member-online-badge">🟢 Online</span>
+              )}
+
+              {member.verified && (
+                <span className="member-verified-badge">✓ Verified</span>
+              )}
+            </div>
+
+            <div className="member-info">
+              <h3>
+                {name}
+                {age ? `, ${age}` : ""}
+              </h3>
+
+              {(() => {
+                const distanceKm = calculateDistanceKm(
+                  currentUserProfile?.latitude,
+                  currentUserProfile?.longitude,
+                  member.latitude,
+                  member.longitude
+                );
+                return (
+                  <p className="member-location-line">
+                    📍 {member.city || "Location not added"}
+                    {member.country ? `, ${member.country}` : ""}
+                    {distanceKm !== null && (
+                      <>
+                        {" • "}
+                        {Number(distanceKm.toFixed(1))} km
+                      </>
+                    )}
+                  </p>
+                );
+              })()}
+
+              <button
+                className="member-action-btn"
+                onClick={() => {
+                  const memberId = member.id || member.uid;
+                  navigate(`/member-profile/${memberId}`, {
+                    state: { member },
+                  });
+                }}
+              >
+                👤 {t("home.viewProfile") || "View Profile"}
+              </button>
+
+              <button
+                className={`member-action-btn like-btn ${
+                  likedMembers.includes(member.id) ? "liked" : ""
+                }`}
+                onClick={() => handleLike(member)}
+              >
+                {likedMembers.includes(member.id)
+                  ? `❤️ ${t("home.liked") || "Liked"}`
+                  : `♡ ${t("home.like") || "Like"}`}
+              </button>
+
+              <button
+                className={`member-action-btn interest-btn ${
+                  isPending || isConnected ? "sent" : ""
+                }`}
+                onClick={() => handleInterest(member)}
+                disabled={
+                  isPending || isConnected || interestLoading === member.id
+                }
+              >
+                {interestLoading === member.id
+                  ? "Sending..."
+                  : isConnected
+                  ? `🤝 ${t("home.connected") || "Connected"}`
+                  : isPending
+                  ? `✓ ${t("home.interestSent") || "Interest Sent"}`
+                  : `💕 ${t("home.sendInterest") || "Send Interest"}`}
+              </button>
+
+              <button
+                className="member-action-btn chat-btn"
+                onClick={() => handleStartChat(member)}
+              >
+                💬 {t("home.startChat") || "Start Chat"}
+              </button>
+            </div>
+          </div>
         );
+      })}
+    </div>
 
-      // ==============================
-      // INTEREST STATUS
-      // ==============================
-      const interest = getInterestForMember(member.id);
-      const isPending = interest?.status === "pending";
-      const isConnected = interest?.status === "accepted";
+{/* ===================== PAGINATION ===================== */}
+{true && (
+  <div className="pagination-controls">
+    <button
+      className="pagination-btn"
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      disabled={currentPage === 1}
+    >
+      ⏮️ Previous
+    </button>
 
-      return (
-        <div className="member-card" key={member.id}>
-          <div className="member-photo-wrapper">
-            {photo ? (
-              <img src={photo} alt={name} className="member-photo" />
-            ) : (
-              <div className="member-photo-placeholder">
-                <FiUser size={48} />
-              </div>
-            )}
+    <span className="pagination-info">
+      Page {currentPage} of {totalPages}
+    </span>
 
-            {member.online && (
-              <span className="member-online-badge">🟢 Online</span>
-            )}
-
-            {member.verified && (
-              <span className="member-verified-badge">✓ Verified</span>
-            )}
-          </div>
-
-          <div className="member-info">
-            <h3>
-              {name}
-              {age ? `, ${age}` : ""}
-            </h3>
-
-{(() => {
-
-const distanceKm = calculateDistanceKm(
-  currentUserProfile?.latitude,
-  currentUserProfile?.longitude,
-  member.latitude,
-  member.longitude
-);
-  return (
-    <p className="member-location-line">
-📍 {member.city || "Location not added"}
-  {member.country ? `, ${member.country}` : ""}
-  {distanceKm !== null && (
-    <>
-      {" • "}
-      {Number(distanceKm.toFixed(1))} km
-    </>
-  )}
-</p>
-  );
-})()}
-
-            {/* VIEW PROFILE */}
-{/* VIEW PROFILE */}
-<button
-  className="member-action-btn"
-  onClick={() => {
-    const memberId = member.id || member.uid;
-    navigate(`/member-profile/${memberId}`, {
-      state: { member },
-    });
-  }}
->
-  👤 {t("home.viewProfile") || "View Profile"}
-</button>
-
-{/* LIKE */}
-<button
-  className={`member-action-btn like-btn ${
-    likedMembers.includes(member.id) ? "liked" : ""
-  }`}
-  onClick={() => handleLike(member)}
->
-  {likedMembers.includes(member.id)
-    ? `❤️ ${t("home.liked") || "Liked"}`
-    : `♡ ${t("home.like") || "Like"}`}
-</button>
-
-{/* SEND INTEREST */}
-<button
-  className={`member-action-btn interest-btn ${
-    isPending || isConnected ? "sent" : ""
-  }`}
-  onClick={() => handleInterest(member)}
-  disabled={isPending || isConnected || interestLoading === member.id}
->
-  {interestLoading === member.id
-    ? "Sending..."
-    : isConnected
-    ? `🤝 ${t("home.connected") || "Connected"}`
-    : isPending
-    ? `✓ ${t("home.interestSent") || "Interest Sent"}`
-    : `💕 ${t("home.sendInterest") || "Send Interest"}`}
-</button>
-
-{/* START CHAT */}
-<button
-  className="member-action-btn chat-btn"
-  onClick={() => handleStartChat(member)}
->
-  💬 {t("home.startChat") || "Start Chat"}
-</button>
-          </div>
-        </div>
-      );
-    })}
+    <button
+      className="pagination-btn"
+      onClick={() =>
+        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+      }
+      disabled={currentPage === totalPages}
+    >
+      Next ⏭️
+    </button>
   </div>
 )}
+  </>
+)}
+
 
 {/* =================================================
     COMMUNITY LINKS MODAL

@@ -1,0 +1,20 @@
+{
+  "name": "UMUHUZA - Real Love, Real People",
+  "short_name": "UMUHUZA",
+  "description": "Meet genuine people, make meaningful connections, and build relationships with UMUHUZA.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#4B176E",
+  "theme_color": "#4B176E",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
