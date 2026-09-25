@@ -1,6 +1,6 @@
 {
   "name": "UMUHUZA - Real Love, Real People",
-  "short_name": "UMUHUZA",
+  "short_name": "UMUHUZA Lite",
   "description": "Meet genuine people, make meaningful connections, and build relationships with UMUHUZA.",
   "start_url": "/",
   "scope": "/",
@@ -11,10 +11,22 @@
   "lang": "en",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/icons/umuhuza-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/icons/umuhuza-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/umuhuza-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
