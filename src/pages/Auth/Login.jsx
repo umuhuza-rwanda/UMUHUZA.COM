@@ -5,6 +5,8 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { useAppPreferences } from "../../context/AppPreferencesContext";
 
 import { supabase } from "../../lib/supabase";
 
@@ -21,6 +23,7 @@ function Login() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useAppPreferences();
 
   // =====================================================
   // LOGIN
@@ -378,6 +381,7 @@ function Login() {
     navigate("/forgot-password");
   };
 
+
   // =====================================================
   // UI
   // =====================================================
@@ -386,7 +390,6 @@ function Login() {
     <div className="login-page">
 
       <div className="login-card">
-
         {/* =================================================
             LOGO
         ================================================= */}
@@ -406,6 +409,9 @@ function Login() {
         <p className="login-subtitle">
           Sign in to continue your love journey.
         </p>
+<LanguageSwitcher />
+        
+
 
         {/* =================================================
             ERROR
@@ -454,65 +460,50 @@ function Login() {
               PASSWORD
           ================================================= */}
 
-          <div className="login-field">
+{/* =================================================
+    PASSWORD
+================================================= */}
 
-            <div className="password-row">
+<div className="login-field">
 
-              <label htmlFor="login-password">
-                Password
-              </label>
+  <div className="password-row">
+    <label htmlFor="login-password">
+      Password
+    </label>
 
-              {/* =================================================
-                  FORGOT PASSWORD
-              ================================================= */}
+    <button
+      type="button"
+      className="auth-link"
+      onClick={handleForgotPassword}
+      disabled={loading}
+    >
+      Forgot Password?
+    </button>
+  </div>
 
-              <button
-                type="button"
-                className="auth-link"
-                onClick={handleForgotPassword}
-                disabled={loading}
-              >
-                Forgot Password?
-              </button>
+  {/* Password input with eye icon inside */}
+  <div className="password-input-wrapper">
+    <input
+      id="login-password"
+      type={showPassword ? "text" : "password"}
+      placeholder="Enter your password"
+      autoComplete="current-password"
+      value={password}
+      onChange={(event) => setPassword(event.target.value)}
+      disabled={loading}
+      className="password-input"
+    />
 
-            </div>
-
-  <input
-    id="login-password"
-    type={showPassword ? "text" : "password"}
-    placeholder="Enter your password"
-    autoComplete="current-password"
-    value={password}
-    onChange={(event) =>
-      setPassword(event.target.value)
-    }
-    disabled={loading}
-  />
-
-  <button
-    type="button"
-    className="password-toggle"
-    onClick={() =>
-      setShowPassword((previous) => !previous)
-    }
-    disabled={loading}
-    aria-label={
-      showPassword
-        ? "Hide password"
-        : "Show password"
-    }
-    title={
-      showPassword
-        ? "Hide password"
-        : "Show password"
-    }
-  >
-    {showPassword ? (
-      <FiEyeOff />
-    ) : (
-      <FiEye />
-    )}
-  </button>
+    <button
+      type="button"
+      className="password-toggle-btn"
+      onClick={() => setShowPassword((prev) => !prev)}
+      disabled={loading}
+      aria-label={showPassword ? "Hide password" : "Show password"}
+    >
+      {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+    </button>
+  </div>
 
 </div>
 

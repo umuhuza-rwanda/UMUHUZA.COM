@@ -3,95 +3,54 @@ import "./Auth.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
-import { FiImage } from "react-icons/fi";
-
+import { FiImage, FiCamera, FiUser } from "react-icons/fi";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { useAppPreferences } from "../../context/AppPreferencesContext";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
-
-import {
-  FiCamera,
-  FiUser,
-  FiX,
-} from "react-icons/fi";
-
 import { supabase } from "../../lib/supabase";
 
 function ProfileSetup() {
   const navigate = useNavigate();
+  const { t } = useAppPreferences();
 
   // =====================================================
-  // SUPABASE STORAGE BUCKET
+  // SETTINGS
   // =====================================================
-
   const PROFILE_BUCKET = "profile-photos";
-
-  // =====================================================
-  // IMAGE COMPRESSION SETTINGS
-  // =====================================================
-
-  // FINAL uploaded image MUST be below this size.
   const MAX_COMPRESSED_SIZE = 250 * 1024;
-
-  // Maximum original image accepted before compression.
-  // This allows users to select large phone/camera photos.
   const MAX_ORIGINAL_SIZE = 20 * 1024 * 1024;
-
-  // Maximum dimension of the compressed image.
-  // This dramatically reduces large camera photos.
   const MAX_IMAGE_DIMENSION = 1600;
 
   // =====================================================
-  // PROFILE PHOTOS
+  // STATE
   // =====================================================
-
-  const [photos, setPhotos] = useState([
-    null,
-    null,
-    null,
-    null,
-  ]);
-
-  // =====================================================
-  // SELECTED INTERESTS
-  // =====================================================
-
-  const [selectedInterests, setSelectedInterests] =
-    useState([]);
-
-  // =====================================================
-  // UI STATE
-  // =====================================================
-
+  const [photos, setPhotos] = useState([null, null, null, null]);
+  const [selectedInterests, setSelectedInterests] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState("");
 
   // =====================================================
-  // INTEREST OPTIONS
+  // INTERESTS (translated)
   // =====================================================
-
   const interests = [
-    "❤️ Love",
-    "🎵 Music",
-    "✈️ Travel",
-    "⚽ Sports",
-    "📚 Reading",
-    "🎬 Movies",
-    "🍳 Cooking",
-    "🌿 Nature",
-    "💃 Dancing",
-    "🏋️ Fitness",
-    "🙏 Faith",
-    "🎨 Art",
+    { value: "Love", label: t("interest.love") || "❤️ Love" },
+    { value: "Music", label: t("interest.music") || "🎵 Music" },
+    { value: "Travel", label: t("interest.travel") || "✈️ Travel" },
+    { value: "Sports", label: t("interest.sports") || "⚽ Sports" },
+    { value: "Reading", label: t("interest.reading") || "📚 Reading" },
+    { value: "Movies", label: t("interest.movies") || "🎬 Movies" },
+    { value: "Cooking", label: t("interest.cooking") || "🍳 Cooking" },
+    { value: "Nature", label: t("interest.nature") || "🌿 Nature" },
+    { value: "Dancing", label: t("interest.dancing") || "💃 Dancing" },
+    { value: "Fitness", label: t("interest.fitness") || "🏋️ Fitness" },
+    { value: "Faith", label: t("interest.faith") || "🙏 Faith" },
+    { value: "Art", label: t("interest.art") || "🎨 Art" },
   ];
 
   // =====================================================
-  // COMPRESS IMAGE
+  // IMAGE COMPRESSION
   // =====================================================
-
-  const compressImage = (
-    file,
-    maxSize = MAX_COMPRESSED_SIZE
-  ) => {
+  const compressImage = (file, maxSize = MAX_COMPRESSED_SIZE) => {
     return new Promise((resolve, reject) => {
       if (!file) {
         reject(new Error("No image selected."));
@@ -99,9 +58,7 @@ function ProfileSetup() {
       }
 
       const image = new Image();
-
-      const objectUrl =
-        URL.createObjectURL(file);
+      const objectUrl = URL.createObjectURL(file);
 
       image.onload = () => {
         try {
@@ -110,320 +67,97 @@ function ProfileSetup() {
           let width = image.naturalWidth;
           let height = image.naturalHeight;
 
-          // ---------------------------------------------
-          // RESIZE IMAGE
-          // ---------------------------------------------
-
-          if (
-            width > MAX_IMAGE_DIMENSION ||
-            height > MAX_IMAGE_DIMENSION
-          ) {
-            const scale =
-              Math.min(
-                MAX_IMAGE_DIMENSION / width,
-                MAX_IMAGE_DIMENSION / height
-              );
-
+          if (width > MAX_IMAGE_DIMENSION || height > MAX_IMAGE_DIMENSION) {
+            const scale = Math.min(
+              MAX_IMAGE_DIMENSION / width,
+              MAX_IMAGE_DIMENSION / height
+            );
             width = Math.round(width * scale);
             height = Math.round(height * scale);
           }
 
-          const canvas =
-            document.createElement("canvas");
-
-          const ctx =
-            canvas.getContext("2d");
-
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
           if (!ctx) {
-            reject(
-              new Error(
-                "Your browser does not support image compression."
-              )
-            );
-
+            reject(new Error("Your browser does not support image compression."));
             return;
           }
 
           canvas.width = width;
           canvas.height = height;
-
-          // ---------------------------------------------
-          // WHITE BACKGROUND
-          // ---------------------------------------------
-          //
-          // This prevents transparent PNG images from
-          // becoming black when converted to JPEG.
-          //
-
           ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(image, 0, 0, width, height);
 
-          ctx.fillRect(
-            0,
-            0,
-            width,
-            height
-          );
+          const qualities = [0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3];
 
-          // ---------------------------------------------
-          // DRAW IMAGE
-          // ---------------------------------------------
+          const createBlob = (quality) =>
+            new Promise((blobResolve) => {
+              canvas.toBlob((blob) => blobResolve(blob), "image/jpeg", quality);
+            });
 
-          ctx.drawImage(
-            image,
-            0,
-            0,
-            width,
-            height
-          );
-
-          // ---------------------------------------------
-          // TRY DIFFERENT JPEG QUALITIES
-          // ---------------------------------------------
-
-          const qualities = [
-            0.85,
-            0.80,
-            0.75,
-            0.70,
-            0.65,
-            0.60,
-            0.55,
-            0.50,
-            0.45,
-            0.40,
-            0.35,
-            0.30,
-          ];
-
-          const createBlob = (
-            quality
-          ) => {
-            return new Promise(
-              (blobResolve) => {
-                canvas.toBlob(
-                  (blob) => {
-                    blobResolve(blob);
-                  },
-                  "image/jpeg",
-                  quality
+          const compressWithQuality = async () => {
+            for (const quality of qualities) {
+              const blob = await createBlob(quality);
+              if (blob && blob.size < maxSize) {
+                resolve(
+                  new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                    type: "image/jpeg",
+                    lastModified: Date.now(),
+                  })
                 );
+                return;
               }
+            }
+
+            // Fallback: reduce dimensions
+            let currentWidth = width;
+            let currentHeight = height;
+            while (currentWidth > 600 && currentHeight > 600) {
+              currentWidth = Math.round(currentWidth * 0.85);
+              currentHeight = Math.round(currentHeight * 0.85);
+              canvas.width = currentWidth;
+              canvas.height = currentHeight;
+              ctx.fillStyle = "#ffffff";
+              ctx.fillRect(0, 0, currentWidth, currentHeight);
+              ctx.drawImage(image, 0, 0, currentWidth, currentHeight);
+
+              const blob = await createBlob(0.7);
+              if (blob && blob.size < maxSize) {
+                resolve(
+                  new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                    type: "image/jpeg",
+                    lastModified: Date.now(),
+                  })
+                );
+                return;
+              }
+            }
+
+            const finalBlob = await createBlob(0.3);
+            if (!finalBlob || finalBlob.size >= maxSize) {
+              reject(new Error("This image could not be compressed below 250 KB."));
+              return;
+            }
+
+            resolve(
+              new File([finalBlob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              })
             );
           };
 
-          const compressWithQuality =
-            async () => {
-              // -----------------------------------------
-              // FIRST TRY QUALITY REDUCTION
-              // -----------------------------------------
-
-              for (
-                const quality of qualities
-              ) {
-                const blob =
-                  await createBlob(
-                    quality
-                  );
-
-                if (!blob) {
-                  continue;
-                }
-
-                if (
-                  blob.size <
-                  maxSize
-                ) {
-                  const compressedFile =
-                    new File(
-                      [
-                        blob,
-                      ],
-                      file.name.replace(
-                        /\.[^/.]+$/,
-                        ""
-                      ) + ".jpg",
-                      {
-                        type:
-                          "image/jpeg",
-                        lastModified:
-                          Date.now(),
-                      }
-                    );
-
-                  resolve(
-                    compressedFile
-                  );
-
-                  return;
-                }
-              }
-
-              // -----------------------------------------
-              // IF STILL TOO LARGE:
-              // REDUCE DIMENSIONS
-              // -----------------------------------------
-
-              let currentWidth =
-                width;
-
-              let currentHeight =
-                height;
-
-              while (
-                currentWidth > 600 &&
-                currentHeight > 600
-              ) {
-                currentWidth =
-                  Math.round(
-                    currentWidth *
-                      0.85
-                  );
-
-                currentHeight =
-                  Math.round(
-                    currentHeight *
-                      0.85
-                  );
-
-                canvas.width =
-                  currentWidth;
-
-                canvas.height =
-                  currentHeight;
-
-                ctx.fillStyle =
-                  "#ffffff";
-
-                ctx.fillRect(
-                  0,
-                  0,
-                  currentWidth,
-                  currentHeight
-                );
-
-                ctx.drawImage(
-                  image,
-                  0,
-                  0,
-                  currentWidth,
-                  currentHeight
-                );
-
-                const blob =
-                  await createBlob(
-                    0.70
-                  );
-
-                if (
-                  blob &&
-                  blob.size <
-                    maxSize
-                ) {
-                  const compressedFile =
-                    new File(
-                      [
-                        blob,
-                      ],
-                      file.name.replace(
-                        /\.[^/.]+$/,
-                        ""
-                      ) + ".jpg",
-                      {
-                        type:
-                          "image/jpeg",
-                        lastModified:
-                          Date.now(),
-                      }
-                    );
-
-                  resolve(
-                    compressedFile
-                  );
-
-                  return;
-                }
-              }
-
-              // -----------------------------------------
-              // FINAL FALLBACK
-              // -----------------------------------------
-
-              const finalBlob =
-                await createBlob(
-                  0.30
-                );
-
-              if (
-                !finalBlob
-              ) {
-                reject(
-                  new Error(
-                    "Unable to compress image."
-                  )
-                );
-
-                return;
-              }
-
-              if (
-                finalBlob.size >=
-                maxSize
-              ) {
-                reject(
-                  new Error(
-                    "This image could not be compressed below 250 KB. Please choose another photo."
-                  )
-                );
-
-                return;
-              }
-
-              const compressedFile =
-                new File(
-                  [
-                    finalBlob,
-                  ],
-                  file.name.replace(
-                    /\.[^/.]+$/,
-                    ""
-                  ) + ".jpg",
-                  {
-                    type:
-                      "image/jpeg",
-                    lastModified:
-                      Date.now(),
-                  }
-                );
-
-              resolve(
-                compressedFile
-              );
-            };
-
-          compressWithQuality().catch(
-            reject
-          );
-        } catch (compressionError) {
-          URL.revokeObjectURL(
-            objectUrl
-          );
-
-          reject(
-            compressionError
-          );
+          compressWithQuality().catch(reject);
+        } catch (err) {
+          URL.revokeObjectURL(objectUrl);
+          reject(err);
         }
       };
 
       image.onerror = () => {
-        URL.revokeObjectURL(
-          objectUrl
-        );
-
-        reject(
-          new Error(
-            "Unable to read this image."
-          )
-        );
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("Unable to read this image."));
       };
 
       image.src = objectUrl;
@@ -433,256 +167,89 @@ function ProfileSetup() {
   // =====================================================
   // CLEAN PREVIEW URLS
   // =====================================================
-
   useEffect(() => {
     return () => {
       photos.forEach((photo) => {
-        if (photo?.preview) {
-          URL.revokeObjectURL(
-            photo.preview
-          );
-        }
+        if (photo?.preview) URL.revokeObjectURL(photo.preview);
       });
     };
   }, [photos]);
 
   // =====================================================
-// TAKE PHOTO WITH PHONE CAMERA
-// =====================================================
+  // TAKE PHOTO
+  // =====================================================
+  const takePhotoWithCamera = async (photoIndex) => {
+    try {
+      setError("");
+      const photo = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
 
-const takePhotoWithCamera = async (photoIndex) => {
-  try {
-    setError("");
+      if (!photo.dataUrl) throw new Error("Unable to capture photo.");
 
-    const photo = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Camera,
-    });
-
-    if (!photo.dataUrl) {
-      throw new Error("Unable to capture photo.");
-    }
-
-    // Convert camera photo to File
-    const response = await fetch(photo.dataUrl);
-    const blob = await response.blob();
-
-    const file = new File(
-      [blob],
-      `umuhuza-camera-${Date.now()}.jpg`,
-      {
+      const response = await fetch(photo.dataUrl);
+      const blob = await response.blob();
+      const file = new File([blob], `umuhuza-camera-${Date.now()}.jpg`, {
         type: "image/jpeg",
-      }
-    );
+      });
 
-    // Use the same compression system already used by your website
-    const compressedFile = await compressImage(
-      file,
-      MAX_COMPRESSED_SIZE
-    );
+      const compressedFile = await compressImage(file);
+      const previewUrl = URL.createObjectURL(compressedFile);
 
-    if (compressedFile.size > MAX_COMPRESSED_SIZE) {
-      throw new Error(
-        "The captured photo is still too large. Please try another photo."
-      );
+      setPhotos((current) => {
+        const updated = [...current];
+        if (updated[photoIndex]?.preview) URL.revokeObjectURL(updated[photoIndex].preview);
+        updated[photoIndex] = { file: compressedFile, preview: previewUrl };
+        return updated;
+      });
+    } catch (err) {
+      if (err?.message?.includes("cancel")) return;
+      setError(err?.message || t("profileSetup.errorCamera") || "Unable to take a photo.");
     }
-
-    // Create preview
-    const previewUrl = URL.createObjectURL(compressedFile);
-
-    setPhotos((currentPhotos) => {
-      const updatedPhotos = [...currentPhotos];
-
-      // Remove previous preview URL
-      if (updatedPhotos[photoIndex]?.preview) {
-        URL.revokeObjectURL(updatedPhotos[photoIndex].preview);
-      }
-
-      updatedPhotos[photoIndex] = {
-        file: compressedFile,
-        preview: previewUrl,
-      };
-
-      return updatedPhotos;
-    });
-
-  } catch (error) {
-    console.error("Camera error:", error);
-
-    if (error?.message?.includes("cancel")) {
-      return;
-    }
-
-    setError(
-      error?.message ||
-      "Unable to take a photo. Please check your camera permission."
-    );
-  }
-};
+  };
 
   // =====================================================
-  // PHOTO CHANGE
+  // PHOTO FROM GALLERY
   // =====================================================
-
-  const handlePhotoChange = async (
-    event,
-    photoIndex
-  ) => {
-    const file =
-      event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
+  const handlePhotoChange = async (event, photoIndex) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
     setError("");
 
-    // =================================================
-    // IMAGE TYPE VALIDATION
-    // =================================================
-
-    if (
-      !file.type.startsWith(
-        "image/"
-      )
-    ) {
-      setError(
-        "Please select a valid image."
-      );
-
+    if (!file.type.startsWith("image/")) {
+      setError(t("profileSetup.errorInvalidImage") || "Please select a valid image.");
       event.target.value = "";
-
       return;
     }
 
-    // =================================================
-    // ORIGINAL FILE SIZE VALIDATION
-    // =================================================
-    //
-    // IMPORTANT:
-    // We DO NOT reject an 8 MB image anymore.
-    // It will be compressed in the browser first.
-    //
-
-    if (
-      file.size >
-      MAX_ORIGINAL_SIZE
-    ) {
-      setError(
-        "This image is too large. Please choose an image smaller than 20 MB."
-      );
-
+    if (file.size > MAX_ORIGINAL_SIZE) {
+      setError(t("profileSetup.errorImageTooLarge") || "This image is too large (max 20 MB).");
       event.target.value = "";
-
       return;
     }
 
     try {
-      // =================================================
-      // COMPRESS IMAGE BEFORE STORAGE
-      // =================================================
-
-      console.log(
-        `Original image size: ${(
-          file.size /
-          1024
-        ).toFixed(1)} KB`
-      );
-
-      const compressedFile =
-        await compressImage(
-          file
-        );
-
-      console.log(
-        `Compressed image size: ${(
-          compressedFile.size /
-          1024
-        ).toFixed(1)} KB`
-      );
-
-      // =================================================
-      // FINAL SAFETY CHECK
-      // =================================================
-
-      if (
-        compressedFile.size >=
-        MAX_COMPRESSED_SIZE
-      ) {
-        setError(
-          "The image could not be compressed below 250 KB. Please choose another photo."
-        );
-
+      const compressedFile = await compressImage(file);
+      if (compressedFile.size >= MAX_COMPRESSED_SIZE) {
+        setError(t("profileSetup.errorCompress") || "Image could not be compressed below 250 KB.");
         event.target.value = "";
-
         return;
       }
 
-      // =================================================
-      // CREATE PREVIEW FROM COMPRESSED FILE
-      // =================================================
-      //
-      // IMPORTANT:
-      // The preview now also represents the compressed
-      // image, not the original 8 MB image.
-      //
-
-      const preview =
-        URL.createObjectURL(
-          compressedFile
-        );
-
-      setPhotos(
-        (currentPhotos) => {
-          const updatedPhotos =
-            [
-              ...currentPhotos,
-            ];
-
-          // Revoke previous preview
-
-          if (
-            updatedPhotos[
-              photoIndex
-            ]?.preview
-          ) {
-            URL.revokeObjectURL(
-              updatedPhotos[
-                photoIndex
-              ].preview
-            );
-          }
-
-          updatedPhotos[
-            photoIndex
-          ] = {
-            file:
-              compressedFile,
-            preview,
-          };
-
-          return updatedPhotos;
-        }
-      );
-
-      setError("");
-    } catch (compressionError) {
-      console.error(
-        "UMUHUZA IMAGE COMPRESSION ERROR:",
-        compressionError
-      );
-
-      setError(
-        compressionError?.message ||
-          "Unable to compress this image. Please choose another photo."
-      );
+      const preview = URL.createObjectURL(compressedFile);
+      setPhotos((current) => {
+        const updated = [...current];
+        if (updated[photoIndex]?.preview) URL.revokeObjectURL(updated[photoIndex].preview);
+        updated[photoIndex] = { file: compressedFile, preview };
+        return updated;
+      });
+    } catch (err) {
+      setError(err?.message || t("profileSetup.errorCompress") || "Unable to compress this image.");
     }
-
-    // =================================================
-    // ALLOW SAME FILE TO BE SELECTED AGAIN
-    // =================================================
 
     event.target.value = "";
   };
@@ -690,945 +257,306 @@ const takePhotoWithCamera = async (photoIndex) => {
   // =====================================================
   // REMOVE PHOTO
   // =====================================================
-
-  const handleRemovePhoto = (
-    photoIndex
-  ) => {
-    setPhotos(
-      (currentPhotos) => {
-        const updatedPhotos =
-          [
-            ...currentPhotos,
-          ];
-
-        if (
-          updatedPhotos[
-            photoIndex
-          ]?.preview
-        ) {
-          URL.revokeObjectURL(
-            updatedPhotos[
-              photoIndex
-            ].preview
-          );
-        }
-
-        updatedPhotos[
-          photoIndex
-        ] = null;
-
-        return updatedPhotos;
-      }
-    );
-
+  const handleRemovePhoto = (photoIndex) => {
+    setPhotos((current) => {
+      const updated = [...current];
+      if (updated[photoIndex]?.preview) URL.revokeObjectURL(updated[photoIndex].preview);
+      updated[photoIndex] = null;
+      return updated;
+    });
     setError("");
   };
 
   // =====================================================
   // SELECT INTEREST
   // =====================================================
-
-  const handleInterestClick = (
-    interest
-  ) => {
-    setSelectedInterests(
-      (currentInterests) => {
-        if (
-          currentInterests.includes(
-            interest
-          )
-        ) {
-          return currentInterests.filter(
-            (item) =>
-              item !== interest
-          );
-        }
-
-        return [
-          ...currentInterests,
-          interest,
-        ];
-      }
+  const handleInterestClick = (value) => {
+    setSelectedInterests((prev) =>
+      prev.includes(value) ? prev.filter((i) => i !== value) : [...prev, value]
     );
   };
 
   // =====================================================
-  // CREATE UNIQUE PHOTO FILE NAME
+  // UPLOAD HELPERS
   // =====================================================
-
-  const createPhotoPath = (
-    userId,
-    file,
-    index
-  ) => {
-    // Images are converted to JPEG
-    // during compression.
-
-    const extension =
-      "jpg";
-
-    const randomPart =
-      Math.random()
-        .toString(36)
-        .substring(2, 10);
-
-    return `${userId}/${Date.now()}-${index}-${randomPart}.${extension}`;
+  const createPhotoPath = (userId, index) => {
+    const randomPart = Math.random().toString(36).substring(2, 10);
+    return `${userId}/${Date.now()}-${index}-${randomPart}.jpg`;
   };
 
-  // =====================================================
-  // UPLOAD PHOTO
-  // =====================================================
+  const uploadProfilePhoto = async (userId, photo, index) => {
+    if (!photo?.file) return null;
 
-  const uploadProfilePhoto =
-    async (
-      userId,
-      photo,
-      index
-    ) => {
-      if (!photo?.file) {
-        return null;
-      }
+    const filePath = createPhotoPath(userId, index);
+    const { error: uploadError } = await supabase.storage
+      .from(PROFILE_BUCKET)
+      .upload(filePath, photo.file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: "image/jpeg",
+      });
 
-      // =================================================
-      // FINAL UPLOAD SIZE CHECK
-      // =================================================
+    if (uploadError) throw new Error(`Photo upload failed: ${uploadError.message}`);
 
-      if (
-        photo.file.size >=
-        MAX_COMPRESSED_SIZE
-      ) {
-        throw new Error(
-          "Profile photo must be smaller than 250 KB."
-        );
-      }
+    const { data } = supabase.storage.from(PROFILE_BUCKET).getPublicUrl(filePath);
+    if (!data?.publicUrl) throw new Error("Unable to create profile photo URL.");
 
-      const filePath =
-        createPhotoPath(
-          userId,
-          photo.file,
-          index
-        );
-
-      const {
-        error: uploadError,
-      } =
-        await supabase.storage
-          .from(PROFILE_BUCKET)
-          .upload(
-            filePath,
-            photo.file,
-            {
-              cacheControl:
-                "3600",
-              upsert: false,
-              contentType:
-                "image/jpeg",
-            }
-          );
-
-      if (uploadError) {
-        console.error(
-          "UMUHUZA STORAGE UPLOAD ERROR:",
-          uploadError
-        );
-
-        throw new Error(
-          `Photo upload failed: ${uploadError.message}`
-        );
-      }
-
-      // =================================================
-      // GET PUBLIC URL
-      // =================================================
-
-      const {
-        data: publicUrlData,
-      } =
-        supabase.storage
-          .from(PROFILE_BUCKET)
-          .getPublicUrl(
-            filePath
-          );
-
-      const publicUrl =
-        publicUrlData?.publicUrl;
-
-      if (!publicUrl) {
-        throw new Error(
-          "Unable to create profile photo URL."
-        );
-      }
-
-      return {
-        path: filePath,
-        url: publicUrl,
-      };
-    };
+    return { path: filePath, url: data.publicUrl };
+  };
 
   // =====================================================
   // FINISH PROFILE
   // =====================================================
+  const handleFinishProfile = async () => {
+    setError("");
 
-  const handleFinishProfile =
-    async () => {
-      setError("");
+    if (!photos[0]) {
+      setError(t("profileSetup.errorMainPhoto") || "Please upload your main profile photo.");
+      return;
+    }
 
-      // =================================================
-      // VALIDATION
-      // =================================================
+    if (selectedInterests.length === 0) {
+      setError(t("profileSetup.errorInterests") || "Please select at least one interest.");
+      return;
+    }
 
-      if (!photos[0]) {
-        setError(
-          "Please upload your main profile photo. A real profile photo is required to join UMUHUZA."
-        );
+    setLoading(true);
 
-        return;
+    try {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData?.user) {
+        throw new Error(t("profileSetup.errorSession") || "Your account session has expired.");
       }
 
-      if (
-        selectedInterests.length ===
-        0
-      ) {
-        setError(
-          "Please select at least one interest."
-        );
+      const userId = userData.user.id;
+      const uploadedPhotos = [];
 
-        return;
+      for (let index = 0; index < photos.length; index++) {
+        const photo = photos[index];
+        if (!photo) continue;
+
+        const uploaded = await uploadProfilePhoto(userId, photo, index);
+        if (uploaded) uploadedPhotos.push({ index, ...uploaded });
       }
 
-      // =================================================
-      // START LOADING
-      // =================================================
-
-      setLoading(true);
-
-      try {
-        // =================================================
-        // GET CURRENT AUTHENTICATED USER
-        // =================================================
-
-        const {
-          data: userData,
-          error: userError,
-        } =
-          await supabase.auth.getUser();
-
-        if (userError) {
-          console.error(
-            "UMUHUZA AUTH ERROR:",
-            userError
-          );
-
-          throw new Error(
-            `Authentication error: ${userError.message}`
-          );
-        }
-
-        const user =
-          userData?.user;
-
-        if (!user) {
-          throw new Error(
-            "Your account session has expired. Please log in again."
-          );
-        }
-
-        const userId =
-          user.id;
-
-        console.log(
-          "=========================================="
-        );
-
-        console.log(
-          "UMUHUZA PROFILE SETUP"
-        );
-
-        console.log(
-          "User ID:",
-          userId
-        );
-
-        console.log(
-          "=========================================="
-        );
-
-        // =================================================
-        // UPLOAD PHOTOS
-        // =================================================
-
-        const uploadedPhotos =
-          [];
-
-        for (
-          let index = 0;
-          index <
-          photos.length;
-          index++
-        ) {
-          const photo =
-            photos[index];
-
-          if (!photo) {
-            continue;
-          }
-
-          console.log(
-            `Uploading compressed photo ${index + 1}...`
-          );
-
-          console.log(
-            `Upload size: ${(
-              photo.file.size /
-              1024
-            ).toFixed(1)} KB`
-          );
-
-          const uploaded =
-            await uploadProfilePhoto(
-              userId,
-              photo,
-              index
-            );
-
-          if (uploaded) {
-            uploadedPhotos.push({
-              index,
-              path:
-                uploaded.path,
-              url:
-                uploaded.url,
-            });
-          }
-        }
-
-        // =================================================
-        // CHECK MAIN PHOTO
-        // =================================================
-
-        const mainPhoto =
-          uploadedPhotos.find(
-            (photo) =>
-              photo.index === 0
-          );
-
-        if (!mainPhoto) {
-          throw new Error(
-            "Your main profile photo could not be uploaded."
-          );
-        }
-
-        // =================================================
-        // PHOTO URLS
-        // =================================================
-
-        const photoUrls =
-          uploadedPhotos.map(
-            (photo) =>
-              photo.url
-          );
-
-        // =================================================
-        // PHOTO PATHS
-        // =================================================
-
-        const photoPaths =
-          uploadedPhotos.map(
-            (photo) =>
-              photo.path
-          );
-
-        console.log(
-          "Uploaded photos:",
-          photoUrls
-        );
-
-        // =================================================
-        // SAVE PROFILE
-        // =================================================
-
-        const {
-          error: profileError,
-        } =
-          await supabase
-            .from("profiles")
-            .update({
-              interests:
-                selectedInterests,
-
-              profile_photo_url:
-                mainPhoto.url,
-
-              profile_photos:
-                photoUrls,
-
-              profile_photo_paths:
-                photoPaths,
-
-              profile_photo_count:
-                uploadedPhotos.length,
-
-              profile_completed:
-                true,
-
-              updated_at:
-                new Date().toISOString(),
-            })
-            .eq(
-              "id",
-              userId
-            );
-
-        // =================================================
-        // DATABASE ERROR
-        // =================================================
-
-        if (profileError) {
-          console.error(
-            "=========================================="
-          );
-
-          console.error(
-            "UMUHUZA PROFILE DATABASE ERROR"
-          );
-
-          console.error(
-            "Message:",
-            profileError.message
-          );
-
-          console.error(
-            "Code:",
-            profileError.code
-          );
-
-          console.error(
-            "Details:",
-            profileError.details
-          );
-
-          console.error(
-            "Hint:",
-            profileError.hint
-          );
-
-          console.error(
-            "=========================================="
-          );
-
-          throw profileError;
-        }
-
-        // =================================================
-        // SUCCESS
-        // =================================================
-
-        console.log(
-          "=========================================="
-        );
-
-        console.log(
-          "UMUHUZA PROFILE SAVED SUCCESSFULLY"
-        );
-
-        console.log(
-          "User ID:",
-          userId
-        );
-
-        console.log(
-          "Photo count:",
-          uploadedPhotos.length
-        );
-
-        console.log(
-          "Interests:",
-          selectedInterests
-        );
-
-        console.log(
-          "=========================================="
-        );
-
-        // =================================================
-        // GO TO MEMBER HOME
-        // =================================================
-
-        navigate(
-          "/member-home",
-          {
-            replace: true,
-          }
-        );
-      } catch (
-        profileError
-      ) {
-        console.error(
-          "=========================================="
-        );
-
-        console.error(
-          "UMUHUZA PROFILE SETUP ERROR"
-        );
-
-        console.error(
-          profileError
-        );
-
-        console.error(
-          "=========================================="
-        );
-
-        const message =
-          profileError?.message ||
-          "";
-
-        const lowerMessage =
-          message.toLowerCase();
-
-        // =================================================
-        // STORAGE / BUCKET ERROR
-        // =================================================
-
-        if (
-          lowerMessage.includes(
-            "bucket"
-          ) ||
-          lowerMessage.includes(
-            "storage"
-          ) ||
-          lowerMessage.includes(
-            "photo upload"
-          )
-        ) {
-          setError(
-            message ||
-              "Profile photo storage is not configured correctly. Please check your Supabase Storage bucket."
-          );
-        }
-
-        // =================================================
-        // RLS ERROR
-        // =================================================
-
-        else if (
-          lowerMessage.includes(
-            "row-level security"
-          ) ||
-          lowerMessage.includes(
-            "permission denied"
-          ) ||
-          lowerMessage.includes(
-            "not authorized"
-          ) ||
-          lowerMessage.includes(
-            "violates row-level security"
-          )
-        ) {
-          setError(
-            "Supabase did not allow your profile to be updated. Please check the profiles RLS policy."
-          );
-        }
-
-        // =================================================
-        // AUTH / SESSION ERROR
-        // =================================================
-
-        else if (
-          lowerMessage.includes(
-            "jwt"
-          ) ||
-          lowerMessage.includes(
-            "session"
-          ) ||
-          lowerMessage.includes(
-            "token"
-          ) ||
-          lowerMessage.includes(
-            "authentication"
-          )
-        ) {
-          setError(
-            "Your account session has expired. Please log in again."
-          );
-        }
-
-        // =================================================
-        // DATABASE COLUMN ERROR
-        // =================================================
-
-        else if (
-          lowerMessage.includes(
-            "column"
-          ) &&
-          lowerMessage.includes(
-            "profiles"
-          )
-        ) {
-          setError(
-            message
-          );
-        }
-
-        // =================================================
-        // DEFAULT ERROR
-        // =================================================
-
-        else {
-          setError(
-            message ||
-              "We couldn't save your profile. Please try again."
-          );
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+      const mainPhoto = uploadedPhotos.find((p) => p.index === 0);
+      if (!mainPhoto) throw new Error("Main profile photo could not be uploaded.");
+
+      const photoUrls = uploadedPhotos.map((p) => p.url);
+      const photoPaths = uploadedPhotos.map((p) => p.path);
+
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({
+          interests: selectedInterests,
+          profile_photo_url: mainPhoto.url,
+          profile_photos: photoUrls,
+          profile_photo_paths: photoPaths,
+          profile_photo_count: uploadedPhotos.length,
+          profile_completed: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", userId);
+
+      if (profileError) throw profileError;
+
+      navigate("/member-home", { replace: true });
+    } catch (err) {
+      console.error("Profile setup error:", err);
+      setError(err?.message || t("profileSetup.errorGeneric") || "We couldn't save your profile.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // =====================================================
-  // PAGE
+  // RENDER
   // =====================================================
-
   return (
     <div className="auth-page">
       <div className="auth-container">
 
-        {/* =================================================
-            LEFT SIDE
-        ================================================= */}
-
+        {/* LEFT SIDE */}
         <div className="auth-welcome">
-
-<div className="premium-logo">
-  <img src={umurangaLogo} alt="UMUHUZA" />
-</div>
+          <div className="premium-logo">
+            <img src={umurangaLogo} alt="UMUHUZA" />
+          </div>
 
           <h1>
-            Create Your
+            {t("profileSetup.heroTitle") || "Create Your"}
             <br />
-            UMUHUZA Profile
+            {t("profileSetup.heroTitle2") || "UMUHUZA Profile"}
           </h1>
 
           <p>
-            Iminsi yo kuba wenyine irarangiye! Shakira umukunzi w'inzozi zawe hano maze mwubake ejo hazaza hanyu n'uwo mukwiranye / Show the real you and let
-            genuine people discover you.
+            {t("profileSetup.heroSubtitle") ||
+              "Show the real you and let genuine people discover you."}
           </p>
 
-          <div className="auth-hearts">
-            ❤️ 💕 ❤️
-          </div>
-
+          <LanguageSwitcher />
         </div>
 
-        {/* =================================================
-            RIGHT SIDE
-        ================================================= */}
-
+        {/* RIGHT SIDE */}
         <div className="auth-form-container">
-
           <div className="auth-form">
 
-            <h2>
-              Build Your Profile
-            </h2>
-
+            <h2>{t("profileSetup.title") || "Build Your Profile"}</h2>
             <p className="auth-subtitle">
-              Add your real photo and
-              choose your interests.
+              {t("profileSetup.subtitle") || "Add your real photo and choose your interests."}
             </p>
 
-            {/* =================================================
-                STEP INDICATOR
-            ================================================= */}
-
+            {/* STEP INDICATOR */}
             <div className="signup-progress">
-
               <div className="progress-step completed">
                 <span>✓</span>
-                <small>Account</small>
+                <small>{t("signup.stepAccount") || "Account"}</small>
               </div>
-
               <div className="progress-line active-line"></div>
-
               <div className="progress-step completed">
                 <span>✓</span>
-                <small>About You</small>
+                <small>{t("signup.stepAbout") || "About You"}</small>
               </div>
-
               <div className="progress-line active-line"></div>
-
               <div className="progress-step active">
                 <span>3</span>
-                <small>Profile</small>
+                <small>{t("signup.stepProfile") || "Profile"}</small>
               </div>
-
             </div>
 
-            {/* =================================================
-                ERROR
-            ================================================= */}
+            {error && <div className="auth-error">{error}</div>}
 
-            {error && (
-              <div className="auth-error">
-                {error}
-              </div>
-            )}
-
-            {/* =================================================
-                PROFILE PHOTO
-            ================================================= */}
-
+            {/* MAIN PHOTO */}
             <div className="profile-photo-section">
-
               <div className="profile-photo-placeholder">
-
                 {photos[0] ? (
                   <img
-                    src={
-                      photos[0].preview
-                    }
-                    alt="Main profile preview"
+                    src={photos[0].preview}
+                    alt="Main profile"
                     className="profile-photo-preview"
                   />
                 ) : (
-                  <FiUser
-                    className="profile-placeholder-icon"
-                  />
+                  <FiUser className="profile-placeholder-icon" />
                 )}
-
                 <div className="camera-icon">
                   <FiCamera />
                 </div>
-
               </div>
 
               <div className="photo-text">
-
                 <h3>
-                  Main Profile Photo
-
-                  <span
-                    style={{
-                      color: "#E63946",
-                      marginLeft: "4px",
-                    }}
-                  >
-                    *
-                  </span>
+                  {t("profileSetup.mainPhoto") || "Main Profile Photo"}
+                  <span style={{ color: "#E63946", marginLeft: 4 }}>*</span>
                 </h3>
-
                 <p>
-                  Your main photo is required
-                  and will be shown on your
-                  UMUHUZA profile.
+                  {t("profileSetup.mainPhotoRequired") ||
+                    "Your main photo is required and will be shown on your UMUHUZA profile."}
                 </p>
 
-<div
-  style={{
-    display: "flex",
-    gap: "10px",
-    flexWrap: "wrap",
-  }}
->
-  {/* TAKE PHOTO */}
-  <button
-    type="button"
-    className="upload-photo-btn"
-    onClick={() => takePhotoWithCamera(0)}
-    disabled={loading}
-  >
-    <FiCamera />
-    {photos[0] ? "Retake Photo" : "Take Photo"}
-  </button>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    className="upload-photo-btn"
+                    onClick={() => takePhotoWithCamera(0)}
+                    disabled={loading}
+                  >
+                    <FiCamera />
+                    {photos[0]
+                      ? t("profileSetup.retakePhoto") || "Retake Photo"
+                      : t("profileSetup.takePhoto") || "Take Photo"}
+                  </button>
 
-  {/* CHOOSE FROM GALLERY */}
-  <button
-    type="button"
-    className="upload-photo-btn"
-    onClick={() =>
-      document
-        .getElementById("profile-photo-0")
-        ?.click()
-    }
-    disabled={loading}
-  >
-    <FiImage />
-    {photos[0] ? "Change Photo" : "Choose from Gallery"}
-  </button>
-</div>
+                  <button
+                    type="button"
+                    className="upload-photo-btn"
+                    onClick={() => document.getElementById("profile-photo-0")?.click()}
+                    disabled={loading}
+                  >
+                    <FiImage />
+                    {photos[0]
+                      ? t("profileSetup.changePhoto") || "Change Photo"
+                      : t("profileSetup.chooseGallery") || "Choose from Gallery"}
+                  </button>
+                </div>
 
                 <input
                   id="profile-photo-0"
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
-                  onChange={(event) =>
-                    handlePhotoChange(
-                      event,
-                      0
-                    )
-                  }
+                  onChange={(e) => handlePhotoChange(e, 0)}
                   disabled={loading}
-                  style={{
-                    display: "none",
-                  }}
+                  style={{ display: "none" }}
                 />
 
-                <small
-                  style={{
-                    display: "block",
-                    marginTop: "8px",
-                    color: "#777",
-                  }}
-                >
-                  Images are automatically
-                  compressed to under 250 KB.
+                <small style={{ display: "block", marginTop: 8, color: "#777" }}>
+                  {t("profileSetup.compressNote") || "Images are automatically compressed to under 250 KB."}
                 </small>
-
               </div>
-
             </div>
 
-            {/* =================================================
-                REAL PHOTO NOTICE
-            ================================================= */}
-
-            <div
-              className="profile-completion"
-              style={{
-                marginBottom: "25px",
-              }}
-            >
-
+            {/* REAL PHOTO POLICY */}
+            <div className="profile-completion" style={{ marginBottom: 25 }}>
               <div className="completion-header">
-                <span>
-                  🛡️ Real Profile Policy
-                </span>
+                <span>🛡️ {t("profileSetup.realPhotoPolicy") || "Real Profile Policy"}</span>
               </div>
-
               <small>
-                <strong>
-                  Use your real photo/ koresha ifoto yawe gusa
-                </strong>{" "}
-                UMUHUZA is for real people seeking real love and 
-                connections. Fake or
-                misleading profile photos
-                are not allowed.
+                <strong>{t("profileSetup.realPhotoText") || "Use your real photo."}</strong>{" "}
+                {t("profileSetup.realPhotoDesc") ||
+                  "UMUHUZA is for real people seeking real love and connections."}
               </small>
-
             </div>
 
-            {/* =================================================
-                ADDITIONAL PHOTOS
-            ================================================= */}
-
-            {/* =================================================
-                INTERESTS
-            ================================================= */}
-
+            {/* INTERESTS */}
             <div className="form-group">
-
-              <label>
-                Your Interests
-              </label>
-
+              <label>{t("profileSetup.interests") || "Your Interests"}</label>
               <div className="interest-options">
-
-                {interests.map(
-                  (interest) => {
-
-                    const selected =
-                      selectedInterests.includes(
-                        interest
-                      );
-
-                    return (
-                      <button
-                        key={interest}
-                        type="button"
-                        className={
-                          selected
-                            ? "selected-interest"
-                            : ""
-                        }
-                        onClick={() =>
-                          handleInterestClick(
-                            interest
-                          )
-                        }
-                        disabled={loading}
-                      >
-
-                        {interest}
-
-                        {selected && (
-                          <span
-                            style={{
-                              marginLeft:
-                                "5px",
-                            }}
-                          >
-                            ✓
-                          </span>
-                        )}
-
-                      </button>
-                    );
-                  }
-                )}
-
+                {interests.map((interest) => {
+                  const selected = selectedInterests.includes(interest.value);
+                  return (
+                    <button
+                      key={interest.value}
+                      type="button"
+                      className={selected ? "selected-interest" : ""}
+                      onClick={() => handleInterestClick(interest.value)}
+                      disabled={loading}
+                    >
+                      {interest.label}
+                      {selected && <span style={{ marginLeft: 5 }}>✓</span>}
+                    </button>
+                  );
+                })}
               </div>
-
               <small className="input-help">
-                Choose the interests that
-                describe you.
+                {t("profileSetup.interestsHelp") || "Choose the interests that describe you."}
               </small>
-
             </div>
 
-            {/* =================================================
-                FINISH PROFILE
-            ================================================= */}
-
+            {/* FINISH BUTTON */}
             <button
               type="button"
               className="auth-primary-btn"
-              onClick={
-                handleFinishProfile
-              }
+              onClick={handleFinishProfile}
               disabled={loading}
             >
               {loading
-                ? "Saving Profile..."
-                : "Finish Profile ❤️"}
+                ? t("profileSetup.saving") || "Saving Profile..."
+                : t("profileSetup.finish") || "Finish Profile ❤️"}
             </button>
 
-            {/* =================================================
-                LOGIN
-            ================================================= */}
-
+            {/* LOGIN */}
             <div className="auth-switch">
-
-              <span>
-                Already a member?
-              </span>
-
+              <span>{t("signup.alreadyMember") || "Already a member?"}</span>
               <button
                 type="button"
                 className="auth-link"
-                onClick={() =>
-                  navigate("/login")
-                }
+                onClick={() => navigate("/login")}
                 disabled={loading}
               >
-                Login
+                {t("signup.login") || "Login"}
               </button>
-
             </div>
 
           </div>
-
         </div>
-
       </div>
     </div>
   );

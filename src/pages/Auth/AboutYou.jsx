@@ -1,684 +1,279 @@
 import "./Auth.css";
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { useAppPreferences } from "../../context/AppPreferencesContext";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
-
-import {
-  FiHeart,
-  FiUser,
-} from "react-icons/fi";
-
+import { FiHeart, FiUser } from "react-icons/fi";
 import { supabase } from "../../lib/supabase";
 
-
 function AboutYou() {
-
   const navigate = useNavigate();
-
+  const { t } = useAppPreferences();
 
   // =====================================================
   // FORM STATE
   // =====================================================
+  const [personalStatus, setPersonalStatus] = useState("");
+  const [lookingForGender, setLookingForGender] = useState("");
+  const [relationGoal, setRelationGoal] = useState("");
 
-  const [personalStatus, setPersonalStatus] =
-    useState("");
+  // =====================================================
+  // TRANSLATED OPTIONS
+  // =====================================================
+  const personalStatusOptions = [
+    { value: "single", label: t("status.single") || "Single" },
+    { value: "divorced", label: t("status.divorced") || "Divorced" },
+    { value: "widowed", label: t("status.widowed") || "Widowed" },
+    { value: "separated", label: t("status.separated") || "Separated" },
+  ];
 
-  const [lookingForGender, setLookingForGender] =
-    useState("");
+  const lookingForOptions = [
+    { value: "men", label: t("looking.men") || "👨 Men" },
+    { value: "women", label: t("looking.women") || "👩 Women" },
+    { value: "men-and-women", label: t("looking.both") || "👨 Men & 👩 Women" },
+  ];
 
-  const [relationGoal, setRelationGoal] =
-    useState("");
-
+  const relationshipGoalOptions = [
+    { value: "marriage", label: t("goal.marriage") || "💍 Marriage" },
+    { value: "serious-relationship", label: t("goal.serious") || "❤️ Serious Relationship" },
+    { value: "friendship", label: t("goal.friendship") || "🤝 Friendship" },
+    { value: "getting-to-know", label: t("goal.gettingToKnow") || "💕 Getting to Know Someone" },
+  ];
 
   // =====================================================
   // UI STATE
   // =====================================================
-
-  const [error, setError] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(false);
-
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // =====================================================
   // SAVE ABOUT YOU
   // =====================================================
+  const handleContinue = async () => {
+    setError("");
 
- const handleContinue = async () => {
-  setError("");
-
-  // =====================================================
-  // VALIDATION
-  // =====================================================
-
-  if (!personalStatus) {
-    setError("Please select your personal status.");
-    return;
-  }
-
-  if (!lookingForGender) {
-    setError("Please choose who you are looking for.");
-    return;
-  }
-
-  if (!relationGoal) {
-    setError("Please choose your relationship goal.");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    // =====================================================
-    // GET CURRENT USER
-    // =====================================================
-
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
-
-    if (userError) {
-      console.error(
-        "UMUHUZA About You auth error:",
-        userError
-      );
-
-      setError(
-        "We couldn't verify your account. Please try again."
-      );
-
+    if (!personalStatus) {
+      setError(t("aboutYou.errorStatus") || "Please select your personal status.");
       return;
     }
 
-    if (!user) {
-      console.error(
-        "UMUHUZA: No authenticated user found."
-      );
-
-      setError(
-        "Your account session could not be found. Please log in again."
-      );
-
+    if (!lookingForGender) {
+      setError(t("aboutYou.errorLooking") || "Please choose who you are looking for.");
       return;
     }
 
-    console.log(
-      "UMUHUZA USER FOUND:",
-      user.id
-    );
-
-    // =====================================================
-    // SAVE ABOUT YOU
-    // =====================================================
-    //
-    // IMPORTANT:
-    // We only update columns that actually exist
-    // in the profiles table.
-    //
-    // No signup_step.
-    // No email verification check.
-    // No refreshSession().
-    //
-    // =====================================================
-
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({
-        personal_status: personalStatus,
-        looking_for_gender: lookingForGender,
-        relation_goal: relationGoal,
-        about_you_completed: true,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id);
-
-    // =====================================================
-    // DATABASE ERROR
-    // =====================================================
-
-    if (updateError) {
-      console.error(
-        "=========================================="
-      );
-
-      console.error(
-        "UMUHUZA ABOUT YOU DATABASE ERROR"
-      );
-
-      console.error(updateError);
-
-      console.error(
-        "=========================================="
-      );
-
-      setError(
-        `Profile could not be saved: ${updateError.message}`
-      );
-
+    if (!relationGoal) {
+      setError(t("aboutYou.errorGoal") || "Please choose your relationship goal.");
       return;
     }
 
-    // =====================================================
-    // SUCCESS
-    // =====================================================
+    setLoading(true);
 
-    console.log(
-      "=========================================="
-    );
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
-    console.log(
-      "UMUHUZA ABOUT YOU SAVED SUCCESSFULLY"
-    );
+      if (userError || !user) {
+        setError(t("aboutYou.errorSession") || "Your account session could not be found. Please log in again.");
+        return;
+      }
 
-    console.log(
-      "User ID:",
-      user.id
-    );
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({
+          personal_status: personalStatus,
+          looking_for_gender: lookingForGender,
+          relation_goal: relationGoal,
+          about_you_completed: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
 
-    console.log(
-      "Personal Status:",
-      personalStatus
-    );
+      if (updateError) {
+        setError(t("aboutYou.errorSave") || `Profile could not be saved: ${updateError.message}`);
+        return;
+      }
 
-    console.log(
-      "Looking For:",
-      lookingForGender
-    );
-
-    console.log(
-      "Relationship Goal:",
-      relationGoal
-    );
-
-    console.log(
-      "=========================================="
-    );
-
-    // =====================================================
-    // GO TO PROFILE SETUP
-    // =====================================================
-
-    navigate("/profile-setup");
-
-  } catch (unexpectedError) {
-    console.error(
-      "UMUHUZA unexpected About You error:",
-      unexpectedError
-    );
-
-    setError(
-      unexpectedError?.message ||
-      "Something went wrong while saving your information. Please try again."
-    );
-
-  } finally {
-    setLoading(false);
-  }
-};
+      navigate("/profile-setup");
+    } catch (err) {
+      setError(err?.message || t("aboutYou.errorGeneric") || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // =====================================================
   // PAGE
   // =====================================================
-
   return (
-
     <div className="auth-page">
-
       <div className="auth-container">
 
-
-        {/* =================================================
-            LEFT SIDE
-        ================================================= */}
-
+        {/* LEFT SIDE */}
         <div className="auth-welcome">
-
-<div className="premium-logo">
-  <img src={umurangaLogo} alt="UMUHUZA" />
-</div>
-
-
-          <h1>
-
-            Tell Us
-
-            <br />
-
-            About You
-
-          </h1>
-
-
-          <p>
-
-            Help us understand what you are
-            looking for so UMUHUZA can help
-            you discover meaningful connections.
-
-          </p>
-
-
-          <div className="auth-hearts">
-
-            ❤️ 💕 ❤️
-
+          <div className="premium-logo">
+            <img src={umurangaLogo} alt="UMUHUZA" />
           </div>
 
+          <h1>
+            {t("aboutYou.heroTitle") || "Tell Us"}
+            <br />
+            {t("aboutYou.heroTitle2") || "About You"}
+          </h1>
+
+          <p>
+            {t("aboutYou.heroSubtitle") ||
+              "Help us understand what you are looking for so UMUHUZA can help you discover meaningful connections."}
+          </p>
+
+          <LanguageSwitcher />
         </div>
 
-
-
-        {/* =================================================
-            RIGHT SIDE
-        ================================================= */}
-
+        {/* RIGHT SIDE */}
         <div className="auth-form-container">
-
           <div className="auth-form">
 
-
-            {/* =================================================
-                TITLE
-            ================================================= */}
-
-            <h2>
-
-              About You
-
-            </h2>
-
-
+            <h2>{t("aboutYou.title") || "About You"}</h2>
             <p className="auth-subtitle">
-
-              Choose the options that describe you.
-
+              {t("aboutYou.subtitle") || "Choose the options that describe you."}
             </p>
 
-
-
-            {/* =================================================
-                STEP INDICATOR
-            ================================================= */}
-
+            {/* STEP INDICATOR */}
             <div className="signup-progress">
-
-
-              {/* ACCOUNT */}
-
               <div className="progress-step completed">
-
-                <span>
-
-                  ✓
-
-                </span>
-
-                <small>
-
-                  Account
-
-                </small>
-
+                <span>✓</span>
+                <small>{t("signup.stepAccount") || "Account"}</small>
               </div>
-
-
-              {/* LINE */}
-
               <div className="progress-line active-line"></div>
-
-
-              {/* ABOUT YOU */}
-
               <div className="progress-step active">
-
-                <span>
-
-                  2
-
-                </span>
-
-                <small>
-
-                  About You
-
-                </small>
-
+                <span>2</span>
+                <small>{t("signup.stepAbout") || "About You"}</small>
               </div>
-
-
-              {/* LINE */}
-
               <div className="progress-line"></div>
-
-
-              {/* PROFILE */}
-
               <div className="progress-step">
-
-                <span>
-
-                  3
-
-                </span>
-
-                <small>
-
-                  Profile
-
-                </small>
-
+                <span>3</span>
+                <small>{t("signup.stepProfile") || "Profile"}</small>
               </div>
-
-
             </div>
 
+            {error && <div className="auth-error">{error}</div>}
 
-
-            {/* =================================================
-                ERROR
-            ================================================= */}
-
-            {error && (
-
-              <div className="auth-error">
-
-                {error}
-
-              </div>
-
-            )}
-
-
-
-            {/* =================================================
-                PERSONAL STATUS
-            ================================================= */}
-
+            {/* PERSONAL STATUS */}
             <div className="form-group">
-
               <label htmlFor="personalStatus">
-
-                Personal Status
-
+                {t("aboutYou.personalStatus") || "Personal Status"}
               </label>
-
-
               <div className="input-wrapper">
-
                 <FiUser />
-
-
                 <select
                   id="personalStatus"
                   value={personalStatus}
-                  onChange={(event) =>
-                    setPersonalStatus(
-                      event.target.value
-                    )
-                  }
+                  onChange={(e) => setPersonalStatus(e.target.value)}
                   disabled={loading}
                 >
-
                   <option value="">
-
-                    Select your personal status
-
+                    {t("aboutYou.selectStatus") || "Select your personal status"}
                   </option>
-
-
-                  <option value="single">
-
-                    Single
-
-                  </option>
-
-
-                  <option value="divorced">
-
-                    Divorced
-
-                  </option>
-
-
-                  <option value="widowed">
-
-                    Widowed
-
-                  </option>
-
-
-                  <option value="separated">
-
-                    Separated
-
-                  </option>
-
+                  {personalStatusOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
-
               </div>
-
             </div>
 
-
-
-            {/* =================================================
-                WHO ARE YOU LOOKING FOR
-            ================================================= */}
-
+            {/* LOOKING FOR */}
             <div className="form-group">
-
               <label htmlFor="lookingForGender">
-
-                Who are you looking for?
-
+                {t("aboutYou.lookingFor") || "Who are you looking for?"}
               </label>
-
-
               <div className="input-wrapper">
-
                 <FiHeart />
-
-
                 <select
                   id="lookingForGender"
                   value={lookingForGender}
-                  onChange={(event) =>
-                    setLookingForGender(
-                      event.target.value
-                    )
-                  }
+                  onChange={(e) => setLookingForGender(e.target.value)}
                   disabled={loading}
                 >
-
                   <option value="">
-
-                    Choose who you want to meet
-
+                    {t("aboutYou.selectLookingFor") || "Choose who you want to meet"}
                   </option>
-
-
-                  <option value="men">
-
-                    👨 Men
-
-                  </option>
-
-
-                  <option value="women">
-
-                    👩 Women
-
-                  </option>
-
-
-                  <option value="men-and-women">
-
-                    👨 Men & 👩 Women
-
-                  </option>
-
+                  {lookingForOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
-
               </div>
-
-
               <small className="input-help">
-
-                UMUHUZA will use this to help
-                recommend compatible people.
-
+                {t("aboutYou.lookingHelp") ||
+                  "UMUHUZA will use this to help recommend compatible people."}
               </small>
-
             </div>
 
-
-
-            {/* =================================================
-                RELATIONSHIP GOAL
-            ================================================= */}
-
+            {/* RELATIONSHIP GOAL */}
             <div className="form-group">
-
               <label htmlFor="relationGoal">
-
-                Relationship Goal
-
+                {t("aboutYou.relationshipGoal") || "Relationship Goal"}
               </label>
-
-
               <div className="input-wrapper">
-
                 <FiHeart />
-
-
                 <select
                   id="relationGoal"
                   value={relationGoal}
-                  onChange={(event) =>
-                    setRelationGoal(
-                      event.target.value
-                    )
-                  }
+                  onChange={(e) => setRelationGoal(e.target.value)}
                   disabled={loading}
                 >
-
                   <option value="">
-
-                    Choose your relationship goal
-
+                    {t("aboutYou.selectGoal") || "Choose your relationship goal"}
                   </option>
-
-
-                  <option value="marriage">
-
-                    💍 Marriage
-
-                  </option>
-
-
-                  <option value="serious-relationship">
-
-                    ❤️ Serious Relationship
-
-                  </option>
-
-
-                  <option value="friendship">
-
-                    🤝 Friendship
-
-                  </option>
-
-
-                  <option value="getting-to-know">
-
-                    💕 Getting to Know Someone
-
-                  </option>
-
+                  {relationshipGoalOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
-
               </div>
-
-
               <small className="input-help">
-
-                Choose what you genuinely hope
-                to find on UMUHUZA.
-
+                {t("aboutYou.goalHelp") ||
+                  "Choose what you genuinely hope to find on UMUHUZA."}
               </small>
-
             </div>
 
-
-
-            {/* =================================================
-                CONTINUE
-            ================================================= */}
-
+            {/* CONTINUE BUTTON */}
             <button
               type="button"
               className="auth-primary-btn"
               onClick={handleContinue}
               disabled={loading}
             >
-
               {loading
-
-                ? "Saving Your Information..."
-
-                : "Continue ❤️"
-
-              }
-
+                ? t("aboutYou.saving") || "Saving Your Information..."
+                : t("aboutYou.continue") || "Continue ❤️"}
             </button>
 
-
-
-            {/* =================================================
-                LOGIN
-            ================================================= */}
-
+            {/* LOGIN */}
             <div className="auth-switch">
-
-              <span>
-
-                Already a member?
-
-              </span>
-
-
+              <span>{t("signup.alreadyMember") || "Already a member?"}</span>
               <button
                 type="button"
                 className="auth-link"
-                onClick={() =>
-                  navigate("/login")
-                }
+                onClick={() => navigate("/login")}
                 disabled={loading}
               >
-
-                Login
-
+                {t("signup.login") || "Login"}
               </button>
-
             </div>
 
-
           </div>
-
         </div>
-
       </div>
-
     </div>
-
   );
-
 }
-
 
 export default AboutYou;
