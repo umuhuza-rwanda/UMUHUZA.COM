@@ -163,9 +163,14 @@ function Premium() {
           <FiArrowLeft /> {t("premium.back")}
         </button>
 
-        <div className="premium-logo">
-          <img src={umurangaLogo} alt="UMUHUZA" />
-        </div>
+      {/* Logo on the right */}
+  <div className="likes-logo">
+    <img
+      src={umurangaLogo}
+      alt="UMUHUZA"
+      style={{ height: 60, objectFit: "contain" }}
+    />
+  </div>
       </header>
 
       <main className="premium-main">

@@ -286,9 +286,14 @@ const handleChat = () => {
           <FiArrowLeft /> {t("memberProfile.backToDiscovery")}
         </button>
 
-        <div className="profile-logo">
-          <img src={umurangaLogo} alt="UMUHUZA" style={{ height: 36 }} />
-        </div>
+  {/* Logo on the right */}
+  <div className="likes-logo">
+    <img
+      src={umurangaLogo}
+      alt="UMUHUZA"
+      style={{ height: 60, objectFit: "contain" }}
+    />
+  </div>
       </div>
 
       {/* Hero Section */}

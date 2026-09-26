@@ -1354,23 +1354,16 @@ const loadConnectionsAfterAccept = async () => {
       <header className="interests-header">
 
 
-        <button
-          type="button"
-          className="interests-back-btn"
-          onClick={() =>
-            navigate(
-              "/member-home"
-            )
-          }
-        >
-
-          <FiArrowLeft />
-
-          <span>
-            {t("common.back")}
-          </span>
-
-        </button>
+<button
+  type="button"
+  className="interests-back-btn"
+  onClick={() => navigate("/dating")}
+>
+  <FiArrowLeft />
+  <span>
+    {t("common.back") || "Back"}
+  </span>
+</button>
 
 
         <div className="interests-logo">

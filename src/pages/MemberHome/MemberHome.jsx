@@ -24,6 +24,8 @@ import {
   FiChevronDown,
   FiSettings,
   FiHeart,
+  FiBookOpen,
+
 } from "react-icons/fi";
 
 import { supabase } from "../../lib/supabase";
@@ -2048,14 +2050,14 @@ const handleStartChat = (member) => {
             flexShrink: 0,
           }}
         >
-          <img
-            src={umurangaLogo}
-            alt="UMUHUZA.COM"
-            style={{
-              height: 42,
-              objectFit: "contain",
-            }}
-          />
+  {/* Logo on the right */}
+  <div className="likes-logo">
+    <img
+      src={umurangaLogo}
+      alt="UMUHUZA"
+      style={{ height: 43, objectFit: "contain" }}
+    />
+  </div>
         </div>
 
         {/* =================================================
@@ -2560,7 +2562,6 @@ const handleStartChat = (member) => {
 {/* =================================================
     SECONDARY NAV
 ================================================= */}
-
 <nav className="member-secondary-nav">
 
   {/* Messages */}
@@ -2570,7 +2571,6 @@ const handleStartChat = (member) => {
   >
     <div className="nav-icon-box">
       <FiMessageCircle size={22} color="white" />
-
       {unreadMessageCount > 0 && (
         <span className="nav-badge">
           {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
@@ -2580,49 +2580,34 @@ const handleStartChat = (member) => {
     <span>{t("nav.messages") || "Messages"}</span>
   </button>
 
-  {/* Connections */}
+  {/* Dating (Likes + Interests + Notifications) */}
   <button
     className="secondary-nav-item"
-    onClick={() => navigate("/interests")}
+    onClick={() => navigate("/dating")}
   >
     <div className="nav-icon-box">
-      <FiUsers size={22} color="white" />
-
-      {pendingInterestsCount > 0 && (
+      <FiHeart size={22} color="white" />
+      {(pendingInterestsCount + unreadNotificationCount) > 0 && (
         <span className="nav-badge">
-          {pendingInterestsCount > 99 ? "99+" : pendingInterestsCount}
+          {(pendingInterestsCount + unreadNotificationCount) > 99
+            ? "99+"
+            : pendingInterestsCount + unreadNotificationCount}
         </span>
       )}
     </div>
-    <span>{t("nav.connections") || "Connections"}</span>
+    <span>Dating</span>
   </button>
 
-  {/* Notifications */}
-{/* Notifications */}
-<button
-  className="secondary-nav-item"
-  onClick={() => navigate("/notifications")}
-  style={{
-    position: "relative",
-  }}
->
-  <div className="nav-icon-box">
-    <FiBell
-      size={22}
-      color="white"
-    />
-  </div>
-
-<span>{t("nav.notifications") || "Notifications"}</span>
-
-  {unreadNotificationCount > 0 && (
-    <span className="secondary-notification-badge">
-      {unreadNotificationCount > 99
-        ? "99+"
-        : unreadNotificationCount}
-    </span>
-  )}
-</button>
+  {/* Menyanibi */}
+  <button
+    className="secondary-nav-item"
+    onClick={() => navigate("/menyanibi")}
+  >
+    <div className="nav-icon-box">
+      <FiBookOpen size={22} color="white" />
+    </div>
+    <span>Menyanibi</span>
+  </button>
 
   {/* Premium */}
   <button
@@ -2636,16 +2621,16 @@ const handleStartChat = (member) => {
   </button>
 
   {/* WhatsApp */}
-<button
-  type="button"
-  className="secondary-nav-item whatsapp-nav-item"
-  onClick={() => setShowCommunityLinks(true)}
->
-  <div className="nav-icon-box">
-    <span style={{ fontSize: 18, color: "white" }}>🟢</span>
-  </div>
-  <span>{t("nav.whatsapp") || "WhatsApp"}</span>
-</button>
+  <button
+    type="button"
+    className="secondary-nav-item whatsapp-nav-item"
+    onClick={() => setShowCommunityLinks(true)}
+  >
+    <div className="nav-icon-box">
+      <span style={{ fontSize: 18, color: "white" }}>🟢</span>
+    </div>
+    <span>{t("nav.whatsapp") || "WhatsApp"}</span>
+  </button>
 
 </nav>
       {/* =================================================

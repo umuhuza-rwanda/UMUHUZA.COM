@@ -15,6 +15,8 @@ import FloatingInviteButton from "./components/FloatingInviteButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
 import Spin from "./pages/Spin/Spin";
+import Dating from "./pages/Dating/Dating";
+import Likes from "./pages/Likes/Likes";
 
 
 // =========================
@@ -50,6 +52,8 @@ import LocationDiscovery from "./pages/Member/profile/LocationDiscovery";
 import NotificationSettings from "./pages/Member/profile/NotificationSettings";
 import AccountSecurity from "./pages/Member/profile/AccountSecurity";
 import Privacy from "./pages/Member/profile/Privacy";
+import Menyanibi from "./pages/Menyanibi/Menyanibi";
+import MenyanibiPost from "./pages/Menyanibi/MenyanibiPost";
 import NewAppPreferences from "./pages/Member/profile/NewAppPreferences";
 import HelpSupport from "./pages/Member/profile/HelpSupport";
 import SuccessStoriesPage from "./pages/Public/SuccessStoriesPage";
@@ -619,6 +623,9 @@ function App() {
             element={<Home />}
           />
 
+          <Route path="/menyanibi" element={<Menyanibi />} />
+<Route path="/menyanibi/:id" element={<MenyanibiPost />} />
+
           {/* =================================================
               AUTHENTICATION
           ================================================= */}
@@ -696,6 +703,24 @@ function App() {
           <Route
   path="/supabase-test"
   element={<SupabaseTest />}
+/>
+
+<Route
+  path="/likes"
+  element={
+    <MemberLayout>
+      <Likes />
+    </MemberLayout>
+  }
+/>
+
+<Route
+  path="/dating"
+  element={
+    <MemberLayout>
+      <Dating />
+    </MemberLayout>
+  }
 />
 
           {/* =================================================

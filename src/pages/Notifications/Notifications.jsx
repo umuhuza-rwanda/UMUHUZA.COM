@@ -699,25 +699,25 @@ return t("notifications.newNotification");
     <div className="notifications-page">
       {/* HEADER */}
       <header className="notifications-header">
-        <button
-          className="notifications-back-btn"
-          onClick={() =>
-            navigate("/member-home")
-          }
-        >
-          <FiArrowLeft />
-
-          <span>
-            {t("notifications.back")}
-          </span>
-        </button>
+<button
+  className="notifications-back-btn"
+  onClick={() => navigate("/dating")}
+>
+  <FiArrowLeft />
+  <span>
+    {t("notifications.back") || "Back"}
+  </span>
+</button>
 
         <div className="notifications-logo">
-          <img
-            src={umurangaLogo}
-            alt="UMUHUZA"
-            style={{ height: 36 }}
-          />
+  {/* Logo on the right */}
+  <div className="likes-logo">
+    <img
+      src={umurangaLogo}
+      alt="UMUHUZA"
+      style={{ height: 52, objectFit: "contain" }}
+    />
+  </div>
         </div>
 
         <div className="notifications-title">

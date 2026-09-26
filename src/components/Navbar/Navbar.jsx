@@ -215,10 +215,14 @@ const handleWhatsApp = () => {
             
           </span>
 
-            <img
-              src={umurangaLogo}
-              alt="UMURANGA.COM"
-            />
+  {/* Logo on the right */}
+  <div className="likes-logo">
+    <img
+      src={umurangaLogo}
+      alt="UMUHUZA"
+      style={{ height: 58, objectFit: "contain" }}
+    />
+  </div>
 
 
         </div>

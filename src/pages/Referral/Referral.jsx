@@ -438,7 +438,7 @@ if (data) {
           <img
             src={umurangaLogo}
             alt="UMUHUZA.COM"
-            style={{ height: 36, objectFit: "contain" }}
+            style={{ height: 60, objectFit: "contain" }}
           />
         </div>
         <div className="referral-header-spacer" />
