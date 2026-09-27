@@ -2598,16 +2598,19 @@ const handleStartChat = (member) => {
     <span>Dating</span>
   </button>
 
-  {/* Menyanibi */}
-  <button
-    className="secondary-nav-item"
-    onClick={() => navigate("/menyanibi")}
-  >
-    <div className="nav-icon-box">
-      <FiBookOpen size={22} color="white" />
-    </div>
-    <span>Menyanibi</span>
-  </button>
+{/* Menyanibi */}
+<button
+  className="secondary-nav-item"
+  onClick={() => navigate("/menyanibi")}
+>
+  <div className="nav-icon-box">
+    <FiBookOpen size={22} color="white" />
+    
+    {/* Hard-coded unread badge */}
+    <span className="nav-badge">10</span>
+  </div>
+  <span>Menyanibi</span>
+</button>
 
   {/* Premium */}
   <button

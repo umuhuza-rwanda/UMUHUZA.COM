@@ -1,0 +1,197 @@
+/* =====================================================
+   MATCHES PAGE
+===================================================== */
+
+.matches-page {
+  min-height: 100vh;
+  background: #0f0a1f;
+  color: #ffffff;
+  padding-bottom: 40px;
+}
+
+/* Header */
+.matches-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #2e1065, #4c1d95);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.matches-header h1 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
+
+.matches-header .back-btn {
+  background: none;
+  border: none;
+  color: #c4b5fd;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.matches-logo img {
+  height: 36px;
+  object-fit: contain;
+}
+
+/* Content */
+.matches-content {
+  padding: 20px 16px;
+}
+
+.matches-message {
+  text-align: center;
+  color: #a78bfa;
+  margin-top: 60px;
+}
+
+.matches-message.error {
+  color: #f87171;
+}
+
+/* Empty State */
+.matches-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.matches-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.matches-empty h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.matches-empty p {
+  color: #a78bfa;
+  margin-bottom: 24px;
+}
+
+.matches-primary-btn {
+  background: linear-gradient(135deg, #ec4899, #be185d);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* Matches List */
+.matches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Match Card */
+.match-card {
+  background: linear-gradient(145deg, #1e1b4b, #2e1065);
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.match-avatar {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  background: #1e1b4b;
+}
+
+.match-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.match-avatar svg {
+  width: 100%;
+  height: 100%;
+  padding: 60px;
+  color: #a78bfa;
+}
+
+/* Info */
+.match-info {
+  padding: 16px 18px 8px;
+}
+
+.match-info strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.match-info span {
+  font-size: 14px;
+  color: #c4b5fd;
+}
+
+/* Actions */
+.match-actions {
+  display: flex;
+  gap: 10px;
+  padding: 12px 18px 18px;
+}
+
+.view-profile-btn {
+  flex: 1;
+  background: rgba(167, 139, 250, 0.15);
+  color: #e9d5ff;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 999px;
+  padding: 11px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-profile-btn:hover {
+  background: rgba(167, 139, 250, 0.25);
+}
+
+.chat-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #ec4899, #be185d);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 11px 0;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}

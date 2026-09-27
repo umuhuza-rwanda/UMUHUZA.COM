@@ -217,3 +217,26 @@
   bzpadding: 6px 0;
   z-index: 2;
 }
+/* =====================================================
+   MATCHES CARD - Red Gradient
+===================================================== */
+
+.dating-card.matches-card {
+  background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+  color: white !important;
+}
+
+.dating-card.matches-card h3,
+.dating-card.matches-card p {
+  color: white !important;
+}
+
+.dating-card.matches-card .dating-card-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.dating-card.matches-card .dating-card-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}

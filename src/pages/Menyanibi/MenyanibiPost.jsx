@@ -1,11 +1,20 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiHeart, FiMessageCircle, FiEye } from "react-icons/fi";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
+
+// Import the same 9 images
+import post1 from "../../assets/menyanibi/post1.jpg";
+import post2 from "../../assets/menyanibi/post2.jpg";
+import post3 from "../../assets/menyanibi/post3.jpg";
+import post4 from "../../assets/menyanibi/post4.jpg";
+import post5 from "../../assets/menyanibi/post5.jpg";
+import post6 from "../../assets/menyanibi/post6.jpg";
+import post7 from "../../assets/menyanibi/post7.jpg";
+import post8 from "../../assets/menyanibi/post8.jpg";
+import post9 from "../../assets/menyanibi/post9.jpg";
+
 import "./Menyanibi.css";
 
-// =====================================================
-// ALL REAL POSTS (Full Content)
-// =====================================================
 const posts = [
   {
     id: "1",
@@ -14,6 +23,8 @@ const posts = [
     likes: "1.8k",
     comments: "47",
     views: "12.4k",
+    preview: "Yumva mwahorana, ashimishwa no kuganira nawe, akwereka inshuti ze...",
+    image: post1,
     content: `1. Yumva mwahorana:
 Nkuko hagati y’abantu bakundana bigenda, umukobwa ugukunda kandi ukwiyumvamo aba yumva iteka mwahorana, muganira.
 
@@ -42,7 +53,7 @@ Umukobwa ukwiyumvamo aba azi byinshi bikwerekeyeho kugeza ku munsi wavukiyeho cy
 Ibintu byose ukora arabyishimira kandi akabikwereka.
 
 10. Gukora ibikorwa bikureshya:
-Ashobora kugerageza gukurura ibitekerezo byawe binyuze mu myambarire, inseko, uburyo avuga cyangwa ibindi bikorwa bituma umwitaho.`,
+Ashobora kugerageza gukurura ibitekerezo byawe binyuze mu myambarire, inseko, uburyo avuga cyangwa ibindi bikorwa bituma umwitaho.`
   },
   {
     id: "2",
@@ -51,6 +62,8 @@ Ashobora kugerageza gukurura ibitekerezo byawe binyuze mu myambarire, inseko, ub
     likes: "1.3k",
     comments: "38",
     views: "9.7k",
+    preview: "Ntaguha umwanya, akugereranya n’abandi, ntiyifuza kuganira ku hazaza...",
+    image: post2,
     content: `1. Ntaguha umwanya
 Umukunzi wawe ashobora guhora akubwira ko ahuze ku buryo utabona umwanya uhagije wo kumubona, kuganira cyangwa kwishimana na we. Iyo ibi bihoraho, bishobora kuba ikimenyetso cy’uko ataguha umwanya ukwiye mu buzima bwe.
 
@@ -64,7 +77,7 @@ Umuntu ugukunda ashobora kugira inzozi z’uko muzabaho mu gihe kizaza, aho muza
 Iyo umuntu atagufitiye amarangamutima, amakosa mato ashobora kumurakaza cyane. Ashobora guhora akwivumburaho cyangwa akarakazwa n’ibintu bidakomeye, bigatuma umubano wanyu urushaho kugorana.
 
 5. Ntabwo aterwa ishema nawe
-Ashobora kudashaka kukuvuga mu ruhame, kukwereka inshuti ze cyangwa kugendana nawe ku mugaragaro. Iyo umuntu ahora yirinda kugaragaza ko muri kumwe, bishobora gutuma wibaza uko abona umubano wanyu.`,
+Ashobora kudashaka kukuvuga mu ruhame, kukwereka inshuti ze cyangwa kugendana nawe ku mugaragaro. Iyo umuntu ahora yirinda kugaragaza ko muri kumwe, bishobora gutuma wibaza uko abona umubano wanyu.`
   },
   {
     id: "3",
@@ -73,6 +86,8 @@ Ashobora kudashaka kukuvuga mu ruhame, kukwereka inshuti ze cyangwa kugendana na
     likes: "2.4k",
     comments: "61",
     views: "15.2k",
+    preview: "Akwereka inshuti n’abavandimwe be, akubonamo umuntu udasimburwa...",
+    image: post3,
     content: `1. Akwereka inshuti n’abavandimwe be n’imiryango
 Ni ikimenyetso cyiza iyo umusore mukundana atagutinya cyangwa ngo aguhishe inshuti ze, abavandimwe be ndetse n’abandi bo mu muryango we, cyane cyane iyo umubano wanyu ukomeje gukomera nubwo mutaratangira kubana.
 Iyo akwemerera kumenya abantu be ba hafi kandi akabereka ko mukundana, bishobora kugaragaza ko nta kintu gikomeye aguhisha. Umuntu ushaka kuguhisha cyangwa ufite ibyo atakubwira ashobora kwirinda ko umenyana n’abantu be ba hafi kugira ngo batagira ibyo bakubwira cyangwa ngo bamubaze ibijyanye nawe.
@@ -92,7 +107,7 @@ Kuba hafi yawe mu bihe byiza no mu bihe bibi bigaragaza ko umubano wanyu atawubo
 
 5. Nta mikino agira, ibintu byose avuga aba abikomeje kandi ntacyo agukinga
 Iyo umusore afatana uburemere umubano wanyu, ntabwo awufata nk’umukino. Agerageza kuba umunyakuri kuri wowe, akakubwiza ukuri kandi akirinda kugira ibintu by’ingenzi aguhisha.
-Iyo atangiye kukugirira icyizere no kukubwira ibimuri ku mutima, bishobora kugaragaza ko abona ko uri umuntu wa hafi kandi w’ingenzi kuri we. Iyo kandi ibyo avuga bihura n’ibyo akora, bishobora kugufasha kumenya ko umubano wanyu awufata mu buryo bukomeye kandi ko atagushaka mu buryo bw’uburiganya.`,
+Iyo atangiye kukugirira icyizere no kukubwira ibimuri ku mutima, bishobora kugaragaza ko abona ko uri umuntu wa hafi kandi w’ingenzi kuri we. Iyo kandi ibyo avuga bihura n’ibyo akora, bishobora kugufasha kumenya ko umubano wanyu awufata mu buryo bukomeye kandi ko atagushaka mu buryo bw’uburiganya.`
   },
   {
     id: "4",
@@ -101,6 +116,8 @@ Iyo atangiye kukugirira icyizere no kukubwira ibimuri ku mutima, bishobora kugar
     likes: "3.1k",
     comments: "89",
     views: "18.6k",
+    preview: "Amagambo ye ntahuza n’ibikorwa bye, aba hafi yawe iyo bimufitiye inyungu gusa...",
+    image: post4,
     content: `Urukundo nyarwo ntirugaragarira mu magambo gusa, ahubwo rugaragarira no mu bikorwa, mu kwitaho no mu buryo umuntu ateganya ejo hazaza h’umubano we. Hari igihe umuntu ashobora kukubwira ko agukunda, ariko ibikorwa bye bikerekana ko atiteguye ko umubano wanyu ugera ku rwego rwo kubana.
 Dore ibimenyetso 10 bishobora kugufasha kubimenya:
 
@@ -138,7 +155,7 @@ Gutegereza ubwabyo ntabwo ari ikibazo, ariko iyo bihoraho kandi nta cyerekezo cy
 
 10. Umutima wawe uhora ukumvisha ko hari ikitagenda neza
 Rimwe na rimwe umuntu ashobora kumva ko hari ikibazo mu mubano nubwo adashobora guhita asobanura neza impamvu. Ushobora guhora ufite gushidikanya, guhangayika cyangwa kumva ko umukunzi wawe atari gukorana nawe mu kubaka ejo hazaza.
-Ibyo byiyumvo ntibihita bisobanura ko umubano wanyu ari mubi, ariko bishobora kuba impamvu yo guhagarara gato, mukaganira ku byo buri wese ashaka ndetse mugasuzuma niba mufite icyerekezo kimwe.`,
+Ibyo byiyumvo ntibihita bisobanura ko umubano wanyu ari mubi, ariko bishobora kuba impamvu yo guhagarara gato, mukaganira ku byo buri wese ashaka ndetse mugasuzuma niba mufite icyerekezo kimwe.`
   },
   {
     id: "5",
@@ -147,6 +164,8 @@ Ibyo byiyumvo ntibihita bisobanura ko umubano wanyu ari mubi, ariko bishobora ku
     likes: "3.8k",
     comments: "112",
     views: "22.1k",
+    preview: "Umusore mwaryamanye ashobora kutagukumbura nka mbere...",
+    image: post5,
     content: `1. Umusore mwaryamanye ashobora kutagukumbura nka mbere
 Iyo mwihutiriye gukora imibonano mpuzabitsina mutarashinga urugo, amatsiko n’icyifuzo yari afite bishobora kugabanuka kuko aba amaze kubona icyo yifuzaga. Ibi bishobora gutuma umubano uhinduka cyangwa umwe muri mwe akumva ko nta mpamvu yo gukomeza kuwushyiramo imbaraga nk’uko byari bimeze mbere.
 
@@ -164,7 +183,7 @@ Hari kandi ibyago byo gutwita mutabiteganyije, cyane cyane iyo mutafashe ingamba
 
 5. Bishobora gushyira ubuzima bwawe mu kaga
 Imibonano mpuzabitsina idakingiye ishobora gutera ibyago byo kwandura indwara zandurira mu mibonano mpuzabitsina, harimo na VIH, ndetse no gutwita utabiteganyije.
-Nubwo kuba mukundana bishobora gutuma wumva wizera umukunzi wawe, ntabwo byonyine bivuga ko mwembi mutandura indwara cyangwa ko nta zindi ngaruka zihari. Ni ngombwa gufata ibyemezo bibungabunga ubuzima n’ejo hazaza byawe.`,
+Nubwo kuba mukundana bishobora gutuma wumva wizera umukunzi wawe, ntabwo byonyine bivuga ko mwembi mutandura indwara cyangwa ko nta zindi ngaruka zihari. Ni ngombwa gufata ibyemezo bibungabunga ubuzima n’ejo hazaza byawe.`
   },
   {
     id: "6",
@@ -173,6 +192,8 @@ Nubwo kuba mukundana bishobora gutuma wumva wizera umukunzi wawe, ntabwo byonyin
     likes: "2.7k",
     comments: "73",
     views: "14.8k",
+    preview: "Inseko, akunda kukureba cyane, ibimenyetso by’umubiri...",
+    image: post6,
     content: `1. Inseko
 Umukobwa ugukunda akenshi yishimira kukubona unezerewe. Iyo muri kumwe ashobora guhora agusekera, akishimira ibiganiro byanyu ndetse agaseka n’ibyo muvugana, nk’uburyo bwo kukwereka ko yishimira kuba hafi yawe.
 
@@ -201,7 +222,7 @@ Ashobora kugushyigikira mu biganiro, akakunganira mu byo uvuga cyangwa akagerage
 Umukobwa ugufitiye amarangamutima ashobora kwita ku buzima bwawe n’iterambere ryawe. Ashobora kukugira inama ku byo gukora, ibyo kwirinda cyangwa uburyo wakwiteza imbere, kuko aba ashaka kubona ibintu bigenda neza kuri wowe.
 
 10. Aragufuhira
-Niba akunda kukubaza ku bandi bakobwa mugendana cyangwa akifuza kumenya umubano mufitanye, bishobora kuba ikimenyetso cy’uko akwitaho mu buryo bwihariye. Gufuha bishobora kubaho iyo umuntu atifuza gutakaza umuntu afitiye amarangamutima, nubwo bidahagije byonyine ngo hemezwe ko agukunda.`,
+Niba akunda kukubaza ku bandi bakobwa mugendana cyangwa akifuza kumenya umubano mufitanye, bishobora kuba ikimenyetso cy’uko akwitaho mu buryo bwihariye. Gufuha bishobora kubaho iyo umuntu atifuza gutakaza umuntu afitiye amarangamutima, nubwo bidahagije byonyine ngo hemezwe ko agukunda.`
   },
   {
     id: "7",
@@ -210,6 +231,8 @@ Niba akunda kukubaza ku bandi bakobwa mugendana cyangwa akifuza kumenya umubano 
     likes: "3.5k",
     comments: "95",
     views: "19.3k",
+    preview: "Ntajya agushishikariza kwizigamira, gutumiza nta rutangira...",
+    image: post7,
     content: `Hari igihe umuntu ashobora gukundwa kubera uwo ari we, imico ye n’uburyo yitwara, ariko hari n’igihe ubutunzi cyangwa amafaranga bishobora kuba ari byo bituma umuntu yitabwaho cyane. Niba wifuza kumenya niba umukunzi wawe agukunda by’ukuri cyangwa niba ashishikajwe cyane n’ibyo utunze, hari imyitwarire ushobora kwitondera.
 
 1. Ntajya agushishikariza kwizigamira
@@ -228,7 +251,7 @@ Umuntu ushishikajwe n’amafaranga ashobora guhora ategereje impano, amafaranga 
 Iyo umukunzi wawe aha agaciro urukundo n’imbaraga umushyiriramo, akenshi agaragaza ko abishimira. Ariko niba ibyo umukorera byose abifata nk’inshingano yawe, ntashime cyangwa ngo agaragaze ko abona agaciro kabyo, bishobora kuba ikimenyetso cyo kwitondera.
 
 6. Hari n’abandi bagabo bamuha impano kandi zihenze
-Niba umukunzi wawe ahora yakira impano zihenze cyangwa amafaranga atangwa n’abandi bagabo, kandi na we agakomeza kugutegaho impano n’ibindi bintu by’agaciro, bishobora gutuma wibaza niba ibyo ashaka cyane ari urukundo rwawe cyangwa inyungu ziva ku mafaranga yawe.`,
+Niba umukunzi wawe ahora yakira impano zihenze cyangwa amafaranga atangwa n’abandi bagabo, kandi na we agakomeza kugutegaho impano n’ibindi bintu by’agaciro, bishobora gutuma wibaza niba ibyo ashaka cyane ari urukundo rwawe cyangwa inyungu ziva ku mafaranga yawe.`
   },
   {
     id: "8",
@@ -237,6 +260,8 @@ Niba umukunzi wawe ahora yakira impano zihenze cyangwa amafaranga atangwa n’ab
     likes: "2.1k",
     comments: "54",
     views: "11.5k",
+    preview: "Nta wundi muntu nifuza kuba ndi kumwe na we...",
+    image: post8,
     content: `1.
 Nta wundi muntu nifuza kuba ndi kumwe na we muri aka kanya utari wowe. Ndifuza ko twagumana, nkagukunda kandi nkakwifuriza ijoro ryiza.
 
@@ -267,7 +292,7 @@ Nubwo inzozi ari zo zonyine zishobora gutuma nkubona nkiri kure yawe, nzikunda k
 10.
 Ndifuza ko wamenya ko uri umuntu wa nyuma ntekerezaho mbere yo gusinzira. Kandi iyo mbyutse, nifuza ko uba ukiri mu bitekerezo byanjye. Ndagukunda.
 
-Niba ufite umukunzi, ushobora kumwifuriza ijoro ryiza ukoresheje rimwe muri aya magambo kugira ngo aryame azi ko umutekerezaho kandi umwitayeho.`,
+Niba ufite umukunzi, ushobora kumwifuriza ijoro ryiza ukoresheje rimwe muri aya magambo kugira ngo aryame azi ko umutekerezaho kandi umwitayeho.`
   },
   {
     id: "9",
@@ -276,6 +301,8 @@ Niba ufite umukunzi, ushobora kumwifuriza ijoro ryiza ukoresheje rimwe muri aya 
     likes: "2.9k",
     comments: "68",
     views: "16.4k",
+    preview: "Kuba uri mu buzima bwanjye byanyeretse ko urukundo rw’ukuri rubaho...",
+    image: post9,
     content: `1.
 Kuba uri mu buzima bwanjye byanyeretse ko urukundo rw’ukuri rubaho.
 
@@ -319,9 +346,11 @@ Iyo ndi kumwe nawe, numva mfite amahoro n’ibyishimo byihariye.
 Nta kindi kintu nifuza kurusha gukomeza kubaka ibihe byiza ndi kumwe nawe.
 
 15.
-Ndagukunda kandi nishimira buri mwanya mbona wo kuba hafi yawe.`,
+Ndagukunda kandi nishimira buri mwanya mbona wo kuba hafi yawe.`
   },
 ];
+
+// ... imports (including the 9 images)
 
 function MenyanibiPost() {
   const { id } = useParams();
@@ -354,26 +383,46 @@ function MenyanibiPost() {
         </div>
       </div>
 
-      {/* Post */}
-      <div className="menyanibi-post">
-        <span className={`post-tag ${post.category.toLowerCase()}`}>
-          {post.category}
-        </span>
-
-        <h1>{post.title}</h1>
-
-        <div className="post-engagement">
-          <span><FiHeart /> {post.likes}</span>
-          <span><FiMessageCircle /> {post.comments}</span>
-          <span><FiEye /> {post.views}</span>
+      {/* ========== DOCUMENT CARD ========== */}
+      <div className="document-card">
+        
+        {/* Real Image at the top */}
+        <div className="document-cover">
+          <img src={post.image} alt={post.title} />
         </div>
 
-        <div className="post-content full-text">
-          {post.content.split("\n").map((line, index) => (
-            <p key={index} style={{ marginBottom: line.trim() === "" ? 12 : 6 }}>
-              {line}
-            </p>
-          ))}
+        {/* Content */}
+        <div className="document-body">
+          <span className={`post-tag ${post.category.toLowerCase()}`}>
+            {post.category}
+          </span>
+
+          <h1 className="document-title">{post.title}</h1>
+
+          <div className="post-engagement">
+            <span><FiHeart /> {post.likes}</span>
+            <span><FiMessageCircle /> {post.comments}</span>
+            <span><FiEye /> {post.views}</span>
+          </div>
+
+<div className="post-content full-text">
+  {post.content.split("\n").map((line, index) => {
+    const trimmed = line.trim();
+    if (!trimmed) return <div key={index} style={{ height: 14 }} />;
+
+    // Check if the line starts with a number (1. 2. 3. ...)
+    const isNumberedPoint = /^\d+\./.test(trimmed);
+
+    return (
+      <p
+        key={index}
+        className={isNumberedPoint ? "point-title" : ""}
+      >
+        {trimmed}
+      </p>
+    );
+  })}
+</div>
         </div>
       </div>
     </div>

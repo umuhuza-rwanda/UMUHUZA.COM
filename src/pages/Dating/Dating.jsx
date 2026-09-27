@@ -11,6 +11,7 @@ function Dating() {
   const [likesCount, setLikesCount] = useState(0);
   const [interestsCount, setInterestsCount] = useState(0);
   const [notificationsCount, setNotificationsCount] = useState(0);
+  const [matchesCount, setMatchesCount] = useState(0);
 
 
   useEffect(() => {
@@ -37,6 +38,26 @@ function Dating() {
         .select("*", { count: "exact", head: true })
         .eq("receiverId", currentUser.id)
         .eq("status", "pending");
+
+        // Mutual likes (Matches)
+const { data: myLikes } = await supabase
+  .from("likes")
+  .select("likedId")
+  .eq("likerId", currentUser.id);
+
+const myLikedIds = (myLikes || []).map((l) => l.likedId);
+
+let matches = 0;
+if (myLikedIds.length > 0) {
+  const { count } = await supabase
+    .from("likes")
+    .select("*", { count: "exact", head: true })
+    .eq("likedId", currentUser.id)
+    .in("likerId", myLikedIds);
+
+  matches = count || 0;
+}
+setMatchesCount(matches);
 
       // Unread notifications
       const { count: unreadNotifs } = await supabase
@@ -77,62 +98,70 @@ function Dating() {
         <h2>Your Dating Hub 💕</h2>
         <p>See who likes you, your interests and notifications</p>
       </div>
+{/* 4 Big Cards */}
+<div className="dating-cards">
 
-      {/* 3 Big Cards */}
-      <div className="dating-cards">
+  {/* LIKES */}
+  <button
+    className="dating-card likes-card"
+    onClick={() => navigate("/likes")}
+  >
+    <div className="dating-card-icon">
+      <FiHeart size={32} />
+    </div>
+    <div className="dating-card-text">
+      <h3>Likes</h3>
+      <p>People who liked you & people you liked</p>
+    </div>
+    <div className="dating-card-count">{likesCount}</div>
+  </button>
 
-        {/* LIKES - Light Pink */}
-        <button
-          className="dating-card likes-card"
-          onClick={() => navigate("/likes")}
-        >
-          <div className="dating-card-icon">
-            <FiHeart size={32} />
-          </div>
-          <div className="dating-card-text">
-            <h3>Likes</h3>
-            <p>People who liked you & people you liked</p>
-          </div>
-          <div className="dating-card-count">
-            {likesCount}
-          </div>
-        </button>
+  {/* MATCHES - New */}
+  <button
+    className="dating-card matches-card"
+    onClick={() => navigate("/matches")}
+  >
+    <div className="dating-card-icon">
+      <FiHeart size={32} />
+    </div>
+    <div className="dating-card-text">
+      <h3>Matches</h3>
+      <p>People you both liked each other</p>
+    </div>
+    <div className="dating-card-count">{matchesCount}</div>
+  </button>
 
-        {/* INTERESTS - Violet + Green */}
-        <button
-          className="dating-card interests-card"
-          onClick={() => navigate("/interests")}
-        >
-          <div className="dating-card-icon">
-            <FiUsers size={32} />
-          </div>
-          <div className="dating-card-text">
-            <h3>Interests</h3>
-            <p>Pending interests & your connections</p>
-          </div>
-          <div className="dating-card-count">
-            {interestsCount}
-          </div>
-        </button>
+  {/* INTERESTS */}
+  <button
+    className="dating-card interests-card"
+    onClick={() => navigate("/interests")}
+  >
+    <div className="dating-card-icon">
+      <FiUsers size={32} />
+    </div>
+    <div className="dating-card-text">
+      <h3>Interests</h3>
+      <p>Pending interests & your connections</p>
+    </div>
+    <div className="dating-card-count">{interestsCount}</div>
+  </button>
 
-        {/* NOTIFICATIONS - Blue */}
-        <button
-          className="dating-card notifications-card"
-          onClick={() => navigate("/notifications")}
-        >
-          <div className="dating-card-icon">
-            <FiBell size={32} />
-          </div>
-          <div className="dating-card-text">
-            <h3>Notifications</h3>
-            <p>New likes, interests and messages</p>
-          </div>
-          <div className="dating-card-count">
-            {notificationsCount}
-          </div>
-        </button>
+  {/* NOTIFICATIONS */}
+  <button
+    className="dating-card notifications-card"
+    onClick={() => navigate("/notifications")}
+  >
+    <div className="dating-card-icon">
+      <FiBell size={32} />
+    </div>
+    <div className="dating-card-text">
+      <h3>Notifications</h3>
+      <p>New likes, interests and messages</p>
+    </div>
+    <div className="dating-card-count">{notificationsCount}</div>
+  </button>
 
-      </div>
+</div>
     </div>
   );
 }

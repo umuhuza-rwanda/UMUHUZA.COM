@@ -17,6 +17,7 @@ import { supabase } from "./lib/supabase";
 import Spin from "./pages/Spin/Spin";
 import Dating from "./pages/Dating/Dating";
 import Likes from "./pages/Likes/Likes";
+import Matches from "./pages/Matches/Matches";
 
 
 // =========================
@@ -634,6 +635,7 @@ function App() {
             path="/signup"
             element={<Signup />}
           />
+          <Route path="/matches" element={<Matches />} />
 
           <Route
             path="/register"

@@ -37,6 +37,7 @@ import { supabase } from "../../lib/supabase";
 
 const CHAT_IMAGE_BUCKET = "chat-images";
 
+
 const IMAGE_MAX_BYTES = 250 * 1024;
 
 const IMAGE_EXPIRY_MS =
@@ -49,6 +50,7 @@ const IMAGE_SIGNED_URL_SECONDS =
 // =====================================================
 // CHECK IF IMAGE MESSAGE IS EXPIRED
 // =====================================================
+
 
 const isExpiredImageMessage =
   (chatMessage) => {
@@ -497,746 +499,501 @@ const compressImageTo250KB =
 // =====================================================
 // CHAT COMPONENT
 // =====================================================
-
 function Chat() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { t } = useAppPreferences();
 
-  const navigate =
-    useNavigate();
-
-  const location =
-    useLocation();
-
-  const { t } =
-    useAppPreferences();
-
+  const [showChatMenu, setShowChatMenu] = useState(false);
+const [blocking, setBlocking] = useState(false);
+const [reporting, setReporting] = useState(false);
 
   // =====================================================
-  // CURRENT USER
+  // STATE
   // =====================================================
-
-  const [
-    currentUser,
-    setCurrentUser,
-  ] = useState(null);
-
-
-  // =====================================================
-  // MEMBERS
-  // =====================================================
-
-  const [
-    connections,
-    setConnections,
-  ] = useState([]);
-
-  const [
-    loadingConnections,
-    setLoadingConnections,
-  ] = useState(true);
-
-
-  // =====================================================
-  // SELECTED PERSON
-  // =====================================================
-
-  const [
-    selectedPerson,
-    setSelectedPerson,
-  ] = useState(null);
-
-
-  // =====================================================
-  // CURRENT CONVERSATION
-  // =====================================================
-
-  const [
-    currentConversation,
-    setCurrentConversation,
-  ] = useState(null);
-
-
-  // =====================================================
-  // MESSAGES
-  // =====================================================
-
-  const [
-    messages,
-    setMessages,
-  ] = useState([]);
-
-  const [
-    loadingMessages,
-    setLoadingMessages,
-  ] = useState(false);
-
-
-  // =====================================================
-  // MESSAGE INPUT
-  // =====================================================
-
-  const [
-    message,
-    setMessage,
-  ] = useState("");
-
-  const [
-    sending,
-    setSending,
-  ] = useState(false);
-
-
-  // =====================================================
-  // IMAGE STATE
-  // =====================================================
-
-  const [
-    selectedImages,
-    setSelectedImages,
-  ] = useState([]);
-
-  const [
-    uploadingImages,
-    setUploadingImages,
-  ] = useState(false);
-
-
-  // =====================================================
-  // IMAGE INPUT
-  // =====================================================
-
-  const imageInputRef =
-    useRef(null);
-
-
-  // =====================================================
-  // SEARCH
-  // =====================================================
-
-  const [
-    search,
-    setSearch,
-  ] = useState("");
-
-
-  // =====================================================
-  // ERROR
-  // =====================================================
-
-  const [
-    error,
-    setError,
-  ] = useState("");
-
+  const [unreadCounts, setUnreadCounts] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
+  const [connections, setConnections] = useState([]);
+  const [loadingConnections, setLoadingConnections] = useState(true);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [currentConversation, setCurrentConversation] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadingImages, setUploadingImages] = useState(false);
+  const imageInputRef = useRef(null);
+  const [search, setSearch] = useState("");
+  const [error, setError] = useState("");
 
   // =====================================================
   // AUTH
   // =====================================================
-
   useEffect(() => {
-
     let active = true;
 
+    const loadCurrentUser = async () => {
+      try {
+        const { data, error: authError } = await supabase.auth.getUser();
+        if (!active) return;
 
-    const loadCurrentUser =
-      async () => {
-
-        try {
-
-          const {
-            data,
-            error: authError,
-          } =
-            await supabase.auth.getUser();
-
-
-          if (!active) {
-            return;
-          }
-
-
-          if (authError) {
-
-            console.error(
-              "Supabase auth error:",
-              authError
-            );
-
-            setCurrentUser(null);
-
-            return;
-          }
-
-
-          setCurrentUser(
-            data?.user || null
-          );
-
-        } catch (err) {
-
-          console.error(
-            "Unable to get Supabase user:",
-            err
-          );
-
-
-          if (active) {
-            setCurrentUser(null);
-          }
-
+        if (authError) {
+          console.error("Supabase auth error:", authError);
+          setCurrentUser(null);
+          return;
         }
 
-      };
-
+        setCurrentUser(data?.user || null);
+      } catch (err) {
+        console.error("Unable to get Supabase user:", err);
+        if (active) setCurrentUser(null);
+      }
+    };
 
     loadCurrentUser();
 
-
     const {
-      data: {
-        subscription,
-      },
-    } =
-      supabase.auth.onAuthStateChange(
-        (_event, session) => {
-
-          if (!active) {
-            return;
-          }
-
-          setCurrentUser(
-            session?.user || null
-          );
-
-        }
-      );
-
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return;
+      setCurrentUser(session?.user || null);
+    });
 
     return () => {
-
       active = false;
-
       subscription.unsubscribe();
-
     };
-
   }, []);
-
 
   // =====================================================
   // ONLINE PRESENCE
   // =====================================================
-
   useEffect(() => {
-
-    if (!currentUser) {
-      return undefined;
-    }
-
+    if (!currentUser) return undefined;
 
     let active = true;
 
+    const updatePresence = async (online) => {
+      try {
+        const { error: presenceError } = await supabase
+          .from("profiles")
+          .update({
+            online,
+            last_seen: new Date().toISOString(),
+          })
+          .eq("id", currentUser.id);
 
-    const updatePresence =
-      async (online) => {
-
-        try {
-
-          const {
-            error: presenceError,
-          } =
-            await supabase
-              .from("profiles")
-              .update({
-                online,
-                last_seen:
-                  new Date().toISOString(),
-              })
-              .eq(
-                "id",
-                currentUser.id
-              );
-
-
-          if (
-            presenceError &&
-            active
-          ) {
-
-            console.error(
-              "Unable to update online status:",
-              presenceError
-            );
-
-          }
-
-        } catch (err) {
-
-          console.error(
-            "Presence error:",
-            err
-          );
-
+        if (presenceError && active) {
+          console.error("Unable to update online status:", presenceError);
         }
-
-      };
-
+      } catch (err) {
+        console.error("Presence error:", err);
+      }
+    };
 
     updatePresence(true);
 
-
-    const handleBeforeUnload =
-      () => {
-        updatePresence(false);
-      };
-
-
-    window.addEventListener(
-      "beforeunload",
-      handleBeforeUnload
-    );
-
-
-    return () => {
-
-      active = false;
-
-
-      window.removeEventListener(
-        "beforeunload",
-        handleBeforeUnload
-      );
-
-
+    const handleBeforeUnload = () => {
       updatePresence(false);
-
     };
 
-  }, [currentUser]);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
+    return () => {
+      active = false;
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      updatePresence(false);
+    };
+  }, [currentUser]);
 
   // =====================================================
   // LOAD MEMBERS
   // =====================================================
-
   useEffect(() => {
-
     if (!currentUser) {
-
       setConnections([]);
-
       setLoadingConnections(false);
-
       return undefined;
     }
 
-
     let active = true;
-
-
     setLoadingConnections(true);
-
     setError("");
 
-
-    const loadMembers =
-      async () => {
-
-        try {
-
-          const {
-            data,
-            error: membersError,
-          } =
-            await supabase
-              .from("profiles")
-              .select("*");
-
-
-          if (!active) {
-            return;
-          }
-
-
-          if (membersError) {
-
-            console.error(
-              "Error loading members:",
-              membersError
-            );
-
-
-            setError(
-              "Unable to load UMUHUZA members."
-            );
-
-
-            setConnections([]);
-
-            setLoadingConnections(false);
-
-            return;
-          }
-
-
-          const loadedMembers =
-            (data || [])
-              .map(
-                (profile) => ({
-
-                  ...profile,
-
-                  id:
-                    profile.id,
-
-
-                  full_name:
-                    profile.full_name ||
-                    [
-                      profile.first_name,
-                      profile.last_name,
-                    ]
-                      .filter(Boolean)
-                      .join(" ") ||
-                    profile.name ||
-                    "UMUHUZA Member",
-
-
-                  firstName:
-                    profile.first_name ||
-                    profile.firstName ||
-                    "",
-
-
-                  lastName:
-                    profile.last_name ||
-                    profile.lastName ||
-                    "",
-
-
-                  profilePhoto:
-                    profile.profile_photo_url ||
-                    profile.profilePhoto ||
-                    profile.photo_url ||
-                    profile.photoURL ||
-                    profile.image ||
-                    "",
-
-
-                  profile_photo_url:
-                    profile.profile_photo_url ||
-                    profile.profilePhoto ||
-                    profile.photo_url ||
-                    profile.photoURL ||
-                    profile.image ||
-                    "",
-
-
-                  online:
-                    profile.online === true,
-
-
-                  lastSeen:
-                    profile.last_seen ||
-                    profile.lastSeen ||
-                    null,
-
-                })
-              )
-              .filter(
-                (profile) =>
-                  profile.id !==
-                  currentUser.id
-              );
-
-
-          // =================================================
-          // SORT PEOPLE BY MOST RECENT CONVERSATION
-          // =================================================
-
-          try {
-
-            const {
-              data: conversations,
-            } =
-              await supabase
-                .from("conversations")
-                .select(
-                  `
-                    id,
-                    participant_one,
-                    participant_two,
-                    last_message_at,
-                    updated_at,
-                    created_at
-                  `
-                )
-                .or(
-                  `participant_one.eq.${currentUser.id},participant_two.eq.${currentUser.id}`
-                );
-
-
-            const recentMap =
-              new Map();
-
-
-            (
-              conversations ||
-              []
-            ).forEach(
-              (conversation) => {
-
-                const otherUserId =
-                  conversation.participant_one ===
-                  currentUser.id
-                    ? conversation.participant_two
-                    : conversation.participant_one;
-
-
-                if (!otherUserId) {
-                  return;
-                }
-
-
-                const recentDate =
-                  conversation.last_message_at ||
-                  conversation.updated_at ||
-                  conversation.created_at ||
-                  null;
-
-
-                if (
-                  !recentDate
-                ) {
-                  return;
-                }
-
-
-                const existing =
-                  recentMap.get(
-                    otherUserId
-                  );
-
-
-                if (
-                  !existing ||
-                  new Date(
-                    recentDate
-                  ).getTime() >
-                  new Date(
-                    existing
-                  ).getTime()
-                ) {
-
-                  recentMap.set(
-                    otherUserId,
-                    recentDate
-                  );
-
-                }
-
-              }
-            );
-
-
-            loadedMembers.sort(
-              (a, b) => {
-
-                const aDate =
-                  recentMap.get(
-                    a.id
-                  );
-
-                const bDate =
-                  recentMap.get(
-                    b.id
-                  );
-
-
-                if (
-                  aDate &&
-                  bDate
-                ) {
-
-                  return (
-                    new Date(
-                      bDate
-                    ).getTime() -
-                    new Date(
-                      aDate
-                    ).getTime()
-                  );
-
-                }
-
-
-                if (
-                  aDate &&
-                  !bDate
-                ) {
-                  return -1;
-                }
-
-
-                if (
-                  !aDate &&
-                  bDate
-                ) {
-                  return 1;
-                }
-
-
-                return String(
-                  a.full_name || ""
-                ).localeCompare(
-                  String(
-                    b.full_name || ""
-                  )
-                );
-
-              }
-            );
-
-          } catch (conversationSortError) {
-
-            console.error(
-              "Conversation sorting error:",
-              conversationSortError
-            );
-
-          }
-
-
-          setConnections(
-            loadedMembers
-          );
-
-          setLoadingConnections(false);
-
-        } catch (err) {
-
-          console.error(
-            "Member loading error:",
-            err
-          );
-
-
-          if (!active) {
-            return;
-          }
-
-
-          setError(
-            "Unable to load UMUHUZA members."
-          );
-
-
+    const loadMembers = async () => {
+      try {
+        const { data, error: membersError } = await supabase
+          .from("profiles")
+          .select("*");
+
+        if (!active) return;
+
+        if (membersError) {
+          console.error("Error loading members:", membersError);
+          setError("Unable to load UMUHUZA members.");
           setConnections([]);
-
           setLoadingConnections(false);
-
+          return;
         }
 
-      };
+        const loadedMembers = (data || [])
+          .map((profile) => ({
+            ...profile,
+            id: profile.id,
+            full_name:
+              profile.full_name ||
+              [profile.first_name, profile.last_name].filter(Boolean).join(" ") ||
+              profile.name ||
+              "UMUHUZA Member",
+            firstName: profile.first_name || profile.firstName || "",
+            lastName: profile.last_name || profile.lastName || "",
+            profilePhoto:
+              profile.profile_photo_url ||
+              profile.profilePhoto ||
+              profile.photo_url ||
+              profile.photoURL ||
+              profile.image ||
+              "",
+            profile_photo_url:
+              profile.profile_photo_url ||
+              profile.profilePhoto ||
+              profile.photo_url ||
+              profile.photoURL ||
+              profile.image ||
+              "",
+            online: profile.online === true,
+            lastSeen: profile.last_seen || profile.lastSeen || null,
+          }))
+          .filter((profile) => profile.id !== currentUser.id);
 
+        // Sort by most recent conversation
+        try {
+          const { data: conversations } = await supabase
+            .from("conversations")
+            .select(
+              "id, participant_one, participant_two, last_message_at, updated_at, created_at"
+            )
+            .or(
+              `participant_one.eq.${currentUser.id},participant_two.eq.${currentUser.id}`
+            );
+
+          const recentMap = new Map();
+
+          (conversations || []).forEach((conversation) => {
+            const otherUserId =
+              conversation.participant_one === currentUser.id
+                ? conversation.participant_two
+                : conversation.participant_one;
+
+            if (!otherUserId) return;
+
+            const recentDate =
+              conversation.last_message_at ||
+              conversation.updated_at ||
+              conversation.created_at ||
+              null;
+
+            if (!recentDate) return;
+
+            const existing = recentMap.get(otherUserId);
+            if (
+              !existing ||
+              new Date(recentDate).getTime() > new Date(existing).getTime()
+            ) {
+              recentMap.set(otherUserId, recentDate);
+            }
+          });
+
+          loadedMembers.sort((a, b) => {
+            const aDate = recentMap.get(a.id);
+            const bDate = recentMap.get(b.id);
+
+            if (aDate && bDate) {
+              return new Date(bDate).getTime() - new Date(aDate).getTime();
+            }
+            if (aDate && !bDate) return -1;
+            if (!aDate && bDate) return 1;
+            return String(a.full_name || "").localeCompare(
+              String(b.full_name || "")
+            );
+          });
+        } catch (conversationSortError) {
+          console.error("Conversation sorting error:", conversationSortError);
+        }
+
+        setConnections(loadedMembers);
+        setLoadingConnections(false);
+      } catch (err) {
+        console.error("Member loading error:", err);
+        if (!active) return;
+        setError("Unable to load UMUHUZA members.");
+        setConnections([]);
+        setLoadingConnections(false);
+      }
+    };
 
     loadMembers();
 
-
-    // =====================================================
-    // REALTIME PROFILE + CONVERSATION UPDATES
-    // =====================================================
-
-    const profileChannel =
-      supabase
-        .channel(
-          `chat-profiles-${currentUser.id}`
-        )
-        .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "profiles",
-          },
-          () => {
-            loadMembers();
-          }
-        )
-        .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "conversations",
-          },
-          () => {
-            loadMembers();
-          }
-        )
-        .subscribe();
-
+    const profileChannel = supabase
+      .channel(`chat-profiles-${currentUser.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles" },
+        () => loadMembers()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "conversations" },
+        () => loadMembers()
+      )
+      .subscribe();
 
     return () => {
-
       active = false;
-
-
-      supabase.removeChannel(
-        profileChannel
-      );
-
+      supabase.removeChannel(profileChannel);
     };
-
   }, [currentUser]);
 
   // =====================================================
-// INCREASE chat_limit_used
+// BLOCK PERSON
 // =====================================================
-const increaseChatLimitUsed = async () => {
-  if (!currentUser) return;
+const handleBlockPerson = async () => {
+  if (!currentUser?.id || !selectedPerson?.id) return;
+
+  const confirmed = window.confirm(
+    `Block ${selectedPerson.full_name || "this person"}? You will no longer see each other.`
+  );
+  if (!confirmed) return;
 
   try {
-    // Get current values
-    const { data: profile, error } = await supabase
-      .from("profiles")
-      .select("chat_limit_used, extra_chat_credits, premium_until")
-      .eq("id", currentUser.id)
-      .maybeSingle();
+    setBlocking(true);
 
-    if (error || !profile) return;
+    // Save block in a "blocks" table
+    // Create this table if you don't have it yet:
+    // blocks: id, blocker_id, blocked_id, created_at
+    const { error } = await supabase.from("blocks").insert({
+      blocker_id: currentUser.id,
+      blocked_id: selectedPerson.id,
+      created_at: new Date().toISOString(),
+    });
 
-    // If user has Premium → do nothing
-    if (profile.premium_until) {
-      const premiumDate = new Date(profile.premium_until);
-      if (premiumDate > new Date()) {
-        return;
-      }
+    if (error) {
+      // ignore duplicate block
+      if (error.code !== "23505") throw error;
     }
 
-    // If user has extra credits → decrease credit instead
-    if ((profile.extra_chat_credits || 0) > 0) {
-      await supabase
-        .from("profiles")
-        .update({
-          extra_chat_credits: profile.extra_chat_credits - 1,
-        })
-        .eq("id", currentUser.id);
-      return;
-    }
+    setShowChatMenu(false);
+    setSelectedPerson(null);
+    setCurrentConversation(null);
+    setMessages([]);
 
-    // Otherwise increase the free limit counter
-    await supabase
-      .from("profiles")
-      .update({
-        chat_limit_used: (profile.chat_limit_used || 0) + 1,
-      })
-      .eq("id", currentUser.id);
+    // Remove from list
+    setConnections((prev) =>
+      prev.filter((p) => p.id !== selectedPerson.id)
+    );
 
+    alert("Person blocked successfully.");
   } catch (err) {
-    console.error("Error increasing chat limit:", err);
+    console.error("Block error:", err);
+    alert(err.message || "Unable to block this person.");
+  } finally {
+    setBlocking(false);
   }
 };
 
+// =====================================================
+// REPORT PERSON
+// =====================================================
+const handleReportPerson = async () => {
+  if (!currentUser?.id || !selectedPerson?.id) return;
+
+  const reason = window.prompt(
+    "Why are you reporting this person? (spam, fake, harassment, other)"
+  );
+
+  if (!reason || !reason.trim()) return;
+
+  try {
+    setReporting(true);
+
+    // reports table: id, reporter_id, reported_id, reason, created_at, status
+    const { error } = await supabase.from("reports").insert({
+      reporter_id: currentUser.id,
+      reported_id: selectedPerson.id,
+      reason: reason.trim(),
+      status: "pending",
+      created_at: new Date().toISOString(),
+    });
+
+    if (error) throw error;
+
+    setShowChatMenu(false);
+    alert("Report submitted. Thank you. Our team will review it.");
+  } catch (err) {
+    console.error("Report error:", err);
+    alert(err.message || "Unable to submit report.");
+  } finally {
+    setReporting(false);
+  }
+};
+
+
+  // =====================================================
+// MARK MESSAGES AS READ
+// =====================================================
+const markConversationAsRead = async (conversationId, otherUserId) => {
+  if (!currentUser?.id || !conversationId) return;
+
+  try {
+    const { error } = await supabase
+      .from("messages")
+      .update({ is_read: true })
+      .eq("conversation_id", conversationId)
+      .eq("is_read", false)
+      .neq("sender_id", currentUser.id); // only messages sent TO me
+
+    if (error) {
+      console.error("Mark as read error:", error);
+      return;
+    }
+
+    // Update badge immediately in UI
+    setUnreadCounts((previous) => {
+      const updated = { ...previous };
+      if (otherUserId) {
+        delete updated[otherUserId];
+      }
+      return updated;
+    });
+  } catch (err) {
+    console.error("Mark as read failed:", err);
+  }
+};
+
+  // =====================================================
+  // LOAD UNREAD MESSAGE COUNTS (OUTSIDE load members)
+  // =====================================================
+  useEffect(() => {
+    if (!currentUser?.id) return;
+
+    let active = true;
+
+    const loadUnreadCounts = async () => {
+      try {
+        const { data: conversations, error: convError } = await supabase
+          .from("conversations")
+          .select("id, participant_one, participant_two")
+          .or(
+            `participant_one.eq.${currentUser.id},participant_two.eq.${currentUser.id}`
+          );
+
+        if (convError) {
+          console.error("Conversations error:", convError);
+          return;
+        }
+
+        if (!conversations || conversations.length === 0) {
+          if (active) setUnreadCounts({});
+          return;
+        }
+
+        const counts = {};
+
+        await Promise.all(
+          conversations.map(async (conv) => {
+            try {
+              const otherUserId =
+                conv.participant_one === currentUser.id
+                  ? conv.participant_two
+                  : conv.participant_one;
+
+              if (!otherUserId) return;
+
+              const { count, error: countError } = await supabase
+                .from("messages")
+                .select("*", { count: "exact", head: true })
+                .eq("conversation_id", conv.id)
+                .eq("is_read", false)
+                .neq("sender_id", currentUser.id);
+
+              if (!countError && count > 0) {
+                counts[otherUserId] = count;
+              }
+            } catch (innerErr) {
+              console.warn("Unread count error:", conv.id, innerErr);
+            }
+          })
+        );
+
+        if (active) setUnreadCounts(counts);
+      } catch (err) {
+        console.error("Error loading unread counts:", err);
+      }
+    };
+
+    loadUnreadCounts();
+
+    const channel = supabase
+      .channel(`unread-messages-${currentUser.id}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "messages" },
+        () => loadUnreadCounts()
+      )
+      .subscribe();
+
+    return () => {
+      active = false;
+      supabase.removeChannel(channel);
+    };
+  }, [currentUser?.id]);
+
+  // =====================================================
+  // INCREASE chat_limit_used
+  // =====================================================
+  const increaseChatLimitUsed = async () => {
+    if (!currentUser) return;
+
+    try {
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("chat_limit_used, extra_chat_credits, premium_until")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+      if (error || !profile) return;
+
+      if (profile.premium_until) {
+        const premiumDate = new Date(profile.premium_until);
+        if (premiumDate > new Date()) return;
+      }
+
+      if ((profile.extra_chat_credits || 0) > 0) {
+        await supabase
+          .from("profiles")
+          .update({
+            extra_chat_credits: profile.extra_chat_credits - 1,
+          })
+          .eq("id", currentUser.id);
+        return;
+      }
+
+      await supabase
+        .from("profiles")
+        .update({
+          chat_limit_used: (profile.chat_limit_used || 0) + 1,
+        })
+        .eq("id", currentUser.id);
+    } catch (err) {
+      console.error("Error increasing chat limit:", err);
+    }
+  };
+
+  // =====================================================
+  // KEEP THE REST OF YOUR FILE FROM HERE
+  // (filteredPeople, getOrCreateConversation, handlers, JSX...)
+  // =====================================================
 
   // =====================================================
   // FILTER MEMBERS
@@ -1492,38 +1249,23 @@ const increaseChatLimitUsed = async () => {
   // SELECT PERSON
   // =====================================================
 
-  const handleSelectPerson =
-    async (person) => {
+const handleSelectPerson = async (person) => {
+  if (!person) return;
 
-      if (!person) {
-        return;
-      }
+  setSelectedPerson(person);
+  setMessage("");
+  setMessages([]);
+  clearSelectedImages();
+  setCurrentConversation(null);
+  setError("");
 
+  const conversation = await openChat(person);
 
-      setSelectedPerson(
-        person
-      );
-
-
-      setMessage("");
-
-      setMessages([]);
-
-      clearSelectedImages();
-
-      setCurrentConversation(
-        null
-      );
-
-      setError("");
-
-
-      await openChat(
-        person
-      );
-
-    };
-
+  // Mark as read when chat opens
+  if (conversation?.id) {
+    await markConversationAsRead(conversation.id, person.id);
+  }
+};
 
   // =====================================================
   // SELECT PERSON FROM PROFILE / DEFAULT PERSON
@@ -3528,31 +3270,21 @@ const mergeServerMessages = (serverMessages) => {
                       }
                     >
 
-                      <div className="chat-person-avatar">
+<div className="chat-person-avatar" style={{ position: "relative" }}>
+  {personImage ? (
+    <img src={personImage} alt={personName} />
+  ) : (
+    <FiUser />
+  )}
 
-                        {personImage ? (
+  {person.online && <span className="online-dot" />}
 
-                          <img
-                            src={personImage}
-                            alt={personName}
-                          />
-
-                        ) : (
-
-                          <FiUser />
-
-                        )}
-
-
-                        {person.online && (
-
-                          <span
-                            className="online-dot"
-                          />
-
-                        )}
-
-                      </div>
+  {unreadCounts[person.id] > 0 && (
+    <span className="chat-unread-badge">
+      {unreadCounts[person.id] > 99 ? "99+" : unreadCounts[person.id]}
+    </span>
+  )}
+</div>
 
 
                       <div className="chat-person-info">
@@ -3607,100 +3339,79 @@ const mergeServerMessages = (serverMessages) => {
 
           <section className="chat-conversation">
 
+{/* =================================================
+    CONVERSATION HEADER
+================================================= */}
+<div className="conversation-header">
 
-            {/* =================================================
-                CONVERSATION HEADER
-            ================================================= */}
+  <div className="conversation-person">
+    <div className="conversation-avatar">
+      {selectedImage ? (
+        <img src={selectedImage} alt={selectedName} />
+      ) : (
+        <FiUser />
+      )}
 
-            <div className="conversation-header">
+      {selectedPerson.online && <span className="online-dot" />}
+    </div>
 
-              <div className="conversation-person">
+    <div>
+      <div className="conversation-name">
+        <h2>{selectedName}</h2>
 
-                <div className="conversation-avatar">
+        {selectedPerson.verified && (
+          <FiCheckCircle className="verified-icon" />
+        )}
+      </div>
 
-                  {selectedImage ? (
+      <p>
+        {selectedPerson.online
+          ? `🟢 ${t("onlineNow") || "Online now"}`
+          : formatLastSeen(
+              selectedPerson.last_seen || selectedPerson.lastSeen
+            )}
+      </p>
+    </div>
+  </div>
 
-                    <img
-                      src={selectedImage}
-                      alt={selectedName}
-                    />
+  <div className="conversation-actions">
+    <button type="button" title="Voice Call">
+      <FiPhone />
+    </button>
 
-                  ) : (
+    <div style={{ position: "relative" }}>
+      <button
+        type="button"
+        title="More"
+        onClick={() => setShowChatMenu((prev) => !prev)}
+      >
+        <FiMoreVertical />
+      </button>
 
-                    <FiUser />
+      {showChatMenu && (
+        <div className="chat-more-menu">
+          <button
+            type="button"
+            onClick={handleReportPerson}
+            disabled={reporting}
+          >
+            🚩 Report
+          </button>
 
-                  )}
+          <button
+            type="button"
+            className="danger"
+            onClick={handleBlockPerson}
+            disabled={blocking}
+          >
+            🚫 Block
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
 
-
-                  {selectedPerson.online && (
-
-                    <span
-                      className="online-dot"
-                    />
-
-                  )}
-
-                </div>
-
-
-                <div>
-
-                  <div className="conversation-name">
-
-                    <h2>
-                      {selectedName}
-                    </h2>
-
-
-                    {selectedPerson.verified && (
-
-                      <FiCheckCircle
-                        className="verified-icon"
-                      />
-
-                    )}
-
-                  </div>
-
-
-                  <p>
-
-                    {selectedPerson.online
-                      ? `🟢 ${t(
-                          "onlineNow"
-                        )}`
-                      : formatLastSeen(
-                          selectedPerson.last_seen ||
-                          selectedPerson.lastSeen
-                        )}
-
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              <div className="conversation-actions">
-
-                <button
-                  type="button"
-                  title="Voice Call"
-                >
-                  <FiPhone />
-                </button>
-
-
-                <button
-                  type="button"
-                  title="More"
-                >
-                  <FiMoreVertical />
-                </button>
-
-              </div>
-
-            </div>
+</div>
 
 
             {/* =================================================

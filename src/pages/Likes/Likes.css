@@ -238,3 +238,26 @@
 .likes-section-btn:not(.active) {
   opacity: 0.75;
 }
+.like-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.like-back-btn {
+  background: linear-gradient(135deg, #ec4899, #be185d);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.like-back-btn:hover {
+  opacity: 0.9;
+}

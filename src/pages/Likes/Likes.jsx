@@ -76,6 +76,61 @@ function Likes() {
 
         const profileMap = new Map(profiles.map((p) => [p.id, p]));
 
+        // =====================================================
+// LIKE BACK
+// =====================================================
+const handleLikeBack = async (member) => {
+  if (!currentUser?.id || !member?.id) return;
+
+  try {
+    // Check if already liked
+    const { data: existing } = await supabase
+      .from("likes")
+      .select("id")
+      .eq("likerId", currentUser.id)
+      .eq("likedId", member.id)
+      .maybeSingle();
+
+    if (existing) {
+      // Already liked → just go to matches
+      navigate("/matches");
+      return;
+    }
+
+    // Create the like
+    const { error } = await supabase.from("likes").insert({
+      likerId: currentUser.id,
+      likedId: member.id,
+      createdAt: new Date().toISOString(),
+    });
+
+    if (error) {
+      // If already exists (race condition)
+      if (error.code === "23505") {
+        navigate("/matches");
+        return;
+      }
+      throw error;
+    }
+
+    // Optional: create a notification for the other person
+    await supabase.from("notifications").insert({
+      user_id: member.id,
+      type: "like",
+      title: "New Like ❤️",
+      message: "Someone liked you back!",
+      related_user_id: currentUser.id,
+      is_read: false,
+    });
+
+    // Go to Matches page
+    navigate("/matches");
+  } catch (err) {
+    console.error("Like back error:", err);
+    setError(err.message || "Unable to like back. Please try again.");
+  }
+};
+
 const mapProfiles = (ids) =>
   ids
     .map((id) => profileMap.get(id))
@@ -213,31 +268,43 @@ const mapProfiles = (ids) =>
                       "Location not added"}
                   </span>
                 </div>
-
-<button
-  className="view-profile-btn"
-  onClick={() =>
-    navigate(`/member-profile/${member.id}`, {
-      state: {
-        member: {
-          id: member.id,
-          full_name: member.name,
-          name: member.name,
-          profile_photo_url: member.photo,
-          profilePhoto: member.photo,
-          city: member.city,
-          country: member.country,
-          age: member.age,
-          date_of_birth: member.date_of_birth,
-          latitude: member.latitude,
-          longitude: member.longitude,
+ 
+<div className="like-actions">
+  <button
+    className="view-profile-btn"
+    onClick={() =>
+      navigate(`/member-profile/${member.id}`, {
+        state: {
+          member: {
+            id: member.id,
+            full_name: member.name,
+            name: member.name,
+            profile_photo_url: member.photo,
+            profilePhoto: member.photo,
+            city: member.city,
+            country: member.country,
+            age: member.age,
+            date_of_birth: member.date_of_birth,
+            latitude: member.latitude,
+            longitude: member.longitude,
+          },
         },
-      },
-    })
-  }
->
-  View Profile
-</button>
+      })
+    }
+  >
+    View Profile
+  </button>
+
+  {/* Only show Like Back when viewing "People who liked you" */}
+  {activeSection === "likedMe" && (
+    <button
+      className="like-back-btn"
+      onClick={() => handleLikeBack(member)}
+    >
+      <FiHeart /> Like Back
+    </button>
+  )}
+</div>
               </div>
             ))}
           </div>
