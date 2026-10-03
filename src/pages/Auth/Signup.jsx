@@ -46,6 +46,7 @@ function Signup() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+ 
 
   // =====================================================
   // REFERRAL FROM URL
@@ -726,20 +727,48 @@ function Signup() {
                 </small>
               )}
             </div>
+            {/* TERMS + 18+ */}
+<div className="terms">
+  <input
+    type="checkbox"
+    id="terms"
+    checked={termsAccepted}
+    onChange={(e) => setTermsAccepted(e.target.checked)}
+    disabled={loading}
+  />
+  <label htmlFor="terms">
+    {t("signup.termsConfirm") || (
+      <>
+        I confirm that I am <strong>18 years or above</strong> and I agree to the{" "}
+      </>
+    )}
+    <a href="/terms" target="_blank" rel="noopener noreferrer">
+      {t("signup.termsOfService") || "Terms of Service"}
+    </a>
+    {", "}
+    <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+      {t("signup.privacyPolicy") || "Privacy Policy"}
+    </a>
+    {t("signup.and") || " and "}
+    <a href="/child-safety" target="_blank" rel="noopener noreferrer">
+      {t("signup.childSafetyPolicy") || "Child Safety Policy"}
+    </a>
+    .
+  </label>
+</div>
 
-            {/* TERMS */}
-            <div className="terms">
-              <input
-                type="checkbox"
-                id="terms"
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-                disabled={loading}
-              />
-              <label htmlFor="terms">
-                {t("signup.terms") || "I agree to the UMUHUZA Terms & Privacy Policy"}
-              </label>
-            </div>
+<p className="legal-links">
+  {t("signup.legalLinks") ||
+    "By continuing, you confirm you are 18+ and agree to our"}{" "}
+  <a href="/privacy-policy">
+    {t("signup.privacyPolicy") || "Privacy Policy"}
+  </a>{" "}
+  {t("signup.and") || "and"}{" "}
+  <a href="/child-safety">
+    {t("signup.childSafetyPolicy") || "Child Safety Policy"}
+  </a>
+  .
+</p>
 
             {/* CONTINUE */}
             <button

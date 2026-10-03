@@ -54,15 +54,27 @@ function MemberProfile() {
   const [loading, setLoading] = useState(!location.state?.member);
   const [error, setError] = useState("");
 
+  const [currentUser, setCurrentUser] = useState(null);
   const [liked, setLiked] = useState(false);
   const [interestSent, setInterestSent] = useState(false);
   const [interestLoading, setInterestLoading] = useState(false);
+  const [likeLoading, setLikeLoading] = useState(false);
+
+  // =====================================================
+  // LOAD CURRENT USER
+  // =====================================================
+  useEffect(() => {
+    const loadUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user || null);
+    };
+    loadUser();
+  }, []);
 
   // =====================================================
   // LOAD MEMBER FROM SUPABASE (when page is refreshed)
   // =====================================================
   useEffect(() => {
-    // If we already have the member from state, no need to fetch
     if (member || !uid) return;
 
     const loadMember = async () => {
@@ -84,16 +96,17 @@ function MemberProfile() {
           return;
         }
 
-        // Normalize the data so it matches what the UI expects
         setMember({
           id: data.id,
-          full_name: data.full_name || data.first_name || data.name || "UMUHUZA Member",
+          full_name:
+            data.full_name || data.first_name || data.name || "UMUHUZA Member",
           firstName: data.first_name || data.firstName || "",
           lastName: data.last_name || data.lastName || "",
           age: data.age || null,
           city: data.city || "",
           country: data.country || "",
-          profile_photo_url: data.profile_photo_url || data.profilePhoto || "",
+          profile_photo_url:
+            data.profile_photo_url || data.profilePhoto || "",
           profilePhoto: data.profile_photo_url || data.profilePhoto || "",
           about: data.about || data.aboutYou || "",
           lookingFor: data.looking_for || data.lookingFor || "",
@@ -104,7 +117,7 @@ function MemberProfile() {
         });
       } catch (err) {
         console.error("Error loading member:", err);
-        setError(t("memberProfile.loadError"));
+        setError(t("memberProfile.loadError") || "Unable to load profile");
       } finally {
         setLoading(false);
       }
@@ -114,33 +127,110 @@ function MemberProfile() {
   }, [uid, member]);
 
   // =====================================================
-  // LIKE
+  // CHECK IF ALREADY LIKED / INTEREST SENT
   // =====================================================
-  const handleLike = () => {
-    setLiked((prev) => !prev);
+  useEffect(() => {
+    if (!currentUser?.id || !member?.id) return;
+
+    const checkStatus = async () => {
+      // Already liked?
+      const { data: likeData } = await supabase
+        .from("likes")
+        .select("id")
+        .eq("likerId", currentUser.id)
+        .eq("likedId", member.id)
+        .maybeSingle();
+
+      if (likeData) setLiked(true);
+
+      // Already sent interest?
+      const { data: interestData } = await supabase
+        .from("interests")
+        .select("id")
+        .eq("senderId", currentUser.id)
+        .eq("receiverId", member.id)
+        .maybeSingle();
+
+      if (interestData) setInterestSent(true);
+    };
+
+    checkStatus();
+  }, [currentUser?.id, member?.id]);
+
+  // =====================================================
+  // LIKE / UNLIKE
+  // =====================================================
+  const handleLike = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
+    if (!member?.id || likeLoading) return;
+
+    setLikeLoading(true);
+
+    try {
+      if (liked) {
+        // Unlike
+        const { error } = await supabase
+          .from("likes")
+          .delete()
+          .eq("likerId", currentUser.id)
+          .eq("likedId", member.id);
+
+        if (error) throw error;
+        setLiked(false);
+      } else {
+        // Like
+        const { error } = await supabase.from("likes").insert({
+          likerId: currentUser.id,
+          likedId: member.id,
+          createdAt: new Date().toISOString(),
+        });
+
+        if (error && error.code !== "23505") throw error;
+
+        setLiked(true);
+
+        // Optional notification
+        await supabase.from("notifications").insert({
+          user_id: member.id,
+          type: "like",
+          title: "New Like ❤️",
+          message: "Someone liked your profile",
+          related_user_id: currentUser.id,
+          is_read: false,
+        });
+      }
+    } catch (err) {
+      console.error("Like error:", err);
+      alert(err.message || "Unable to like this member.");
+    } finally {
+      setLikeLoading(false);
+    }
   };
 
   // =====================================================
   // SEND INTEREST
   // =====================================================
   const handleInterest = async () => {
+    if (!currentUser) {
+      navigate("/login");
+      return;
+    }
+
     if (!member?.id || interestSent || interestLoading) return;
 
     setInterestLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate("/login");
-        return;
-      }
-
       // Check if already sent
       const { data: existing } = await supabase
         .from("interests")
         .select("id")
-        .eq("sender_id", user.id)
-        .eq("receiver_id", member.id)
+        .eq("senderId", currentUser.id)
+        .eq("receiverId", member.id)
         .maybeSingle();
 
       if (existing) {
@@ -148,21 +238,42 @@ function MemberProfile() {
         return;
       }
 
-      // Insert interest
-      const { error } = await supabase.from("interests").insert({
-        sender_id: user.id,
-        receiver_id: member.id,
-        sender_name: user.user_metadata?.full_name || "UMUHUZA Member",
-        receiver_name: member.full_name || member.firstName || "Member",
-        status: "pending",
-      });
+      const senderName =
+        currentUser.user_metadata?.full_name ||
+        currentUser.user_metadata?.name ||
+        "UMUHUZA Member";
+
+      const { data: interest, error } = await supabase
+        .from("interests")
+        .insert({
+          senderId: currentUser.id,
+          receiverId: member.id,
+          status: "pending",
+          createdAt: new Date().toISOString(),
+        })
+        .select()
+        .single();
 
       if (error) throw error;
+
+      // Notification
+      await supabase.from("notifications").insert({
+        user_id: member.id,
+        type: "interest",
+        title: "New Interest 💕",
+        message: `${senderName} is interested in you`,
+        related_user_id: currentUser.id,
+        is_read: false,
+      });
 
       setInterestSent(true);
     } catch (err) {
       console.error("Interest error:", err);
-      alert(t("memberProfile.interestError"));
+      alert(
+        t("memberProfile.interestError") ||
+          err.message ||
+          "Unable to send interest."
+      );
     } finally {
       setInterestLoading(false);
     }
@@ -171,46 +282,30 @@ function MemberProfile() {
   // =====================================================
   // START CHAT
   // =====================================================
-// =======================================================
-// START CHAT
-// =======================================================
+  const handleChat = () => {
+    if (!currentUser) {
+      alert("Please log in before starting a chat.");
+      navigate("/login");
+      return;
+    }
 
-const handleChat = () => {
-  if (!currentUser) {
-    alert("Please log in before starting a chat.");
-    navigate("/login");
-    return;
-  }
+    if (!member?.id) {
+      alert("Unable to identify this member.");
+      return;
+    }
 
-  if (!member) {
-    return;
-  }
+    if (member.id === currentUser.id) {
+      alert("You cannot start a chat with yourself.");
+      return;
+    }
 
-  const memberId =
-    member.id ||
-    member.uid ||
-    member.userId;
-
-  if (!memberId) {
-    alert("Unable to identify this member.");
-    return;
-  }
-
-  if (memberId === currentUser.uid) {
-    alert("You cannot start a chat with yourself.");
-    return;
-  }
-
-  // Open the Supabase Chat page and tell it
-  // which member should be selected.
-  navigate("/chat", {
-    state: {
-      selectedUserId: memberId,
-      member: member,
-    },
-  });
-};
-
+    navigate("/chat", {
+      state: {
+        selectedUserId: member.id,
+        member: member,
+      },
+    });
+  };
   // =====================================================
   // LOADING STATE
   // =====================================================

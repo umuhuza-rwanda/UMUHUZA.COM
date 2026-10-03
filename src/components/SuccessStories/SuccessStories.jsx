@@ -13,7 +13,7 @@ function SuccessStories() {
       city: "Kigali",
       badge: "💍 Bashakanye",
       story:
-        "Twahuriye kuri UMUHUZA.COM mu mwaka wa 2025. Twatangiye kuganira buri munsi, nyuma y'amezi make duhura imbonankubone. Uyu munsi turi umuryango wishimye kandi dushimira UMUHUZA.COM yaduhuje."
+        "Twahuriye kuri UMUHUZA mu mwaka wa 2025. Twatangiye kuganira buri munsi, nyuma y'amezi make duhura imbonankubone. Uyu munsi turi umuryango wishimye kandi dushimira UMUHUZA yaduhuje."
     },
     {
       image: couple2,
@@ -21,7 +21,7 @@ function SuccessStories() {
       city: "Huye",
       badge: "❤️ Bagiye Kurushinga",
       story:
-        "Nari nkiri njyenyine imyaka myinshi. Niyandikishije kuri UMUHUZA.COM nshaka umuntu w'inyangamugayo. Nyuma y'ibyumweru bike nahuye n'urukundo rw'ubuzima bwanjye."
+        "Nari nkiri njyenyine imyaka myinshi. Niyandikishije kuri UMUHUZA nshaka umuntu w'inyangamugayo. Nyuma y'ibyumweru bike nahuye n'urukundo rw'ubuzima bwanjye."
     },
     {
       image: couple3,
@@ -29,21 +29,20 @@ function SuccessStories() {
       city: "Musanze",
       badge: "💕 Bamaranye Imyaka 2",
       story:
-        "Sinari nzi ko urukundo nyarwo narusanga kuri internet. UMUHUZA.COM yadufashije guhura no kubaka icyizere. Uyu munsi turi kubaka ejo hazaza hamwe."
+        "Sinari nzi ko urukundo nyarwo narusanga kuri internet. UMUHUZA yadufashije guhura no kubaka icyizere. Uyu munsi turi kubaka ejo hazaza hamwe."
     }
   ];
 
   return (
-
     <section
-  id="successful-stories"
-  className="successful-stories"
->
+      id="successful-stories"
+      className="successful-stories"
+    >
 
       <h2>❤️ Inkuru z'Urukundo rw'Ukuri</h2>
 
       <p>
-        Abakundanye bahuriye K'UMUHUZA.COM bakabona urukundo rw'ubuzima.
+        Abakundanye bahuriye kuri UMUHUZA bakabona urukundo rw'ubuzima.
       </p>
 
       <div className="success-grid">
@@ -52,12 +51,15 @@ function SuccessStories() {
 
           <div className="success-card" key={index}>
 
-            <img src={story.image} alt={story.names} />
+            <img
+              src={story.image}
+              alt={`${story.names} - UMUHUZA`}
+            />
 
             <div className="success-content">
 
               <span className="success-badge">
-                ✔ Bahuriye kuri UMUHUZA.COM
+                ✔ Bahuriye kuri UMUHUZA
               </span>
 
               <h3>{story.names}</h3>
@@ -79,7 +81,6 @@ function SuccessStories() {
       </div>
 
     </section>
-
   );
 }
 

@@ -513,7 +513,7 @@ const handleWhatsApp = () => {
             </span>
 
             <small>
-              Explore UMUHUZA.COM
+              Explore UMUHUZA
             </small>
 
           </div>

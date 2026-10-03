@@ -18,6 +18,9 @@ import Spin from "./pages/Spin/Spin";
 import Dating from "./pages/Dating/Dating";
 import Likes from "./pages/Likes/Likes";
 import Matches from "./pages/Matches/Matches";
+import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
+import ChildSafety from "./pages/Legal/ChildSafety";
+import TermsOfService from "./pages/Legal/TermsOfService";
 
 
 // =========================
@@ -626,6 +629,10 @@ function App() {
 
           <Route path="/menyanibi" element={<Menyanibi />} />
 <Route path="/menyanibi/:id" element={<MenyanibiPost />} />
+
+<Route path="/privacy-policy" element={<PrivacyPolicy />} />
+<Route path="/child-safety" element={<ChildSafety />} />
+<Route path="/terms" element={<TermsOfService />} />
 
           {/* =================================================
               AUTHENTICATION

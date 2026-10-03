@@ -9034,3 +9034,125 @@ header.member-navbar {
   color: #d1d5db;
   font-size: 15px;
 }
+
+/* =====================================================
+   MENU ICON BACKGROUNDS - COLORFUL
+===================================================== */
+
+.umuhuza-menu-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* My Profile - Violet */
+.umuhuza-menu-icon.profile {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: #ffffff;
+}
+
+/* Invite Friends - Blue */
+.umuhuza-menu-icon.invite {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #ffffff;
+}
+
+/* Account Settings - Deep Red */
+.umuhuza-menu-icon.settings {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  color: #ffffff;
+}
+
+/* Privacy Policy - Yellow / Gold */
+.umuhuza-menu-icon.privacy {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+}
+
+/* Child Safety - Green */
+.umuhuza-menu-icon.child {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  color: #ffffff;
+}
+
+/* Terms of Service - Purple */
+.umuhuza-menu-icon.terms {
+  background: linear-gradient(135deg, #a855f7, #7e22ce);
+  color: #ffffff;
+}
+
+/* =====================================================
+   DESKTOP NAV - SAME STYLE AS MOBILE
+===================================================== */
+
+.desktop-nav-links {
+  display: none;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
+@media (min-width: 900px) {
+  .desktop-nav-links {
+    display: flex;
+  }
+
+  .member-secondary-nav {
+    display: none;
+  }
+}
+
+/* Default desktop nav button = purple like mobile */
+.desktop-nav-links button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(109, 40, 217, 0.25);
+  transition: 0.2s ease;
+}
+
+.desktop-nav-links button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+/* WhatsApp = green like mobile */
+.desktop-nav-links .desktop-whatsapp-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(34, 197, 94, 0.25);
+}
+
+/* Badge like mobile */
+.desktop-nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  line-height: 1;
+}

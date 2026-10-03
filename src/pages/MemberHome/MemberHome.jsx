@@ -17,6 +17,8 @@ import {
   FiCheckCircle,
   FiX,
   FiShare2,
+  FiShield,
+  FiFileText,
   FiGift,
   FiMenu,
   FiSun,
@@ -2064,126 +2066,56 @@ const handleStartChat = (member) => {
             DESKTOP NAV LINKS
         ================================================= */}
 
-        <div
-          className="desktop-nav-links"
-          style={{
-            display: "none",
-          }}
-        >
+{/* ===== DESKTOP NAV LINKS (same as mobile) ===== */}
+<div className="desktop-nav-links">
 
-          <button
-            onClick={() =>
-              navigate("/chat")
-            }
-            style={{
-              position: "relative",
-            }}
-          >
-            <FiMessageCircle
-              size={18}
-            />
-            Messages
-            {unreadMessageCount > 0 && (
-              <span
-                className="unread-message-badge"
- style={{
-  position: "absolute",
-  top: -9,
-  right: -9,
+  {/* Messages */}
+  <button type="button" onClick={() => navigate("/chat")}>
+    <FiMessageCircle size={18} />
+    {t("nav.messages") || "Messages"}
+    {unreadMessageCount > 0 && (
+      <span className="desktop-nav-badge">
+        {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
+      </span>
+    )}
+  </button>
 
-  minWidth: 9,
-  height: 9,
-  padding: "0 6px",
+  {/* Dating */}
+  <button type="button" onClick={() => navigate("/dating")}>
+    <FiHeart size={18} />
+    Dating
+    {(pendingInterestsCount + unreadNotificationCount) > 0 && (
+      <span className="desktop-nav-badge">
+        {(pendingInterestsCount + unreadNotificationCount) > 99
+          ? "99+"
+          : pendingInterestsCount + unreadNotificationCount}
+      </span>
+    )}
+  </button>
 
-  borderRadius: "999px",
+  {/* Menyanibi */}
+  <button type="button" onClick={() => navigate("/menyanibi")}>
+    <FiBookOpen size={18} />
+    Menyanibi
+  </button>
 
-  background: "#ff3040",
-  color: "#ffffff",
+  {/* Premium */}
+  <button type="button" onClick={() => navigate("/premium")}>
+    <FiDollarSign size={18} />
+    {t("nav.premium") || "Premium"}
+  </button>
 
-  fontSize: 11,
-  fontWeight: 800,
-  lineHeight: 1,
+  {/* WhatsApp */}
+  <button
+    type="button"
+    className="desktop-whatsapp-btn"
+    onClick={() => setShowCommunityLinks(true)}
+  >
+    <span>🟢</span>
+    {t("nav.whatsapp") || "WhatsApp"}
+  </button>
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-
-  border: "2px solid #ffffff",
-
-  boxSizing: "border-box",
-
-  zIndex: 20,
-
-  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.18)",
-}}  
-              >
-                {unreadMessageCount > 99
-                  ? "99+"
-                  : unreadMessageCount}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() =>
-              navigate(
-                "/interests"
-              )
-            }
-          >
-            <FiUsers
-              size={18}
-            />
-            Connections
-          </button>
-
-          <button
-            onClick={() =>
-              navigate(
-                "/notifications"
-              )
-            }
-          >
-            <FiBell
-              size={18}
-            />
-            Notifications
-
-            {unreadNotifications.length >
-              0 && (
-              <span className="desktop-notification-badge">
-                {
-                  unreadNotifications.length
-                }
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() =>
-              navigate(
-                "/premium"
-              )
-            }
-          >
-            <FiDollarSign
-              size={18}
-            />
-            Premium
-          </button>
-
-<button
-  type="button"
-  className="desktop-whatsapp-btn"
-  onClick={handleWhatsApp}
->
-  <span>
-    🟢
-  </span>
-  WhatsApp
-</button>
-
-        </div>
+</div>
 
         {/* =================================================
             RIGHT CONTROLS
@@ -2456,98 +2388,132 @@ const handleStartChat = (member) => {
   </button>
 
   {showMenu && (
-    <div className="umuhuza-menu-dropdown">
+ <div className="umuhuza-menu-dropdown">
 
-      {/* MENU HEADER */}
-      <div className="umuhuza-menu-header">
-        <div className="umuhuza-menu-header-icon">
-          <FiMenu size={18} />
-        </div>
-
-        <div>
-          <strong>Menu</strong>
-          <span>Manage your UMUHUZA account</span>
-        </div>
-      </div>
-
-
-      {/* MY PROFILE */}
-      <button
-        type="button"
-        className="umuhuza-menu-item"
-        onClick={() => {
-          setShowMenu(false);
-          navigate("/profile");
-        }}
-      >
-        <div className="umuhuza-menu-icon profile">
-          <FiUser size={19} />
-        </div>
-
-        <div className="umuhuza-menu-text">
-          <strong>{t("nav.myProfile") || "My Profile"}</strong>
-          <span>View and edit your profile</span>
-        </div>
-
-        <FiChevronDown
-          className="umuhuza-menu-arrow"
-          size={16}
-        />
-      </button>
-
-
-      {/* INVITE FRIENDS */}
-      <button
-        type="button"
-        className="umuhuza-menu-item"
-        onClick={() => {
-          setShowMenu(false);
-          navigate("/referral");
-        }}
-      >
-        <div className="umuhuza-menu-icon invite">
-          <FiGift size={19} />
-        </div>
-
-        <div className="umuhuza-menu-text">
-          <strong>{t("nav.inviteFriends") || "Invite Friends"}</strong>
-          <span>Invite friends to join UMUHUZA</span>
-        </div>
-
-        <FiChevronDown
-          className="umuhuza-menu-arrow"
-          size={16}
-        />
-      </button>
-
-
-      {/* ACCOUNT SETTINGS */}
-      <button
-        type="button"
-        className="umuhuza-menu-item"
-        onClick={() => {
-          setShowMenu(false);
-
-          // All account settings are now inside My Profile
-          navigate("/profile");
-        }}
-      >
-        <div className="umuhuza-menu-icon settings">
-          <FiSettings size={19} />
-        </div>
-
-        <div className="umuhuza-menu-text">
-          <strong>{t("nav.accountSettings") || "Account Settings"}</strong>
-          <span>Privacy, security and preferences</span>
-        </div>
-
-        <FiChevronDown
-          className="umuhuza-menu-arrow"
-          size={16}
-        />
-      </button>
-
+  {/* MENU HEADER */}
+  <div className="umuhuza-menu-header">
+    <div className="umuhuza-menu-header-icon">
+      <FiMenu size={18} />
     </div>
+    <div>
+      <strong>Menu</strong>
+      <span>Manage your UMUHUZA account</span>
+    </div>
+  </div>
+
+  {/* MY PROFILE */}
+  <button
+    type="button"
+    className="umuhuza-menu-item"
+    onClick={() => {
+      setShowMenu(false);
+      navigate("/profile");
+    }}
+  >
+    <div className="umuhuza-menu-icon profile">
+      <FiUser size={19} />
+    </div>
+    <div className="umuhuza-menu-text">
+      <strong>{t("nav.myProfile") || "My Profile"}</strong>
+      <span>View and edit your profile</span>
+    </div>
+    <FiChevronDown className="umuhuza-menu-arrow" size={16} />
+  </button>
+
+  {/* INVITE FRIENDS */}
+   <button type="button" className="umuhuza-menu-item invite-item"
+    onClick={() => {
+      setShowMenu(false);
+      navigate("/referral");
+    }}
+  >
+    <div className="umuhuza-menu-icon invite">
+      <FiGift size={19} />``
+    </div>
+    <div className="umuhuza-menu-text">
+      <strong>{t("nav.inviteFriends") || "Invite Friends"}</strong>
+      <span>Invite friends to join UMUHUZA</span>
+    </div>
+    <FiChevronDown className="umuhuza-menu-arrow" size={16} />
+  </button>
+
+  {/* ACCOUNT SETTINGS */}
+  <button
+    type="button"
+    className="umuhuza-menu-item"
+    onClick={() => {
+      setShowMenu(false);
+      navigate("/profile");
+    }}
+  >
+    <div className="umuhuza-menu-icon settings">
+      <FiSettings size={19} />
+    </div>
+    <div className="umuhuza-menu-text">
+      <strong>{t("nav.accountSettings") || "Account Settings"}</strong>
+      <span>Privacy, security and preferences</span>
+    </div>
+    <FiChevronDown className="umuhuza-menu-arrow" size={16} />
+  </button>
+
+  {/* PRIVACY POLICY */}
+  <button
+    type="button"
+    className="umuhuza-menu-item"
+    onClick={() => {
+      setShowMenu(false);
+      navigate("/privacy-policy");
+    }}
+  >
+    <div className="umuhuza-menu-icon settings">
+      <FiShield size={19} />
+    </div>
+    <div className="umuhuza-menu-text">
+      <strong>{t("nav.privacyPolicy") || "Privacy Policy"}</strong>
+      <span>How we handle your data</span>
+    </div>
+    <FiChevronDown className="umuhuza-menu-arrow" size={16} />
+  </button>
+
+  {/* CHILD SAFETY */}
+  <button
+    type="button"
+    className="umuhuza-menu-item"
+    onClick={() => {
+      setShowMenu(false);
+      navigate("/child-safety");
+    }}
+  >
+    <div className="umuhuza-menu-icon invite">
+      <FiHeart size={19} />
+    </div>
+    <div className="umuhuza-menu-text">
+      <strong>{t("nav.childSafety") || "Child Safety"}</strong>
+      <span>18+ only and child protection</span>
+    </div>
+    <FiChevronDown className="umuhuza-menu-arrow" size={16} />
+  </button>
+
+  {/* TERMS OF SERVICE */}
+  <button
+    type="button"
+    className="umuhuza-menu-item"
+    onClick={() => {
+      setShowMenu(false);
+      navigate("/terms");
+    }}
+  >
+    <div className="umuhuza-menu-icon profile">
+      <FiFileText size={19} />
+    </div>
+    <div className="umuhuza-menu-text">
+      <strong>{t("nav.terms") || "Terms of Service"}</strong>
+      <span>Rules for using UMUHUZA</span>
+    </div>
+    <FiChevronDown className="umuhuza-menu-arrow" size={16} />
+  </button>
+
+</div>
   )}
 </div>
 
