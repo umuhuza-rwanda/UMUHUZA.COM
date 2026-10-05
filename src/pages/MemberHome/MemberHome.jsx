@@ -1295,6 +1295,71 @@ useEffect(() => {
   };
 
   // =====================================================
+// DISTRICT / CITY COORDINATES (approx center points)
+// =====================================================
+const LOCATION_COORDINATES = {
+  // Rwanda districts
+  gasabo: { lat: -1.8855, lng: 30.1305 },
+  kicukiro: { lat: -1.9780, lng: 30.1280 },
+  nyarugenge: { lat: -1.9706, lng: 30.0588 },
+  bugesera: { lat: -2.2000, lng: 30.1500 },
+  gatsibo: { lat: -1.6000, lng: 30.4500 },
+  kayonza: { lat: -1.9000, lng: 30.6500 },
+  kirehe: { lat: -2.2500, lng: 30.6500 },
+  ngoma: { lat: -2.1500, lng: 30.5500 },
+  nyagatare: { lat: -1.3000, lng: 30.3000 },
+  rwamagana: { lat: -1.9500, lng: 30.4500 },
+  gisagara: { lat: -2.5500, lng: 29.8500 },
+  huye: { lat: -2.5967, lng: 29.7394 },
+  kamonyi: { lat: -1.9500, lng: 29.9000 },
+  muhanga: { lat: -2.0800, lng: 29.7500 },
+  nyamagabe: { lat: -2.4000, lng: 29.4500 },
+  nyanza: { lat: -2.3500, lng: 29.7500 },
+  nyaruguru: { lat: -2.7000, lng: 29.4500 },
+  ruhango: { lat: -2.2000, lng: 29.8000 },
+  karongi: { lat: -2.1500, lng: 29.3500 },
+  ngororero: { lat: -1.8500, lng: 29.5500 },
+  nyabihu: { lat: -1.6500, lng: 29.5000 },
+  nyamasheke: { lat: -2.3500, lng: 29.1500 },
+  rubavu: { lat: -1.6750, lng: 29.2500 },
+  rusizi: { lat: -2.5000, lng: 28.9000 },
+  rutsiro: { lat: -1.9500, lng: 29.3500 },
+  burera: { lat: -1.4500, lng: 29.7500 },
+  gakenke: { lat: -1.7000, lng: 29.8000 },
+  gicumbi: { lat: -1.5800, lng: 30.1000 },
+  musanze: { lat: -1.5000, lng: 29.6000 },
+  rulindo: { lat: -1.7500, lng: 30.0000 },
+
+  // Burundi (main)
+  "bujumbura mairie": { lat: -3.3614, lng: 29.3599 },
+  "bujumbura rural": { lat: -3.4000, lng: 29.4000 },
+  gitega: { lat: -3.4264, lng: 29.9306 },
+  ngozi: { lat: -2.9075, lng: 29.8250 },
+  kayanza: { lat: -2.9210, lng: 29.6250 },
+  muyinga: { lat: -2.8440, lng: 30.3500 },
+  kirundo: { lat: -2.5840, lng: 30.1000 },
+  rumonge: { lat: -3.9736, lng: 29.4386 },
+  makamba: { lat: -4.1340, lng: 29.8200 },
+  rutana: { lat: -3.9280, lng: 30.0000 },
+  ruyigi: { lat: -3.4760, lng: 30.2500 },
+  cankuzo: { lat: -3.2200, lng: 30.5500 },
+  karuzi: { lat: -3.1000, lng: 30.1500 },
+  muramvya: { lat: -3.2680, lng: 29.7000 },
+  mwaro: { lat: -3.5000, lng: 29.7000 },
+  bubanza: { lat: -3.0830, lng: 29.4000 },
+  cibitoke: { lat: -2.8880, lng: 29.1500 },
+  bururi: { lat: -3.9500, lng: 29.6000 },
+};
+
+// Get coordinates from city/district name
+const getCoordsFromLocation = (city) => {
+  if (!city) return null;
+
+  const key = String(city).trim().toLowerCase();
+  return LOCATION_COORDINATES[key] || null;
+};
+
+  // =====================================================
 // FORCE PROFILE COMPLETION
 // =====================================================
 useEffect(() => {
@@ -2777,12 +2842,23 @@ const handleStartChat = (member) => {
               </h3>
 
               {(() => {
-                const distanceKm = calculateDistanceKm(
-                  currentUserProfile?.latitude,
-                  currentUserProfile?.longitude,
-                  member.latitude,
-                  member.longitude
-                );
+  const myCoords = getCoordsFromLocation(
+  currentUserProfile?.city || currentUserProfile?.location
+);
+
+const memberCoords = getCoordsFromLocation(
+  member.city || member.location
+);
+
+const distanceKm =
+  myCoords && memberCoords
+    ? calculateDistanceKm(
+        myCoords.lat,
+        myCoords.lng,
+        memberCoords.lat,
+        memberCoords.lng
+      )
+    : null;
                 return (
                   <p className="member-location-line">
                     📍 {member.city || "Location not added"}

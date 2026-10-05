@@ -13,11 +13,12 @@ import {
 
 function Footer() {
   return (
-  <footer className="kundwa-footer">
-     <section
-    id="contact"
-    className="footer-contact"
-  ></section>
+    <footer className="kundwa-footer">
+
+      <section
+        id="contact"
+        className="footer-contact"
+      ></section>
 
       {/* =========================
           FOOTER MAIN
@@ -25,26 +26,24 @@ function Footer() {
 
       <div className="footer-main">
 
-
         {/* BRAND */}
 
         <div className="footer-brand">
 
           <div className="footer-logo">
             <FiHeart />
-            <span>UMURANGA.COM</span>
+            <span>UMUHUZA.COM</span>
           </div>
 
           <p>
-            Connecting hearts across Rwanda and Burundi
-            and helping people build genuine,
-            meaningful relationships.
+            Helping people in Rwanda and Burundi
+            meet, date, and find love.
           </p>
 
           <div className="footer-trust">
             <FiShield />
             <span>
-              Safe • Secure • Genuine Connections
+              Safe • Secure • Dating
             </span>
           </div>
 
@@ -64,20 +63,20 @@ function Footer() {
           </a>
 
           <a href="/signup">
-            Create Account
+            Create Your Account
           </a>
 
           <a href="/login">
             Login
           </a>
 
-          <a href="#">
-            How UMUHUZA Works
-          </a>
+<a href="/about-us">
+  About Us
+</a>
 
-          <a href="#">
-            Success Stories
-          </a>
+<a href="/download">
+  UMUHUZA for Android
+</a>
 
         </div>
 
@@ -175,7 +174,7 @@ function Footer() {
         <div>
 
           <h3>
-            ❤️ TUNGA APP YA UMUHUZA 
+            ❤️ TUNGA APP YA UMUHUZA
           </h3>
 
           <p>
@@ -238,13 +237,13 @@ function Footer() {
 
         <div>
 
-          <a href="#">
-            Privacy Policy
-          </a>
+<a href="/privacy-policy">
+  Privacy Policy
+</a>
 
-          <a href="#">
-            Terms of Service
-          </a>
+<a href="/terms">
+  Terms & Conditions
+</a>
 
           <a href="#">
             Safety

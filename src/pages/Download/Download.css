@@ -1,0 +1,106 @@
+.download-page {
+  min-height: 100vh;
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.12), transparent 35%),
+    radial-gradient(circle at 90% 20%, rgba(236, 72, 153, 0.12), transparent 35%),
+    linear-gradient(135deg, #faf7ff, #f7f0ff, #fff3f8);
+}
+
+.download-card {
+  width: min(650px, 100%);
+  padding: 55px 40px;
+  text-align: center;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  box-shadow: 0 20px 60px rgba(80, 40, 100, 0.12);
+}
+
+.download-icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 28px;
+  font-size: 42px;
+  background: linear-gradient(135deg, #4b176e, #8c247d, #ed3150);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.25);
+}
+
+.download-card h1 {
+  margin: 0;
+  color: #4b176e;
+  font-size: 38px;
+  font-weight: 900;
+}
+
+.download-tagline {
+  margin: 10px 0 20px;
+  color: #e52f63;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.download-description {
+  max-width: 540px;
+  margin: 0 auto 30px;
+  color: #5f5268;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 28px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #7b2cbf, #c72d70, #ed3150);
+  text-decoration: none;
+  font-weight: 800;
+  box-shadow: 0 12px 28px rgba(199, 45, 112, 0.25);
+  transition: 0.25s ease;
+}
+
+.download-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px rgba(199, 45, 112, 0.32);
+}
+
+.download-note {
+  margin: 18px 0 0;
+  color: #887b91;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .download-page {
+    padding: 45px 16px;
+  }
+
+  .download-card {
+    padding: 40px 22px;
+    border-radius: 26px;
+  }
+
+  .download-card h1 {
+    font-size: 30px;
+  }
+
+  .download-description {
+    font-size: 15px;
+  }
+
+  .download-button {
+    width: 100%;
+    padding: 0 18px;
+  }
+}

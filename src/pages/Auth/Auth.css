@@ -1963,3 +1963,126 @@
     }
 
 }
+.searchable-country {
+  position: relative;
+  width: 100%;
+}
+
+.searchable-country-input {
+  position: relative;
+}
+
+.searchable-country-input input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: inherit;
+  padding-right: 36px;
+}
+
+.clear-country-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: #e5e7eb;
+  color: #374151;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.country-dropdown-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  z-index: 50;
+}
+
+.country-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14.5px;
+  color: #111827;
+}
+
+.country-option:hover {
+  background: #f3e8ff;
+}
+
+.country-option.selected {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+.country-flag {
+  font-size: 18px;
+  width: 28px;
+  text-align: center;
+}
+
+.country-name {
+  flex: 1;
+}
+
+.country-empty {
+  padding: 14px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+.auth-hero-title {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.hero-main {
+  font-size: 2.3rem;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.hero-kinyarwanda {
+  display: block;
+  font-size: 1rem;          /* smaller */
+  font-weight: 700;
+  color: #4ade80;           /* green */
+  letter-spacing: 0.2px;
+  margin-top: 4px;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .hero-main {
+    font-size: 1.7rem;
+  }
+
+  .hero-kinyarwanda {
+    font-size: 0.92rem;
+  }
+}

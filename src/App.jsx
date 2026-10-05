@@ -21,7 +21,7 @@ import Matches from "./pages/Matches/Matches";
 import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
 import ChildSafety from "./pages/Legal/ChildSafety";
 import TermsOfService from "./pages/Legal/TermsOfService";
-
+import Download from "./pages/Download/Download";
 
 // =========================
 // AUTH PAGES
@@ -872,6 +872,7 @@ function App() {
               </MemberLayout>
             }
           />
+          <Route path="/download" element={<Download />} />
 
           {/* =================================================
               APP PREFERENCES

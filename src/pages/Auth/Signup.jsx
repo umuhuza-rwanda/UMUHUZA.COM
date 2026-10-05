@@ -29,6 +29,8 @@ function Signup() {
   const [referralCode, setReferralCode] = useState("");
   const [referralMessage, setReferralMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [countrySearch, setCountrySearch] = useState("");
+const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -79,50 +81,199 @@ function Signup() {
     "Muramvya", "Muyinga", "Mwaro", "Ngozi", "Rumonge", "Rutana", "Ruyigi",
   ];
 
-  const countries = [
-    { code: "RW", name: "Rwanda", flag: "🇷🇼" },
-    { code: "BI", name: "Burundi", flag: "🇧🇮" },
-    { code: "US", name: "United States", flag: "🇺🇸" },
-    { code: "CA", name: "Canada", flag: "🇨🇦" },
-    { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
-    { code: "BE", name: "Belgium", flag: "🇧🇪" },
-    { code: "FR", name: "France", flag: "🇫🇷" },
-    { code: "DE", name: "Germany", flag: "🇩🇪" },
-    { code: "SE", name: "Sweden", flag: "🇸🇪" },
-    { code: "NL", name: "Netherlands", flag: "🇳🇱" },
-    { code: "AU", name: "Australia", flag: "🇦🇺" },
-    { code: "NZ", name: "New Zealand", flag: "🇳🇿" },
-    { code: "CH", name: "Switzerland", flag: "🇨🇭" },
-    { code: "IT", name: "Italy", flag: "🇮🇹" },
-    { code: "ES", name: "Spain", flag: "🇪🇸" },
-    { code: "ZA", name: "South Africa", flag: "🇿🇦" },
-    { code: "UG", name: "Uganda", flag: "🇺🇬" },
-    { code: "KE", name: "Kenya", flag: "🇰🇪" },
-    { code: "TZ", name: "Tanzania", flag: "🇹🇿" },
-    { code: "CD", name: "Democratic Republic of the Congo", flag: "🇨🇩" },
-    { code: "OTHER", name: "Other Country", flag: "🌍" },
-  ];
+const countries = [
+  // East Africa / Great Lakes (priority)
+  { code: "RW", name: "Rwanda", flag: "🇷🇼" },
+  { code: "BI", name: "Burundi", flag: "🇧🇮" },
+  { code: "UG", name: "Uganda", flag: "🇺🇬" },
+  { code: "KE", name: "Kenya", flag: "🇰🇪" },
+  { code: "TZ", name: "Tanzania", flag: "🇹🇿" },
+  { code: "CD", name: "Democratic Republic of the Congo", flag: "🇨🇩" },
+  { code: "CG", name: "Congo (Brazzaville)", flag: "🇨🇬" },
+  { code: "SS", name: "South Sudan", flag: "🇸🇸" },
+  { code: "ET", name: "Ethiopia", flag: "🇪🇹" },
+  { code: "SO", name: "Somalia", flag: "🇸🇴" },
+  { code: "DJ", name: "Djibouti", flag: "🇩🇯" },
+  { code: "ER", name: "Eritrea", flag: "🇪🇷" },
 
-  const phoneCodes = [
-    { code: "+250", country: "Rwanda", flag: "🇷🇼" },
-    { code: "+257", country: "Burundi", flag: "🇧🇮" },
-    { code: "+1", country: "United States / Canada", flag: "🇺🇸" },
-    { code: "+32", country: "Belgium", flag: "🇧🇪" },
-    { code: "+33", country: "France", flag: "🇫🇷" },
-    { code: "+44", country: "United Kingdom", flag: "🇬🇧" },
-    { code: "+49", country: "Germany", flag: "🇩🇪" },
-    { code: "+46", country: "Sweden", flag: "🇸🇪" },
-    { code: "+31", country: "Netherlands", flag: "🇳🇱" },
-    { code: "+27", country: "South Africa", flag: "🇿🇦" },
-    { code: "+256", country: "Uganda", flag: "🇺🇬" },
-    { code: "+254", country: "Kenya", flag: "🇰🇪" },
-    { code: "+255", country: "Tanzania", flag: "🇹🇿" },
-    { code: "+243", country: "DR Congo", flag: "🇨🇩" },
-    { code: "+61", country: "Australia", flag: "🇦🇺" },
-    { code: "+64", country: "New Zealand", flag: "🇳🇿" },
-    { code: "+41", country: "Switzerland", flag: "🇨🇭" },
-    { code: "OTHER", country: "Other", flag: "🌍" },
-  ];
+  // Other Africa
+  { code: "ZA", name: "South Africa", flag: "🇿🇦" },
+  { code: "NG", name: "Nigeria", flag: "🇳🇬" },
+  { code: "GH", name: "Ghana", flag: "🇬🇭" },
+  { code: "CM", name: "Cameroon", flag: "🇨🇲" },
+  { code: "CI", name: "Ivory Coast", flag: "🇨🇮" },
+  { code: "SN", name: "Senegal", flag: "🇸🇳" },
+  { code: "ML", name: "Mali", flag: "🇲🇱" },
+  { code: "BF", name: "Burkina Faso", flag: "🇧🇫" },
+  { code: "NE", name: "Niger", flag: "🇳🇪" },
+  { code: "TD", name: "Chad", flag: "🇹🇩" },
+  { code: "CF", name: "Central African Republic", flag: "🇨🇫" },
+  { code: "GA", name: "Gabon", flag: "🇬🇦" },
+  { code: "GQ", name: "Equatorial Guinea", flag: "🇬🇶" },
+  { code: "AO", name: "Angola", flag: "🇦🇴" },
+  { code: "ZM", name: "Zambia", flag: "🇿🇲" },
+  { code: "ZW", name: "Zimbabwe", flag: "🇿🇼" },
+  { code: "MW", name: "Malawi", flag: "🇲🇼" },
+  { code: "MZ", name: "Mozambique", flag: "🇲🇿" },
+  { code: "BW", name: "Botswana", flag: "🇧🇼" },
+  { code: "NA", name: "Namibia", flag: "🇳🇦" },
+  { code: "MG", name: "Madagascar", flag: "🇲🇬" },
+  { code: "MU", name: "Mauritius", flag: "🇲🇺" },
+  { code: "SC", name: "Seychelles", flag: "🇸🇨" },
+  { code: "RE", name: "Réunion", flag: "🇷🇪" },
+  { code: "EG", name: "Egypt", flag: "🇪🇬" },
+  { code: "MA", name: "Morocco", flag: "🇲🇦" },
+  { code: "DZ", name: "Algeria", flag: "🇩🇿" },
+  { code: "TN", name: "Tunisia", flag: "🇹🇳" },
+  { code: "LY", name: "Libya", flag: "🇱🇾" },
+  { code: "SD", name: "Sudan", flag: "🇸🇩" },
+
+  // Europe
+  { code: "BE", name: "Belgium", flag: "🇧🇪" },
+  { code: "FR", name: "France", flag: "🇫🇷" },
+  { code: "DE", name: "Germany", flag: "🇩🇪" },
+  { code: "NL", name: "Netherlands", flag: "🇳🇱" },
+  { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
+  { code: "IE", name: "Ireland", flag: "🇮🇪" },
+  { code: "SE", name: "Sweden", flag: "🇸🇪" },
+  { code: "NO", name: "Norway", flag: "🇳🇴" },
+  { code: "DK", name: "Denmark", flag: "🇩🇰" },
+  { code: "FI", name: "Finland", flag: "🇫🇮" },
+  { code: "CH", name: "Switzerland", flag: "🇨🇭" },
+  { code: "AT", name: "Austria", flag: "🇦🇹" },
+  { code: "IT", name: "Italy", flag: "🇮🇹" },
+  { code: "ES", name: "Spain", flag: "🇪🇸" },
+  { code: "PT", name: "Portugal", flag: "🇵🇹" },
+  { code: "PL", name: "Poland", flag: "🇵🇱" },
+  { code: "RO", name: "Romania", flag: "🇷🇴" },
+  { code: "CZ", name: "Czech Republic", flag: "🇨🇿" },
+  { code: "HU", name: "Hungary", flag: "🇭🇺" },
+  { code: "GR", name: "Greece", flag: "🇬🇷" },
+  { code: "LU", name: "Luxembourg", flag: "🇱🇺" },
+  { code: "RU", name: "Russia", flag: "🇷🇺" },
+  { code: "UA", name: "Ukraine", flag: "🇺🇦" },
+  { code: "TR", name: "Turkey", flag: "🇹🇷" },
+
+  // Americas
+  { code: "US", name: "United States", flag: "🇺🇸" },
+  { code: "CA", name: "Canada", flag: "🇨🇦" },
+  { code: "MX", name: "Mexico", flag: "🇲🇽" },
+  { code: "BR", name: "Brazil", flag: "🇧🇷" },
+  { code: "AR", name: "Argentina", flag: "🇦🇷" },
+  { code: "CL", name: "Chile", flag: "🇨🇱" },
+  { code: "CO", name: "Colombia", flag: "🇨🇴" },
+  { code: "PE", name: "Peru", flag: "🇵🇪" },
+  { code: "VE", name: "Venezuela", flag: "🇻🇪" },
+  { code: "HT", name: "Haiti", flag: "🇭🇹" },
+  { code: "JM", name: "Jamaica", flag: "🇯🇲" },
+
+  // Middle East / Asia
+  { code: "AE", name: "United Arab Emirates", flag: "🇦🇪" },
+  { code: "SA", name: "Saudi Arabia", flag: "🇸🇦" },
+  { code: "QA", name: "Qatar", flag: "🇶🇦" },
+  { code: "KW", name: "Kuwait", flag: "🇰🇼" },
+  { code: "BH", name: "Bahrain", flag: "🇧🇭" },
+  { code: "OM", name: "Oman", flag: "🇴🇲" },
+  { code: "IL", name: "Israel", flag: "🇮🇱" },
+  { code: "IN", name: "India", flag: "🇮🇳" },
+  { code: "PK", name: "Pakistan", flag: "🇵🇰" },
+  { code: "BD", name: "Bangladesh", flag: "🇧🇩" },
+  { code: "CN", name: "China", flag: "🇨🇳" },
+  { code: "JP", name: "Japan", flag: "🇯🇵" },
+  { code: "KR", name: "South Korea", flag: "🇰🇷" },
+  { code: "SG", name: "Singapore", flag: "🇸🇬" },
+  { code: "MY", name: "Malaysia", flag: "🇲🇾" },
+  { code: "ID", name: "Indonesia", flag: "🇮🇩" },
+  { code: "PH", name: "Philippines", flag: "🇵🇭" },
+  { code: "TH", name: "Thailand", flag: "🇹🇭" },
+  { code: "VN", name: "Vietnam", flag: "🇻🇳" },
+
+  // Oceania
+  { code: "AU", name: "Australia", flag: "🇦🇺" },
+  { code: "NZ", name: "New Zealand", flag: "🇳🇿" },
+
+  // Fallback
+  { code: "OTHER", name: "Other Country", flag: "🌍" },
+];
+
+const phoneCodes = [
+  { code: "+250", country: "Rwanda", flag: "🇷🇼" },
+  { code: "+257", country: "Burundi", flag: "🇧🇮" },
+  { code: "+256", country: "Uganda", flag: "🇺🇬" },
+  { code: "+254", country: "Kenya", flag: "🇰🇪" },
+  { code: "+255", country: "Tanzania", flag: "🇹🇿" },
+  { code: "+243", country: "DR Congo", flag: "🇨🇩" },
+  { code: "+242", country: "Congo Brazzaville", flag: "🇨🇬" },
+  { code: "+211", country: "South Sudan", flag: "🇸🇸" },
+  { code: "+251", country: "Ethiopia", flag: "🇪🇹" },
+  { code: "+252", country: "Somalia", flag: "🇸🇴" },
+  { code: "+253", country: "Djibouti", flag: "🇩🇯" },
+  { code: "+291", country: "Eritrea", flag: "🇪🇷" },
+  { code: "+27", country: "South Africa", flag: "🇿🇦" },
+  { code: "+234", country: "Nigeria", flag: "🇳🇬" },
+  { code: "+233", country: "Ghana", flag: "🇬🇭" },
+  { code: "+237", country: "Cameroon", flag: "🇨🇲" },
+  { code: "+225", country: "Ivory Coast", flag: "🇨🇮" },
+  { code: "+221", country: "Senegal", flag: "🇸🇳" },
+  { code: "+20", country: "Egypt", flag: "🇪🇬" },
+  { code: "+212", country: "Morocco", flag: "🇲🇦" },
+  { code: "+213", country: "Algeria", flag: "🇩🇿" },
+  { code: "+216", country: "Tunisia", flag: "🇹🇳" },
+  { code: "+1", country: "United States / Canada", flag: "🇺🇸" },
+  { code: "+32", country: "Belgium", flag: "🇧🇪" },
+  { code: "+33", country: "France", flag: "🇫🇷" },
+  { code: "+49", country: "Germany", flag: "🇩🇪" },
+  { code: "+31", country: "Netherlands", flag: "🇳🇱" },
+  { code: "+44", country: "United Kingdom", flag: "🇬🇧" },
+  { code: "+353", country: "Ireland", flag: "🇮🇪" },
+  { code: "+46", country: "Sweden", flag: "🇸🇪" },
+  { code: "+47", country: "Norway", flag: "🇳🇴" },
+  { code: "+45", country: "Denmark", flag: "🇩🇰" },
+  { code: "+358", country: "Finland", flag: "🇫🇮" },
+  { code: "+41", country: "Switzerland", flag: "🇨🇭" },
+  { code: "+43", country: "Austria", flag: "🇦🇹" },
+  { code: "+39", country: "Italy", flag: "🇮🇹" },
+  { code: "+34", country: "Spain", flag: "🇪🇸" },
+  { code: "+351", country: "Portugal", flag: "🇵🇹" },
+  { code: "+48", country: "Poland", flag: "🇵🇱" },
+  { code: "+40", country: "Romania", flag: "🇷🇴" },
+  { code: "+30", country: "Greece", flag: "🇬🇷" },
+  { code: "+352", country: "Luxembourg", flag: "🇱🇺" },
+  { code: "+7", country: "Russia", flag: "🇷🇺" },
+  { code: "+90", country: "Turkey", flag: "🇹🇷" },
+  { code: "+971", country: "UAE", flag: "🇦🇪" },
+  { code: "+966", country: "Saudi Arabia", flag: "🇸🇦" },
+  { code: "+974", country: "Qatar", flag: "🇶🇦" },
+  { code: "+91", country: "India", flag: "🇮🇳" },
+  { code: "+92", country: "Pakistan", flag: "🇵🇰" },
+  { code: "+86", country: "China", flag: "🇨🇳" },
+  { code: "+81", country: "Japan", flag: "🇯🇵" },
+  { code: "+82", country: "South Korea", flag: "🇰🇷" },
+  { code: "+65", country: "Singapore", flag: "🇸🇬" },
+  { code: "+60", country: "Malaysia", flag: "🇲🇾" },
+  { code: "+62", country: "Indonesia", flag: "🇮🇩" },
+  { code: "+63", country: "Philippines", flag: "🇵🇭" },
+  { code: "+66", country: "Thailand", flag: "🇹🇭" },
+  { code: "+84", country: "Vietnam", flag: "🇻🇳" },
+  { code: "+61", country: "Australia", flag: "🇦🇺" },
+  { code: "+64", country: "New Zealand", flag: "🇳🇿" },
+  { code: "+55", country: "Brazil", flag: "🇧🇷" },
+  { code: "+52", country: "Mexico", flag: "🇲🇽" },
+  { code: "OTHER", country: "Other", flag: "🌍" },
+];
+
+const otherCountries = countries.filter(
+  (c) => c.code !== "RW" && c.code !== "BI" && c.code !== "OTHER"
+);
+
+const filteredOtherCountries = otherCountries.filter((c) => {
+  const q = countrySearch.trim().toLowerCase();
+  if (!q) return true;
+  return (
+    c.name.toLowerCase().includes(q) ||
+    c.code.toLowerCase().includes(q)
+  );
+});
 
   // =====================================================
   // HELPERS
@@ -415,11 +566,17 @@ function Signup() {
             <img src={umurangaLogo} alt="UMUHUZA" />
           </div>
 
-          <h1>
-            {t("signup.heroTitle") || "Start Your"}
-            <br />
-            {t("signup.heroTitle2") || "Love Journey"}
-          </h1>
+<h1 className="auth-hero-title">
+  <span className="hero-main">
+    {t("signup.heroTitle") || "Start Your"}
+    <br />
+   
+  </span>
+
+  <span className="hero-kinyarwanda">
+    Urakaza neza ku umuhuza
+  </span>
+</h1>
 
           <p>
             {t("signup.heroSubtitle") || "Join genuine people looking for meaningful connections."}
@@ -552,7 +709,7 @@ function Signup() {
                 />
               </div>
               <small className="input-help">
-                {t("signup.ageHelp") || "Your age is calculated automatically."}
+                {t("signup.ageHelp") || "."}
                 {currentAge !== null && currentAge >= 0 && (
                   <> {t("signup.youAre") || "You are"} <strong>{currentAge}</strong> {t("signup.yearsOld") || "years old."}</>
                 )}
@@ -596,56 +753,123 @@ function Signup() {
               </div>
             </div>
 
-            {/* LOCATION */}
-            <div className="form-group">
-              <label htmlFor="location">
-                {country === "rwanda"
-                  ? t("signup.district") || "District"
-                  : country === "burundi"
-                  ? t("signup.province") || "Province"
-                  : country === "other"
-                  ? t("signup.countryOfResidence") || "Country of Residence"
-                  : t("signup.location") || "Location"}
-              </label>
-              <div className="input-wrapper">
-                <FiMapPin />
-                <select
-                  id="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  disabled={loading || !country}
-                >
-                  <option value="">
-                    {!country
-                      ? t("signup.selectCountryFirst") || "Select country first"
-                      : country === "rwanda"
-                      ? t("signup.selectDistrict") || "Select your district"
-                      : country === "burundi"
-                      ? t("signup.selectProvince") || "Select your province"
-                      : t("signup.selectYourCountry") || "Select your country"}
-                  </option>
 
-                  {country === "rwanda" &&
-                    rwandaDistricts.map((d) => (
-                      <option key={d} value={d}>{d}</option>
-                    ))}
+{/* LOCATION */}
+<div className="form-group">
+  <label htmlFor="location">
+    {country === "rwanda"
+      ? t("signup.district") || "District"
+      : country === "burundi"
+      ? t("signup.province") || "Province"
+      : country === "other"
+      ? t("signup.countryOfResidence") || "Country of Residence"
+      : t("signup.location") || "Location"}
+  </label>
 
-                  {country === "burundi" &&
-                    burundiProvinces.map((p) => (
-                      <option key={p} value={p}>{p}</option>
-                    ))}
+  {/* Rwanda / Burundi / empty = normal select */}
+  {(country === "rwanda" || country === "burundi" || !country) && (
+    <div className="input-wrapper">
+      <FiMapPin />
+      <select
+        id="location"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        disabled={loading || !country}
+      >
+        <option value="">
+          {!country
+            ? t("signup.selectCountryFirst") || "Select country first"
+            : country === "rwanda"
+            ? t("signup.selectDistrict") || "Select your district"
+            : t("signup.selectProvince") || "Select your province"}
+        </option>
 
-                  {country === "other" &&
-                    countries
-                      .filter((c) => c.code !== "RW" && c.code !== "BI" && c.code !== "OTHER")
-                      .map((c) => (
-                        <option key={c.code} value={c.name}>
-                          {c.flag} {c.name}
-                        </option>
-                      ))}
-                </select>
-              </div>
-            </div>
+        {country === "rwanda" &&
+          rwandaDistricts.map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+
+        {country === "burundi" &&
+          burundiProvinces.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
+      </select>
+    </div>
+  )}
+
+  {/* Other Country = searchable dropdown */}
+  {country === "other" && (
+    <div className="searchable-country">
+      <div className="input-wrapper searchable-country-input">
+        <FiMapPin />
+        <input
+          type="text"
+          placeholder={
+            location
+              ? location
+              : t("signup.searchCountry") || "Type to search country..."
+          }
+          value={showCountryDropdown ? countrySearch : location}
+          onChange={(e) => {
+            setCountrySearch(e.target.value);
+            setShowCountryDropdown(true);
+            if (location) setLocation("");
+          }}
+          onFocus={() => {
+            setShowCountryDropdown(true);
+            setCountrySearch("");
+          }}
+          disabled={loading}
+          autoComplete="off"
+        />
+        {location && (
+          <button
+            type="button"
+            className="clear-country-btn"
+            onClick={() => {
+              setLocation("");
+              setCountrySearch("");
+              setShowCountryDropdown(true);
+            }}
+          >
+            ✕
+          </button>
+        )}
+      </div>
+
+      {showCountryDropdown && (
+        <div className="country-dropdown-list">
+          {filteredOtherCountries.length === 0 ? (
+            <div className="country-empty">No country found</div>
+          ) : (
+            filteredOtherCountries.map((c) => (
+              <button
+                key={c.code}
+                type="button"
+                className={`country-option ${
+                  location === c.name ? "selected" : ""
+                }`}
+                onClick={() => {
+                  setLocation(c.name);
+                  setCountrySearch("");
+                  setShowCountryDropdown(false);
+                }}
+              >
+                <span className="country-flag">{c.flag}</span>
+                <span className="country-name">{c.name}</span>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  )}
+</div>
+
 
             {/* PHONE */}
             <div className="form-group">
@@ -700,33 +924,7 @@ function Signup() {
               </small>
             </div>
 
-            {/* REFERRAL */}
-            <div className="form-group referral-signup-group">
-              <label htmlFor="referralCode">
-                {t("signup.referralCode") || "Referral Code"}
-              </label>
-              <div className="input-wrapper">
-                <span className="referral-input-icon">🎁</span>
-                <input
-                  id="referralCode"
-                  type="text"
-                  placeholder={t("signup.referralPlaceholder") || "Enter referral code"}
-                  value={referralCode}
-                  onChange={(e) => {
-                    setReferralCode(e.target.value.toUpperCase());
-                    setReferralMessage("");
-                  }}
-                  disabled={loading}
-                />
-              </div>
-              {referralMessage ? (
-                <small className="input-help referral-success-message">💕 {referralMessage}</small>
-              ) : (
-                <small className="input-help">
-                  {t("signup.referralHelp") || "If a UMUHUZA member invited you, enter their referral code."}
-                </small>
-              )}
-            </div>
+
             {/* TERMS + 18+ */}
 <div className="terms">
   <input

@@ -552,6 +552,7 @@ const translations = {
 "nav.childSafetyDesc": "18+ only and child protection",
 "nav.terms": "Terms of Service",
 "nav.termsDesc": "Rules for using UMUHUZA",
+"signup.searchCountry": "Type to search country...",
   },
 
   // ===================================================
@@ -1077,6 +1078,7 @@ const translations = {
 "nav.childSafetyDesc": "Imyaka 18+ gusa n'umutekano w'abana",
 "nav.terms": "Amategeko y'Ikoreshwa",
 "nav.termsDesc": "Amategeko yo gukoresha UMUHUZA",
+"signup.searchCountry": "Andika ushake igihugu...",
   },
 
   // ===================================================
@@ -1616,6 +1618,7 @@ const translations = {
 "nav.childSafetyDesc": "18+ uniquement et protection des enfants",
 "nav.terms": "Conditions d'utilisation",
 "nav.termsDesc": "Règles d'utilisation de UMUHUZA",
+"signup.searchCountry": "Tapez pour rechercher un pays...",
   },
 
   // ===================================================
@@ -2175,6 +2178,7 @@ const translations = {
 "nav.childSafetyDesc": "Miaka 18+ tu na ulinzi wa watoto",
 "nav.terms": "Masharti ya Huduma",
 "nav.termsDesc": "Sheria za kutumia UMUHUZA",
+"signup.searchCountry": "Andika utafute nchi...",
   },
 };
 

@@ -1,4 +1,12 @@
 apply plugin: 'com.android.application'
+signingConfigs {
+    release {
+        storeFile file("C:/Users/USER/Videos/umuhuza-release-2026.jks")
+        storePassword System.getenv("UMUHUZA_KEYSTORE_PASSWORD")
+        keyAlias "umuhuza-release"
+        keyPassword System.getenv("UMUHUZA_KEY_PASSWORD")
+    }
+}
 
 android {
     namespace = "com.umuhuza.app"
@@ -17,10 +25,11 @@ android {
         }
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+release {
+    minifyEnabled false
+    signingConfig signingConfigs.release
+    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+}
     }
 }
 
