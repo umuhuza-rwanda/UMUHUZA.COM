@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
@@ -7,19 +6,27 @@
   </url>
 
   <url>
-    <loc>https://umuhuza.online/about</loc>
+    <loc>https://umuhuza.online/signup</loc>
   </url>
 
   <url>
-    <loc>https://umuhuza.online/how-it-works</loc>
+    <loc>https://umuhuza.online/login</loc>
   </url>
 
   <url>
-    <loc>https://umuhuza.online/success-stories</loc>
+    <loc>https://umuhuza.online/download</loc>
   </url>
 
   <url>
-    <loc>https://umuhuza.online/contact</loc>
+    <loc>https://umuhuza.online/about-us</loc>
+  </url>
+
+  <url>
+    <loc>https://umuhuza.online/privacy-policy</loc>
+  </url>
+
+  <url>
+    <loc>https://umuhuza.online/terms</loc>
   </url>
 
 </urlset>
