@@ -3886,22 +3886,7 @@ const mergeServerMessages = (serverMessages) => {
                   SEND LOVE
               ================================================= */}
 
-              <button
-                type="button"
-                className="message-tool-btn"
-                title="Send Love"
-                onClick={
-                  handleSendLove
-                }
-                disabled={
-                  sending ||
-                  uploadingImages
-                }
-              >
 
-                <FiHeart />
-
-              </button>
 
 
 
