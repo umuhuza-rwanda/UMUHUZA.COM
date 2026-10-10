@@ -385,7 +385,7 @@ function ProfileSetup() {
           <h1>
             {t("profileSetup.heroTitle") || "Create Your"}
             <br />
-            {t("profileSetup.heroTitle2") || "UMUHUZA Profile"}
+            {t("shyira ifoto kuri profile yawe ") || "UMUHUZA Profile"}
           </h1>
 
           <p>

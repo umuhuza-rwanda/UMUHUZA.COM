@@ -1461,134 +1461,79 @@ const getOrCreateConversation = async (person) => {
       currentUserProfile,
     ]);
 
-  // =====================================================
-  // FILTERED MEMBERS
-  // =====================================================
+    const filteredMembers = useMemo(() => {
+  let result = [...smartMembers];
 
-  const filteredMembers =
-    useMemo(() => {
-      let result = [
-        ...smartMembers,
-      ];
+  // ===== MALE =====
+  if (activeCategory === "male") {
+    result = result.filter((member) => {
+      const g = normalize(member.gender);
+      return g === "male" || g === "man" || g === "m";
+    });
+  }
 
-      if (
-        activeCategory ===
-        "online"
-      ) {
-        result =
-          result.filter(
-            (member) =>
-              member.online
-          );
-      }
+  // ===== FEMALE =====
+  if (activeCategory === "female") {
+    result = result.filter((member) => {
+      const g = normalize(member.gender);
+      return g === "female" || g === "woman" || g === "f";
+    });
+  }
 
-      if (
-        activeCategory ===
-        "new"
-      ) {
-        result =
-          result.filter(
-            (member) =>
-              member.newMember
-          );
-      }
+  // ===== ONLINE =====
+  if (activeCategory === "online") {
+    result = result.filter((member) => member.online);
+  }
 
-      if (
-        activeCategory ===
-        "verified"
-      ) {
-        result =
-          result.filter(
-            (member) =>
-              member.verified
-          );
-      }
+  // ===== NEW =====
+  if (activeCategory === "new") {
+    result = result.filter((member) => member.newMember);
+  }
 
-      if (
-        activeCategory ===
-        "diaspora"
-      ) {
-        result =
-          result.filter(
-            isDiasporaMember
-          );
-      }
+  // ===== VERIFIED =====
+  if (activeCategory === "verified") {
+    result = result.filter((member) => member.verified);
+  }
 
-      if (
-        activeCategory ===
-        "nearby" &&
-        currentUserProfile
-      ) {
-        result =
-          result
-            .filter(
-              (member) =>
-                normalize(
-                  member.country
-                ) ===
-                  normalize(
-                    currentUserProfile.country
-                  ) ||
-                normalize(
-                  member.city
-                ) ===
-                  normalize(
-                    currentUserProfile.city
-                  )
-            )
-            .sort(
-              (a, b) =>
-                getLocationScore(
-                  b
-                ) -
-                getLocationScore(
-                  a
-                )
-            );
-      }
+  // ===== DIASPORA =====
+  if (activeCategory === "diaspora") {
+    result = result.filter(isDiasporaMember);
+  }
 
-      if (
-        search.trim()
-      ) {
-        const s =
-          normalize(search);
+  // ===== NEARBY =====
+  if (activeCategory === "nearby" && currentUserProfile) {
+    result = result
+      .filter(
+        (member) =>
+          normalize(member.country) ===
+            normalize(currentUserProfile.country) ||
+          normalize(member.city) ===
+            normalize(currentUserProfile.city)
+      )
+      .sort((a, b) => getLocationScore(b) - getLocationScore(a));
+  }
 
-        result =
-          result.filter(
-            (member) => {
-              const name =
-                normalize(
-                  member.name ||
-                    member.full_name ||
-                    member.username
-                );
+  // ===== SEARCH =====
+  if (search.trim()) {
+    const s = normalize(search);
 
-              const city =
-                normalize(
-                  member.city
-                );
+    result = result.filter((member) => {
+      const name = normalize(
+        member.name || member.full_name || member.username
+      );
+      const city = normalize(member.city);
+      const country = normalize(member.country);
 
-              const country =
-                normalize(
-                  member.country
-                );
+      return (
+        name.includes(s) ||
+        city.includes(s) ||
+        country.includes(s)
+      );
+    });
+  }
 
-              return (
-                name.includes(s) ||
-                city.includes(s) ||
-                country.includes(s)
-              );
-            }
-          );
-      }
-
-      return result;
-    }, [
-      smartMembers,
-      activeCategory,
-      search,
-      currentUserProfile,
-    ]);
+  return result;
+}, [smartMembers, activeCategory, search, currentUserProfile]);
 
     // ===================== REFRESHABLE MEMBER ROTATION =====================
 
@@ -2746,27 +2691,29 @@ const handleStartChat = (member) => {
               DISCOVERY TABS
           ================================================= */}
 
-          <div className="discovery-tabs">
-{[
-  { key: "recommended", label: `💕 ${t("category.recommended") || "Recommended"}` },
-  { key: "online", label: `🟢 ${t("category.online") || "Online"}` },
-  { key: "diaspora", label: `🌍 ${t("category.diaspora") || "Diaspora"}` },
-  { key: "new", label: `✨ ${t("category.new") || "New"}` },
-  { key: "verified", label: `✓ ${t("category.verified") || "Verified"}` },
-  { key: "nearby", label: `📍 ${t("category.nearby") || "Nearby"}` },
-].map((tab) => (
-  <button
-    key={tab.key}
-    className={`discovery-tab ${activeCategory === tab.key ? "active" : ""}`}
-    onClick={() => setActiveCategory(tab.key)}
-  >
-    {tab.label}
-  </button>
-
-              )
-            )}
-
-          </div>
+<div className="discovery-tabs">
+  {[
+    { key: "recommended", label: `💕 ${t("category.recommended") || "Recommended"}` },
+    { key: "male", label: `👨 ${t("category.male") || "Male"}` },
+    { key: "female", label: `👩 ${t("category.female") || "Female"}` },
+    { key: "online", label: `🟢 ${t("category.online") || "Online"}` },
+    { key: "diaspora", label: `🌍 ${t("category.diaspora") || "Diaspora"}` },
+    { key: "new", label: `✨ ${t("category.new") || "New"}` },
+    { key: "verified", label: `✓ ${t("category.verified") || "Verified"}` },
+    { key: "nearby", label: `📍 ${t("category.nearby") || "Nearby"}` },
+  ].map((tab) => (
+    <button
+      key={tab.key}
+      className={`discovery-tab ${activeCategory === tab.key ? "active" : ""}`}
+      onClick={() => {
+        setActiveCategory(tab.key);
+        setCurrentPage(1); // reset page when filter changes
+      }}
+    >
+      {tab.label}
+    </button>
+  ))}
+</div>
 
 
 {/* =================================================

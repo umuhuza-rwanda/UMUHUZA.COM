@@ -523,3 +523,13 @@ html.dark .footer h4,
 [data-kundwa-theme="dark"] .footer h3 {
   color: #faf5ff !important;
 }
+.footer-store-btn {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.footer-store-btn:hover {
+  text-decoration: none;
+}

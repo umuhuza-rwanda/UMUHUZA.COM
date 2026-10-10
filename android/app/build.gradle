@@ -1,16 +1,19 @@
 apply plugin: 'com.android.application'
-signingConfigs {
-    release {
-        storeFile file("C:/Users/USER/Videos/umuhuza-release-2026.jks")
-        storePassword System.getenv("UMUHUZA_KEYSTORE_PASSWORD")
-        keyAlias "umuhuza-release"
-        keyPassword System.getenv("UMUHUZA_KEY_PASSWORD")
-    }
-}
 
 android {
+
+    signingConfigs {
+        release {
+            storeFile file("C:/Users/USER/Videos/umuhuza-release-2026.jks")
+            storePassword System.getenv("UMUHUZA_KEYSTORE_PASSWORD")
+            keyAlias "umuhuza-release"
+            keyPassword System.getenv("UMUHUZA_KEY_PASSWORD")
+        }
+    }
+
     namespace = "com.umuhuza.app"
     compileSdk = rootProject.ext.compileSdkVersion
+
     defaultConfig {
         applicationId "com.umuhuza.app"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -18,23 +21,23 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         aaptOptions {
-             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
-             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
     buildTypes {
-release {
-    minifyEnabled false
-    signingConfig signingConfigs.release
-    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-}
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 }
 
 repositories {
-    flatDir{
+    flatDir {
         dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
     }
 }

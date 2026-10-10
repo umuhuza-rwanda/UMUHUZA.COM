@@ -1,4 +1,5 @@
 import "./Auth.css";
+import SEO from "../../components/SEO/SEO";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -557,6 +558,14 @@ const filteredOtherCountries = otherCountries.filter((c) => {
   // RENDER
   // =====================================================
   return (
+
+      <>
+    <SEO
+      title="Create Your Dating Account | UMUHUZA"
+      description="Join UMUHUZA, a dating platform in Rwanda. Create your account to discover singles, meet potential partners, and start your dating journey."
+      path="/signup"
+    />
+
     <div className="auth-page">
       <div className="auth-container">
 
@@ -997,7 +1006,9 @@ const filteredOtherCountries = otherCountries.filter((c) => {
           </div>
         </div>
       </div>
+   
     </div>
+  </>
   );
 }
 

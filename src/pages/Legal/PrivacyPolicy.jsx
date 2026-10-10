@@ -2,11 +2,18 @@ import { useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
 import "./Legal.css";
+import SEO from "../../components/SEO/SEO";
 
 function PrivacyPolicy() {
   const navigate = useNavigate();
 
   return (
+    <>
+    <SEO
+      title="Privacy Policy | UMUHUZA Dating Platform"
+      description="Read the UMUHUZA privacy policy to understand how our dating platform handles personal information and protects users' privacy."
+      path="/privacy-policy"
+    />
     <div className="legal-page">
       <header className="legal-header">
         <button className="legal-back" onClick={() => navigate(-1)}>
@@ -127,7 +134,8 @@ function PrivacyPolicy() {
           </p>
         </section>
       </main>
-    </div>
+       </div>
+  </>
   );
 }
 

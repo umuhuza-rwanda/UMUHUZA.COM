@@ -1,5 +1,8 @@
 import "./AboutUs.css";
 
+import SEO from "../SEO/SEO";
+
+
 import {
   FiHeart,
   FiUsers,
@@ -56,10 +59,15 @@ function AboutUs() {
   };
 
 
-  return (
+return (
+  <>
+    <SEO
+      title="About UMUHUZA | Rwanda Dating Site"
+      description="Learn about UMUHUZA, an online dating platform in Rwanda helping adults meet potential partners and explore romantic relationships."
+      path="/about-us"
+    />
 
     <div className="about-page">
-
 
       {/* =================================================
           HERO
@@ -473,9 +481,8 @@ function AboutUs() {
 
 
     </div>
-
+  </>
   );
-
 }
 
 export default AboutUs;

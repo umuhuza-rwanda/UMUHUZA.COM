@@ -2,11 +2,23 @@ import { useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
 import "./Legal.css";
+import SEO from "../../components/SEO/SEO";
 
 function TermsOfService() {
   const navigate = useNavigate();
 
+  const pageSEO = (
+    <SEO
+      title="Terms of Service | UMUHUZA"
+      description="Read the terms of service for using the UMUHUZA dating platform in Rwanda."
+      path="/terms-of-service"
+    />
+  );
+
+
+
   return (
+ 
     <div className="legal-page">
       <header className="legal-header">
         <button className="legal-back" onClick={() => navigate(-1)}>
@@ -106,7 +118,8 @@ function TermsOfService() {
           </p>
         </section>
       </main>
-    </div>
+   
+     </div>
   );
 }
 

@@ -2,6 +2,7 @@ import "./ResetPassword.css";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SEO from "../../components/SEO/SEO";
 
 import {
   FiLock,
@@ -16,6 +17,14 @@ import { supabase } from "../../lib/supabase";
 
 function ResetPassword() {
   const navigate = useNavigate();
+
+    const pageSEO = (
+    <SEO
+      title="Reset Your Password | UMUHUZA"
+      description="Reset your UMUHUZA account password securely. Follow the password recovery steps to regain access to your account."
+      path="/reset-password"
+    />
+  );
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] =
@@ -252,7 +261,9 @@ function ResetPassword() {
 
   if (loading) {
     return (
+
       <div className="reset-password-page">
+         {pageSEO}
 
         <div className="reset-password-card">
 

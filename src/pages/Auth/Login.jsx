@@ -1,4 +1,6 @@
 import "./Login.css";
+import SEO from "../../components/SEO/SEO";
+
 
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -387,6 +389,12 @@ function Login() {
   // =====================================================
 
   return (
+      <>
+    <SEO
+      title="Login to UMUHUZA | Rwanda Dating Platform"
+      description="Log in to UMUHUZA to access your account, view your dating profile, and continue discovering potential partners."
+      path="/login"
+    />
     <div className="login-page">
 
       <div className="login-card">
@@ -547,8 +555,9 @@ function Login() {
         </p>
 
       </div>
-
+    
     </div>
+  </>
   );
 }
 

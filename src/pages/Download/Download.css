@@ -1,106 +1,399 @@
+/* ================================
+   UMUHUZA ANDROID DOWNLOAD PAGE
+   Purple • Violet • Pink • Red
+================================ */
+
 .download-page {
-  min-height: 100vh;
-  padding: 80px 20px;
+  position: relative;
+  isolation: isolate;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 64px 22px;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.12), transparent 35%),
-    radial-gradient(circle at 90% 20%, rgba(236, 72, 153, 0.12), transparent 35%),
-    linear-gradient(135deg, #faf7ff, #f7f0ff, #fff3f8);
+    radial-gradient(circle at 12% 12%, rgba(192, 132, 252, 0.24), transparent 32%),
+    radial-gradient(circle at 88% 82%, rgba(244, 63, 94, 0.16), transparent 30%),
+    linear-gradient(135deg, #f8f2ff 0%, #fff8fc 48%, #fff0f5 100%);
+  color: #32134f;
+  font-family: inherit;
+}
+
+.download-glow {
+  position: absolute;
+  z-index: -1;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  filter: blur(75px);
+  pointer-events: none;
+}
+
+.download-glow-one {
+  top: 3%;
+  left: -100px;
+  background: rgba(147, 51, 234, 0.2);
+}
+
+.download-glow-two {
+  right: -100px;
+  bottom: 0;
+  background: rgba(236, 72, 153, 0.18);
 }
 
 .download-card {
-  width: min(650px, 100%);
-  padding: 55px 40px;
+  position: relative;
+  width: min(100%, 940px);
+  padding: 62px 64px 32px;
+  overflow: hidden;
   text-align: center;
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(124, 58, 237, 0.12);
-  box-shadow: 0 20px 60px rgba(80, 40, 100, 0.12);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 34px;
+  box-shadow:
+    0 30px 90px rgba(75, 23, 110, 0.12),
+    0 8px 25px rgba(190, 40, 105, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: download-card-appear 0.65s ease both;
+}
+
+.download-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .download-icon {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 25px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 28px;
-  font-size: 42px;
-  background: linear-gradient(135deg, #4b176e, #8c247d, #ed3150);
-  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.25);
+  width: 124px;
+  height: 124px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 36px;
+  background: linear-gradient(140deg, #571777 0%, #92268f 50%, #ed3157 100%);
+  box-shadow:
+    0 18px 38px rgba(126, 37, 151, 0.23),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  font-size: 48px;
+  animation: download-heart-float 3s ease-in-out infinite;
+}
+
+.download-eyebrow {
+  margin-bottom: 12px;
+  color: #8b35ad;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.4px;
 }
 
 .download-card h1 {
   margin: 0;
   color: #4b176e;
-  font-size: 38px;
+  font-size: clamp(32px, 5vw, 53px);
   font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1.6px;
+}
+
+.download-card h1 span {
+  color: #8d278d;
 }
 
 .download-tagline {
-  margin: 10px 0 20px;
-  color: #e52f63;
-  font-size: 19px;
-  font-weight: 800;
+  margin: 19px 0 0;
+  background: linear-gradient(90deg, #d5268a, #ef3156);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(21px, 3vw, 29px);
+  font-weight: 900;
 }
 
 .download-description {
-  max-width: 540px;
-  margin: 0 auto 30px;
-  color: #5f5268;
-  font-size: 16px;
-  line-height: 1.7;
+  max-width: 690px;
+  margin: 24px auto 0;
+  color: #665471;
+  font-size: 18px;
+  line-height: 1.85;
 }
 
-.download-button {
+.download-features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 36px 0;
+}
+
+.download-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 112px;
+  padding: 18px 10px;
+  border: 1px solid #f0e3f7;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #fcf8ff, #fff5f8);
+  color: #56316c;
+  font-size: 13px;
+  font-weight: 750;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.download-feature:hover {
+  transform: translateY(-4px);
+  border-color: #e8c5f3;
+  box-shadow: 0 12px 24px rgba(100, 35, 125, 0.08);
+}
+
+.download-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: #f1e3ff;
+  font-size: 21px;
+}
+
+.download-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.android-download-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: 0 28px;
-  border-radius: 16px;
-  color: #fff;
-  background: linear-gradient(135deg, #7b2cbf, #c72d70, #ed3150);
+  gap: 13px;
+  width: min(100%, 555px);
+  min-height: 68px;
+  padding: 18px 28px;
+  border: 0;
+  border-radius: 19px;
+  background: linear-gradient(105deg, #812ac0 0%, #bd278f 48%, #ef3157 100%);
+  box-shadow:
+    0 16px 32px rgba(195, 39, 126, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.35;
+  text-align: center;
   text-decoration: none;
-  font-weight: 800;
-  box-shadow: 0 12px 28px rgba(199, 45, 112, 0.25);
-  transition: 0.25s ease;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
-.download-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(199, 45, 112, 0.32);
+.android-download-btn:hover {
+  transform: translateY(-3px);
+  filter: saturate(1.12);
+  box-shadow:
+    0 22px 40px rgba(195, 39, 126, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.android-download-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.android-download-btn:focus-visible {
+  outline: 3px solid #8b35ad;
+  outline-offset: 5px;
+}
+
+.download-button-icon {
+  font-size: 25px;
+  line-height: 1;
 }
 
 .download-note {
-  margin: 18px 0 0;
-  color: #887b91;
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 3px 0 0;
+  color: #776582;
+  font-size: 14px;
 }
 
-@media (max-width: 600px) {
+.download-note-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: #e6f8ed;
+  color: #16844b;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.download-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 42px;
+  padding-top: 23px;
+  border-top: 1px solid #f0e5f4;
+  color: #8a7696;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.download-footer > span:first-child {
+  font-size: 15px;
+}
+
+.download-footer-divider {
+  color: #d82d79;
+}
+
+/* Entrance and subtle motion */
+
+@keyframes download-card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes download-heart-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Tablets and phones */
+
+@media (max-width: 700px) {
   .download-page {
-    padding: 45px 16px;
+    min-height: 100svh;
+    padding: 28px 14px;
   }
 
   .download-card {
-    padding: 40px 22px;
-    border-radius: 26px;
+    padding: 38px 22px 24px;
+    border-radius: 27px;
+  }
+
+  .download-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 24px;
+    border-radius: 29px;
+    font-size: 40px;
+  }
+
+  .download-eyebrow {
+    max-width: 100%;
+    font-size: 10px;
+    letter-spacing: 1.6px;
   }
 
   .download-card h1 {
-    font-size: 30px;
+    letter-spacing: -0.8px;
   }
 
   .download-description {
+    margin-top: 19px;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .download-features {
+    gap: 9px;
+    margin: 27px 0;
+  }
+
+  .download-feature {
+    min-height: 105px;
+    padding: 13px 6px;
+    border-radius: 15px;
+    font-size: 11px;
+  }
+
+  .download-feature-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .android-download-btn {
+    min-height: 62px;
+    padding: 16px 15px;
+    border-radius: 16px;
     font-size: 15px;
   }
 
-  .download-button {
-    width: 100%;
-    padding: 0 18px;
+  .download-footer {
+    gap: 7px;
+    margin-top: 32px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .download-card {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .download-features {
+    grid-template-columns: 1fr;
+  }
+
+  .download-feature {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-height: 68px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .android-download-btn {
+    gap: 8px;
+    font-size: 14px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .download-card,
+  .download-icon {
+    animation: none;
+  }
+
+  .download-feature,
+  .android-download-btn {
+    transition: none;
   }
 }

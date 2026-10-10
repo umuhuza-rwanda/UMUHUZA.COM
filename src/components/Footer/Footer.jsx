@@ -164,65 +164,49 @@ function Footer() {
 
       </div>
 
+```
+  {/* =========================
+      APP DOWNLOAD
+  ========================= */}
 
-      {/* =========================
-          APP DOWNLOAD
-      ========================= */}
+  <div className="footer-app">
 
-      <div className="footer-app">
+    <div>
+      <h3>
+        ❤️ TUNGA APP YA UMUHUZA
+      </h3>
 
-        <div>
+      <p>
+        Connect with people you care about,
+        wherever you go.
+      </p>
+    </div>
 
-          <h3>
-            ❤️ TUNGA APP YA UMUHUZA
-          </h3>
+    <div className="footer-store-buttons">
 
-          <p>
-            Connect with people you care about,
-            wherever you go.
-          </p>
+      <a
+        href="/download"
+        className="footer-store-btn"
+        aria-label="Download UMUHUZA for Android"
+      >
+        <span className="footer-store-icon">
+          ▶
+        </span>
 
-        </div>
+        <span>
+          <small>
+            DOWNLOAD FOR
+          </small>
 
+          Android
+        </span>
+      </a>
 
-        <div className="footer-store-buttons">
+    </div>
 
-          <button className="footer-store-btn">
+  </div>
+```
 
-            <span className="footer-store-icon">
-              
-            </span>
-
-            <span>
-              <small>
-                Download on the
-              </small>
-
-              App Store
-            </span>
-
-          </button>
-
-
-          <button className="footer-store-btn">
-
-            <span className="footer-store-icon">
-              ▶
-            </span>
-
-            <span>
-              <small>
-                GET IT ON
-              </small>
-
-              Google Play
-            </span>
-
-          </button>
-
-        </div>
-
-      </div>
 
 
       {/* =========================

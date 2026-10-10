@@ -566,6 +566,11 @@ const [reporting, setReporting] = useState(false);
     };
   }, []);
 
+  const getRandomSuggestions = () => {
+  const shuffled = [...SUGGESTED_REPLIES].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, 2);
+};
+
   // =====================================================
   // ONLINE PRESENCE
   // =====================================================
@@ -801,6 +806,44 @@ const handleBlockPerson = async () => {
     setBlocking(false);
   }
 };
+
+// =====================================================
+// SUGGESTED REPLIES
+// =====================================================
+const SUGGESTED_REPLIES = [
+  "Hi 👋",
+  "Hey there",
+  "How are you today?",
+  "Hope you’re having a good day",
+  "Nice to meet you",
+  "Your profile caught my attention",
+  "I like your smile",
+  "Where are you from?",
+  "What do you enjoy doing?",
+  "Do you like music?",
+  "What’s your favorite food?",
+  "Are you free to chat?",
+  "I’d love to know you better",
+  "You seem interesting",
+  "How was your day?",
+  "Let’s get to know each other",
+  "What are your hobbies?",
+  "Do you like traveling?",
+  "I’d like to talk more",
+  "Want to chat for a bit?",
+  "You look friendly",
+  "Hope we can connect",
+  "What makes you smile?",
+  "Are you looking for something serious?",
+  "Let’s meet someday",
+  "I feel we could get along",
+  "Tell me about yourself",
+  "What are you passionate about?",
+  "I’d like to know your story",
+  "Have a wonderful day ❤️",
+];
+
+const [suggestedReplies, setSuggestedReplies] = useState([]);
 
 // =====================================================
 // REPORT PERSON
@@ -1253,12 +1296,15 @@ const handleSelectPerson = async (person) => {
   if (!person) return;
 
   setSelectedPerson(person);
+ 
   setMessage("");
   setMessages([]);
   clearSelectedImages();
   setCurrentConversation(null);
   setError("");
-
+const refreshSuggestions = () => {
+  setSuggestedReplies(getRandomSuggestions());
+};
   const conversation = await openChat(person);
 
   // Mark as read when chat opens
@@ -1267,6 +1313,16 @@ const handleSelectPerson = async (person) => {
   }
 };
 
+const handleUseSuggestion = (text) => {
+  if (!text?.trim() || sending || uploadingImages) return;
+
+  setMessage(text.trim());
+
+  setTimeout(() => {
+    handleSendMessage();
+    // suggestions will refresh inside handleSendMessage after success
+  }, 50);
+};
   // =====================================================
   // SELECT PERSON FROM PROFILE / DEFAULT PERSON
   // =====================================================
@@ -2360,6 +2416,7 @@ const removeSelectedImage = (imageId) => {
 // SEND MESSAGE - OPTIMISTIC UI
 // =====================================================
 
+
 const handleSendMessage =
   async () => {
 
@@ -2374,7 +2431,6 @@ const handleSendMessage =
     ) {
       return;
     }
-
 
     // ===================================================
     // CREATE TEMPORARY MESSAGE ID
@@ -2443,6 +2499,7 @@ const handleSendMessage =
     // ===================================================
 
     setMessage("");
+    setSuggestedReplies(getRandomSuggestions());
 
     setError("");
 
@@ -3736,9 +3793,7 @@ const mergeServerMessages = (serverMessages) => {
                 Selected images are now HERE,
                 at the bottom of the chat.
             ================================================= */}
-
-            <div className="message-input-area">
-
+<div className="message-input-area">
 
               {/* =================================================
                   SELECTED IMAGE PREVIEW
@@ -3807,49 +3862,27 @@ const mergeServerMessages = (serverMessages) => {
               )}
 
 
-              {/* =================================================
-                  HIDDEN IMAGE INPUT
-              ================================================= */}
+  {/* 2. SUGGESTIONS - independent */}
+  {selectedPerson && suggestedReplies.length > 0 && (
+    <div className="chat-suggestions">
+      <span className="chat-suggestions-label">Suggested</span>
+      <div className="chat-suggestions-list">
+        {suggestedReplies.map((text, index) => (
+          <button
+            key={index}
+            type="button"
+            className="chat-suggestion-chip"
+            onClick={() => handleUseSuggestion(text)}
+            disabled={sending || uploadingImages}
+          >
+            {text}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
 
-              <input
-                ref={
-                  imageInputRef
-                }
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={
-                  handleImageSelection
-                }
-                style={{
-                  display: "none",
-                }}
-              />
-
-
-              {/* =================================================
-                  SEND IMAGE
-              ================================================= */}
-
-              <button
-                type="button"
-                className="message-tool-btn"
-                title="Send Images"
-                onClick={
-                  openImagePicker
-                }
-                disabled={
-                  sending ||
-                  uploadingImages
-                }
-              >
-
-                <FiImage />
-
-              </button>
-
-
-              {/* =================================================
+                {/* =================================================
                   SEND LOVE
               ================================================= */}
 
@@ -3871,55 +3904,61 @@ const mergeServerMessages = (serverMessages) => {
               </button>
 
 
-              {/* =================================================
-                  MESSAGE INPUT
-              ================================================= */}
-
-              <div className="message-input-wrapper">
-
-                <input
-                  type="text"
-                  placeholder={`Message ${selectedName}...`}
-                  value={message}
-                  onChange={(event) =>
-                    setMessage(
-                      event.target.value
-                    )
-                  }
-                  onKeyDown={
-                    handleKeyDown
-                  }
-                  disabled={
-                    sending ||
-                    uploadingImages
-                  }
-                />
-
-              </div>
 
 
-              {/* =================================================
-                  SEND MESSAGE
-              ================================================= */}
+  {/* 3. WRITE BOX ROW - independent */}
+  <div className="message-tools-row">
+    <input
+      ref={imageInputRef}
+      type="file"
+      accept="image/*"
+      multiple
+      onChange={handleImageSelection}
+      style={{ display: "none" }}
+    />
 
-              <button
-                type="button"
-                className="send-message-btn"
-                onClick={
-                  handleSendMessage
-                }
-                disabled={
-                  !message.trim() ||
-                  sending ||
-                  uploadingImages
-                }
-              >
+    <button
+      type="button"
+      className="message-tool-btn"
+      title="Send Images"
+      onClick={openImagePicker}
+      disabled={sending || uploadingImages}
+    >
+      <FiImage />
+    </button>
 
-                <FiSend />
+    <button
+      type="button"
+      className="message-tool-btn"
+      title="Send Love"
+      onClick={handleSendLove}
+      disabled={sending || uploadingImages}
+    >
+      <FiHeart />
+    </button>
 
-              </button>
+    <div className="message-input-wrapper">
+      <input
+        type="text"
+        placeholder={`Message ${selectedName}...`}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
+        disabled={sending || uploadingImages}
+      />
+    </div>
 
-            </div>
+    <button
+      type="button"
+      className="send-message-btn"
+      onClick={handleSendMessage}
+      disabled={!message.trim() || sending || uploadingImages}
+    >
+      <FiSend />
+    </button>
+  </div>
+
+</div>
 
           </section>
 
