@@ -571,6 +571,32 @@ const [reporting, setReporting] = useState(false);
   return shuffled.slice(0, 2);
 };
 
+// =====================================================
+// OPEN PERSON + PREFILL FROM MATCH POPUP (only one)
+// =====================================================
+useEffect(() => {
+  const userId = location.state?.selectedUserId;
+  const prefill = location.state?.prefillMessage;
+
+  if (prefill) {
+    setMessage(prefill);
+  }
+
+  if (!userId || !connections.length) return;
+  if (selectedPerson?.id === userId) return;
+
+  const person = connections.find((p) => p.id === userId);
+  if (!person) return;
+
+  handleSelectPerson(person);
+
+  if (prefill) {
+    setTimeout(() => setMessage(prefill), 50);
+  }
+}, [location.state?.selectedUserId, location.state?.prefillMessage, connections]);
+
+
+
   // =====================================================
   // ONLINE PRESENCE
   // =====================================================
@@ -611,6 +637,19 @@ const [reporting, setReporting] = useState(false);
       updatePresence(false);
     };
   }, [currentUser]);
+
+  useEffect(() => {
+  const userId = location.state?.selectedUserId;
+  if (!userId || !connections.length) return;
+
+  const person = connections.find((p) => p.id === userId);
+  if (!person) return;
+  if (selectedPerson?.id === userId) return;
+
+  setSelectedPerson(person);
+  // if you also load conversation inside handleSelectPerson,
+  // call that function here instead
+}, [location.state?.selectedUserId, connections]);
 
   // =====================================================
   // LOAD MEMBERS
@@ -738,19 +777,45 @@ const [reporting, setReporting] = useState(false);
       }
     };
 
-    loadMembers();
+       loadMembers();
 
     const profileChannel = supabase
       .channel(`chat-profiles-${currentUser.id}`)
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "profiles" },
-        () => loadMembers()
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "profiles",
+        },
+        (payload) => {
+          const updated = payload.new;
+          if (!updated?.id) return;
+
+          setConnections((prev) =>
+            prev.map((p) =>
+              p.id === updated.id
+                ? {
+                    ...p,
+                    online: updated.online === true,
+                    last_seen: updated.last_seen || p.last_seen,
+                    lastSeen: updated.last_seen || p.lastSeen,
+                  }
+                : p
+            )
+          );
+        }
       )
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "conversations" },
-        () => loadMembers()
+        {
+          event: "*",
+          schema: "public",
+          table: "conversations",
+        },
+        () => {
+          loadMembers();
+        }
       )
       .subscribe();
 
@@ -759,6 +824,8 @@ const [reporting, setReporting] = useState(false);
       supabase.removeChannel(profileChannel);
     };
   }, [currentUser]);
+
+
 
   // =====================================================
 // BLOCK PERSON

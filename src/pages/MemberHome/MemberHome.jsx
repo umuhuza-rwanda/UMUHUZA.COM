@@ -33,6 +33,15 @@ import {
 import { supabase } from "../../lib/supabase";
 import { useAppPreferences } from "../../context/AppPreferencesContext";
 
+const MATCH_SUGGESTIONS = [
+  "Hi 👋",
+  "Hey, nice to match with you",
+  "How are you today?",
+  "Can we meet?",
+  "I'd love to know you better",
+  "Your profile caught my attention",
+];
+
 // =====================================================
 // SAVE USER LOCATION ONCE
 // =====================================================
@@ -181,6 +190,9 @@ const membersPerPage = 9;
 
   const [showCommunityLinks, setShowCommunityLinks] =
     useState(false);
+    const [showMatchPopup, setShowMatchPopup] = useState(false);
+const [matchedPerson, setMatchedPerson] = useState(null);
+const [myPhoto, setMyPhoto] = useState("");
     const whatsappGroupLink =
   "https://chat.whatsapp.com/IAOf4F19GvS9eNhFLByjcz";
 
@@ -287,6 +299,53 @@ const handleWhatsApp = () => {
     };
   }, []);
 
+
+  // MATCH POPUP — realtime when someone matches with you
+useEffect(() => {
+  if (!currentUser?.id) return;
+
+  const channel = supabase
+    .channel(`match-notif-${currentUser.id}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "notifications",
+        filter: `user_id=eq.${currentUser.id}`,
+      },
+      async (payload) => {
+        const n = payload.new;
+        if (!n || n.type !== "match" || !n.related_user_id) return;
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("id, full_name, profile_photo_url")
+          .eq("id", n.related_user_id)
+          .maybeSingle();
+
+        if (!profile) return;
+
+        setMatchedPerson({
+          id: profile.id,
+          name: profile.full_name || "UMUHUZA Member",
+          photo: profile.profile_photo_url || "",
+        });
+        setShowMatchPopup(true);
+
+        await supabase
+          .from("notifications")
+          .update({ is_read: true })
+          .eq("id", n.id);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}, [currentUser?.id]);
+
   // =====================================================
   // NOTIFICATIONS
   // =====================================================
@@ -364,6 +423,47 @@ const channel = supabase
   // =====================================================
   // UNREAD CHAT MESSAGE COUNT
   // =====================================================
+
+useEffect(() => {
+  if (!currentUser?.id) return;
+
+  const loadUnseenMatch = async () => {
+    const { data } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .eq("type", "match")
+      .eq("is_read", false)
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    const n = data?.[0];
+    if (!n?.related_user_id) return;
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("id, full_name, profile_photo_url")
+      .eq("id", n.related_user_id)
+      .maybeSingle();
+
+    if (!profile) return;
+
+    setMatchedPerson({
+      id: profile.id,
+      name: profile.full_name || "UMUHUZA Member",
+      photo: profile.profile_photo_url || "",
+    });
+    setShowMatchPopup(true);
+
+    await supabase
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("id", n.id);
+  };
+
+  loadUnseenMatch();
+}, [currentUser?.id]);
+
 // =====================================================
 // UNREAD CHAT MESSAGE COUNT
 // =====================================================
@@ -694,6 +794,9 @@ useEffect(() => {
     member.avatar ??
     member.image ??
     "";
+
+    // after you have currentUser
+
 
   const lookingForGender =
     member.lookingForGender ??
@@ -1690,10 +1793,55 @@ const handleLike = async (member) => {
       throw likeError;
     }
 
+    // ========== ⭐ PUT MATCH CHECK HERE ==========
+  const { data: theyLikedMe } = await supabase
+    .from("likes")
+    .select("id")
+    .eq("likerId", memberId)        // they liked
+    .eq("likedId", currentUser.id)  // me
+    .maybeSingle();
+
+  if (theyLikedMe) {
+    setMatchedPerson({
+      id: member.id,
+      name:
+        member.full_name ||
+        member.name ||
+        [member.firstName, member.lastName].filter(Boolean).join(" ") ||
+        "UMUHUZA Member",
+      photo:
+        member.profile_photo_url ||
+        member.profilePhoto ||
+        member.photo ||
+        "",
+    });
+    setShowMatchPopup(true);
+
+    const { error: matchNotifError } = await supabase
+    .from("notifications")
+    .insert({
+      user_id: memberId,
+      type: "match",
+      title: "It's a Match! ❤️",
+      message: "You have a new match",
+      related_user_id: currentUser.id,
+      is_read: false,
+    });
+
+  if (matchNotifError) {
+    console.error("Match notification error:", matchNotifError);
+  
+}
+  }
+
     // Update UI immediately
     setLikedMembers((prev) =>
       prev.includes(memberId) ? prev : [...prev, memberId]
     );
+
+
+
+
 
     // ===================== SENDER INFORMATION =====================
     const senderName =
@@ -2008,6 +2156,8 @@ const handleStartChat = (member) => {
         member: member,
       },
     });
+
+
 
   } catch (chatError) {
     console.error(
@@ -2978,6 +3128,84 @@ const distanceKm =
         </section>
 
       </main>
+
+      {showMatchPopup && matchedPerson && (
+  <div className="match-popup-overlay">
+    <div className="match-popup">
+      <button
+        type="button"
+        className="match-popup-close"
+        onClick={() => setShowMatchPopup(false)}
+      >
+        ✕
+      </button>
+
+      <h1 className="match-popup-title">It's a</h1>
+
+      <div className="match-popup-photos">
+        <div className="match-photo match-photo-left">
+          {(currentUserProfile?.profile_photo_url ||
+            currentUserProfile?.profilePhoto) && (
+            <img
+              src={
+                currentUserProfile.profile_photo_url ||
+                currentUserProfile.profilePhoto
+              }
+              alt="You"
+            />
+          )}
+        </div>
+        <div className="match-photo match-photo-right">
+          {matchedPerson.photo ? (
+            <img src={matchedPerson.photo} alt={matchedPerson.name} />
+          ) : (
+            <div className="match-photo-placeholder">💕</div>
+          )}
+        </div>
+      </div>
+
+      <h2 className="match-popup-match">Match</h2>
+
+      <p className="match-popup-subtitle">
+        You matched with <strong>{matchedPerson.name}</strong>
+      </p>
+
+      <div className="match-suggestions">
+        {MATCH_SUGGESTIONS.slice(0, 4).map((text) => (
+          <button
+            key={text}
+            type="button"
+            className="match-suggestion-chip"
+            onClick={() => {
+              setShowMatchPopup(false);
+              navigate("/chat", {
+                state: {
+                  selectedUserId: matchedPerson.id,
+                  prefillMessage: text,
+                },
+              });
+            }}
+          >
+            {text}
+          </button>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        className="match-send-btn"
+        onClick={() => {
+          setShowMatchPopup(false);
+          navigate("/chat", {
+            state: { selectedUserId: matchedPerson.id },
+          });
+        }}
+      >
+        Send Message
+      </button>
+    </div>
+  </div>
+)}
 
     </div>
   );

@@ -5,6 +5,14 @@ import { supabase } from "../../lib/supabase";
 import umurangaLogo from "../../assets/umuranga.logo/UMURANGA.COM.png";
 import "./Likes.css";
 
+const MATCH_SUGGESTIONS = [
+  "Hi 👋",
+  "Hey, nice to match with you",
+  "How are you today?",
+  "Can we meet?",
+];
+
+
 function Likes() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
@@ -13,18 +21,32 @@ function Likes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeSection, setActiveSection] = useState("likedByMe"); // likedByMe | likedMe
+  const [showMatchPopup, setShowMatchPopup] = useState(false);
+  const [matchedPerson, setMatchedPerson] = useState(null);
+  const [myPhoto, setMyPhoto] = useState("");
+  const [matchedIds, setMatchedIds] = useState([]);
 
 
   // =====================================================
   // AUTH
   // =====================================================
-  useEffect(() => {
-    const loadUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setCurrentUser(user);
-    };
-    loadUser();
-  }, []);
+useEffect(() => {
+  const loadUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setCurrentUser(user);
+
+    if (user?.id) {
+      const { data: me } = await supabase
+        .from("profiles")
+        .select("profile_photo_url")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      setMyPhoto(me?.profile_photo_url || "");
+    }
+  };
+  loadUser();
+}, []);
 
   // =====================================================
   // LOAD LIKES
@@ -59,6 +81,8 @@ function Likes() {
         const likedMeIds = (likesOnMe || []).map((l) => l.likerId).filter(Boolean);
 
         const allIds = [...new Set([...likedByMeIds, ...likedMeIds])];
+        const mutualIds = likedMeIds.filter((id) => likedByMeIds.includes(id));
+setMatchedIds(mutualIds);
 
         let profiles = [];
 
@@ -76,60 +100,7 @@ function Likes() {
 
         const profileMap = new Map(profiles.map((p) => [p.id, p]));
 
-        // =====================================================
-// LIKE BACK
-// =====================================================
-const handleLikeBack = async (member) => {
-  if (!currentUser?.id || !member?.id) return;
 
-  try {
-    // Check if already liked
-    const { data: existing } = await supabase
-      .from("likes")
-      .select("id")
-      .eq("likerId", currentUser.id)
-      .eq("likedId", member.id)
-      .maybeSingle();
-
-    if (existing) {
-      // Already liked → just go to matches
-      navigate("/matches");
-      return;
-    }
-
-    // Create the like
-    const { error } = await supabase.from("likes").insert({
-      likerId: currentUser.id,
-      likedId: member.id,
-      createdAt: new Date().toISOString(),
-    });
-
-    if (error) {
-      // If already exists (race condition)
-      if (error.code === "23505") {
-        navigate("/matches");
-        return;
-      }
-      throw error;
-    }
-
-    // Optional: create a notification for the other person
-    await supabase.from("notifications").insert({
-      user_id: member.id,
-      type: "like",
-      title: "New Like ❤️",
-      message: "Someone liked you back!",
-      related_user_id: currentUser.id,
-      is_read: false,
-    });
-
-    // Go to Matches page
-    navigate("/matches");
-  } catch (err) {
-    console.error("Like back error:", err);
-    setError(err.message || "Unable to like back. Please try again.");
-  }
-};
 
 const mapProfiles = (ids) =>
   ids
@@ -187,6 +158,72 @@ const mapProfiles = (ids) =>
   }, [currentUser?.id]);
 
   const currentList = activeSection === "likedByMe" ? likedByMe : likedMe;
+
+          // =====================================================
+// LIKE BACK
+// =====================================================
+
+const handleLikeBack = async (member) => {
+  if (!currentUser?.id || !member?.id) return;
+
+  try {
+    const { data: existing } = await supabase
+      .from("likes")
+      .select("id")
+      .eq("likerId", currentUser.id)
+      .eq("likedId", member.id)
+      .maybeSingle();
+
+    if (!existing) {
+      const { error } = await supabase.from("likes").insert({
+        likerId: currentUser.id,
+        likedId: member.id,
+        createdAt: new Date().toISOString(),
+      });
+
+      if (error && error.code !== "23505") {
+        throw error;
+      }
+    }
+
+    // Notify the other person (so they get match popup later / realtime)
+    await supabase.from("notifications").insert({
+      user_id: member.id,
+      type: "match",
+      title: "It's a Match! ❤️",
+      message: "You have a new match",
+      related_user_id: currentUser.id,
+      is_read: false,
+    });
+
+    // Show match popup for YOU (do not navigate away)
+    setMatchedPerson({
+      id: member.id,
+      name: member.name || "UMUHUZA Member",
+      photo: member.photo || "",
+    });
+
+    setMatchedIds((prev) =>
+  prev.includes(member.id) ? prev : [...prev, member.id]
+);
+
+    setShowMatchPopup(true);
+  } catch (err) {
+    console.error("Like back error:", err);
+    setError(err.message || "Unable to like back. Please try again.");
+  }
+};
+
+useEffect(() => {
+  if (showMatchPopup) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+  return () => {
+    document.body.style.overflow = "";
+  };
+}, [showMatchPopup]);
 
   return (
     <div className="likes-page">
@@ -268,7 +305,7 @@ const mapProfiles = (ids) =>
                       "Location not added"}
                   </span>
                 </div>
- 
+
 <div className="like-actions">
   <button
     className="view-profile-btn"
@@ -292,17 +329,24 @@ const mapProfiles = (ids) =>
       })
     }
   >
-    View Profile
+ 
+View Profile
   </button>
 
-  {/* Only show Like Back when viewing "People who liked you" */}
   {activeSection === "likedMe" && (
-    <button
-      className="like-back-btn"
-      onClick={() => handleLikeBack(member)}
-    >
-      <FiHeart /> Like Back
-    </button>
+    matchedIds.includes(member.id) ? (
+      <button type="button" className="matched-btn" disabled>
+        💕 Matched
+      </button>
+    ) : (
+      <button
+        type="button"
+        className="like-back-btn"
+        onClick={() => handleLikeBack(member)}
+      >
+        <FiHeart /> Like Back
+      </button>
+    )
   )}
 </div>
               </div>
@@ -310,6 +354,79 @@ const mapProfiles = (ids) =>
           </div>
         )}
       </div>
+
+
+ 
+
+{showMatchPopup && matchedPerson && (
+  <div className="match-popup-overlay">
+    <div className="match-popup">
+      <button
+        type="button"
+        className="match-popup-close"
+        onClick={() => setShowMatchPopup(false)}
+      >
+        ✕
+      </button>
+
+      <h1 className="match-popup-title">It's a</h1>
+
+      <div className="match-popup-photos">
+        <div className="match-photo match-photo-left">
+          {myPhoto ? <img src={myPhoto} alt="You" /> : null}
+        </div>
+        <div className="match-photo match-photo-right">
+          {matchedPerson.photo ? (
+            <img src={matchedPerson.photo} alt={matchedPerson.name} />
+          ) : (
+            <div className="match-photo-placeholder">💕</div>
+          )}
+        </div>
+      </div>
+
+      <h2 className="match-popup-match">Match</h2>
+
+      <p className="match-popup-subtitle">
+        You matched with <strong>{matchedPerson.name}</strong>
+      </p>
+
+      <div className="match-suggestions">
+        {MATCH_SUGGESTIONS.map((text) => (
+          <button
+            key={text}
+            type="button"
+            className="match-suggestion-chip"
+            onClick={() => {
+              setShowMatchPopup(false);
+              navigate("/chat", {
+                state: {
+                  selectedUserId: matchedPerson.id,
+                  prefillMessage: text,
+                },
+              });
+            }}
+          >
+            {text}
+          </button>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        className="match-send-btn"
+        onClick={() => {
+          setShowMatchPopup(false);
+          navigate("/chat", {
+            state: { selectedUserId: matchedPerson.id },
+          });
+        }}
+      >
+        Send Message
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
