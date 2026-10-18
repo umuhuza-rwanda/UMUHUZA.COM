@@ -17,10 +17,15 @@ function ProfileSetup() {
   // SETTINGS
   // =====================================================
   const PROFILE_BUCKET = "profile-photos";
-  const MAX_COMPRESSED_SIZE = 250 * 1024;
-  const MAX_ORIGINAL_SIZE = 20 * 1024 * 1024;
-  const MAX_IMAGE_DIMENSION = 1600;
 
+  // Hard max — never upload above this
+  const MAX_COMPRESSED_SIZE = 100 * 1024; // 100 KB
+
+  // Preferred target — compress toward this when possible
+  const TARGET_COMPRESSED_SIZE = 50 * 1024; // ~50 KB
+
+  const MAX_ORIGINAL_SIZE = 20 * 1024 * 1024;
+  const MAX_IMAGE_DIMENSION = 1000; // was 1600 — smaller = less data
   // =====================================================
   // STATE
   // =====================================================
@@ -49,6 +54,9 @@ function ProfileSetup() {
 
   // =====================================================
   // IMAGE COMPRESSION
+  // =====================================================
+  // =====================================================
+  // IMAGE COMPRESSION (max 100 KB, prefer ~50 KB)
   // =====================================================
   const compressImage = (file, maxSize = MAX_COMPRESSED_SIZE) => {
     return new Promise((resolve, reject) => {
@@ -79,7 +87,9 @@ function ProfileSetup() {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
           if (!ctx) {
-            reject(new Error("Your browser does not support image compression."));
+            reject(
+              new Error("Your browser does not support image compression.")
+            );
             return;
           }
 
@@ -89,31 +99,61 @@ function ProfileSetup() {
           ctx.fillRect(0, 0, width, height);
           ctx.drawImage(image, 0, 0, width, height);
 
-          const qualities = [0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3];
+          // Prefer lower quality first so we land near ~50 KB
+          const qualities = [
+            0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3,
+          ];
 
           const createBlob = (quality) =>
             new Promise((blobResolve) => {
-              canvas.toBlob((blob) => blobResolve(blob), "image/jpeg", quality);
+              canvas.toBlob(
+                (blob) => blobResolve(blob),
+                "image/jpeg",
+                quality
+              );
             });
 
           const compressWithQuality = async () => {
+            let bestUnderMax = null;
+
             for (const quality of qualities) {
               const blob = await createBlob(quality);
-              if (blob && blob.size < maxSize) {
+              if (!blob) continue;
+
+              // Ideal: under ~50 KB
+              if (blob.size <= TARGET_COMPRESSED_SIZE) {
                 resolve(
-                  new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
-                    type: "image/jpeg",
-                    lastModified: Date.now(),
-                  })
+                  new File(
+                    [blob],
+                    file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                    { type: "image/jpeg", lastModified: Date.now() }
+                  )
                 );
                 return;
               }
+
+              // Keep best result under hard max (100 KB)
+              if (blob.size < maxSize) {
+                bestUnderMax = blob;
+              }
             }
 
-            // Fallback: reduce dimensions
+            if (bestUnderMax) {
+              resolve(
+                new File(
+                  [bestUnderMax],
+                  file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                  { type: "image/jpeg", lastModified: Date.now() }
+                )
+              );
+              return;
+            }
+
+            // Still too big → shrink dimensions
             let currentWidth = width;
             let currentHeight = height;
-            while (currentWidth > 600 && currentHeight > 600) {
+
+            while (currentWidth > 400 && currentHeight > 400) {
               currentWidth = Math.round(currentWidth * 0.85);
               currentHeight = Math.round(currentHeight * 0.85);
               canvas.width = currentWidth;
@@ -122,13 +162,24 @@ function ProfileSetup() {
               ctx.fillRect(0, 0, currentWidth, currentHeight);
               ctx.drawImage(image, 0, 0, currentWidth, currentHeight);
 
-              const blob = await createBlob(0.7);
+              const blob = await createBlob(0.55);
+              if (blob && blob.size <= TARGET_COMPRESSED_SIZE) {
+                resolve(
+                  new File(
+                    [blob],
+                    file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                    { type: "image/jpeg", lastModified: Date.now() }
+                  )
+                );
+                return;
+              }
               if (blob && blob.size < maxSize) {
                 resolve(
-                  new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
-                    type: "image/jpeg",
-                    lastModified: Date.now(),
-                  })
+                  new File(
+                    [blob],
+                    file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                    { type: "image/jpeg", lastModified: Date.now() }
+                  )
                 );
                 return;
               }
@@ -136,15 +187,20 @@ function ProfileSetup() {
 
             const finalBlob = await createBlob(0.3);
             if (!finalBlob || finalBlob.size >= maxSize) {
-              reject(new Error("This image could not be compressed below 250 KB."));
+              reject(
+                new Error(
+                  "This image could not be compressed below 100 KB."
+                )
+              );
               return;
             }
 
             resolve(
-              new File([finalBlob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
-                type: "image/jpeg",
-                lastModified: Date.now(),
-              })
+              new File(
+                [finalBlob],
+                file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                { type: "image/jpeg", lastModified: Date.now() }
+              )
             );
           };
 
@@ -164,6 +220,149 @@ function ProfileSetup() {
     });
   };
 
+
+    // =====================================================
+  // THUMB COMPRESSION (20–50 KB for member cards)
+  // =====================================================
+  const MAX_THUMB_SIZE = 50 * 1024; // hard max 50 KB
+  const TARGET_THUMB_SIZE = 30 * 1024; // prefer ~30 KB
+  const THUMB_DIMENSION = 360;
+
+  const compressThumb = (file) => {
+    return new Promise((resolve, reject) => {
+      if (!file) {
+        reject(new Error("No image for thumb."));
+        return;
+      }
+
+      const image = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      image.onload = () => {
+        try {
+          URL.revokeObjectURL(objectUrl);
+
+          let width = image.naturalWidth;
+          let height = image.naturalHeight;
+
+          if (width > THUMB_DIMENSION || height > THUMB_DIMENSION) {
+            const scale = Math.min(
+              THUMB_DIMENSION / width,
+              THUMB_DIMENSION / height
+            );
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            reject(new Error("Thumb compression not supported."));
+            return;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(image, 0, 0, width, height);
+
+          const qualities = [0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35];
+
+          const createBlob = (quality) =>
+            new Promise((res) =>
+              canvas.toBlob((b) => res(b), "image/jpeg", quality)
+            );
+
+          const run = async () => {
+            let best = null;
+
+            for (const q of qualities) {
+              const blob = await createBlob(q);
+              if (!blob) continue;
+
+              if (blob.size <= TARGET_THUMB_SIZE) {
+                resolve(
+                  new File(
+                    [blob],
+                    file.name.replace(/\.[^/.]+$/, "") + "-thumb.jpg",
+                    { type: "image/jpeg", lastModified: Date.now() }
+                  )
+                );
+                return;
+              }
+
+              if (blob.size <= MAX_THUMB_SIZE) {
+                best = blob;
+              }
+            }
+
+            if (best) {
+              resolve(
+                new File(
+                  [best],
+                  file.name.replace(/\.[^/.]+$/, "") + "-thumb.jpg",
+                  { type: "image/jpeg", lastModified: Date.now() }
+                )
+              );
+              return;
+            }
+
+            // Shrink more if still large
+            let w = width;
+            let h = height;
+            while (w > 200 && h > 200) {
+              w = Math.round(w * 0.85);
+              h = Math.round(h * 0.85);
+              canvas.width = w;
+              canvas.height = h;
+              ctx.fillStyle = "#ffffff";
+              ctx.fillRect(0, 0, w, h);
+              ctx.drawImage(image, 0, 0, w, h);
+
+              const blob = await createBlob(0.45);
+              if (blob && blob.size <= MAX_THUMB_SIZE) {
+                resolve(
+                  new File(
+                    [blob],
+                    file.name.replace(/\.[^/.]+$/, "") + "-thumb.jpg",
+                    { type: "image/jpeg", lastModified: Date.now() }
+                  )
+                );
+                return;
+              }
+            }
+
+            const finalBlob = await createBlob(0.3);
+            if (!finalBlob || finalBlob.size > 70 * 1024) {
+              reject(new Error("Could not create small card image."));
+              return;
+            }
+
+            resolve(
+              new File(
+                [finalBlob],
+                file.name.replace(/\.[^/.]+$/, "") + "-thumb.jpg",
+                { type: "image/jpeg", lastModified: Date.now() }
+              )
+            );
+          };
+
+          run().catch(reject);
+        } catch (err) {
+          URL.revokeObjectURL(objectUrl);
+          reject(err);
+        }
+      };
+
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("Unable to create thumb."));
+      };
+
+      image.src = objectUrl;
+    });
+  };
   // =====================================================
   // CLEAN PREVIEW URLS
   // =====================================================
@@ -234,8 +433,11 @@ function ProfileSetup() {
 
     try {
       const compressedFile = await compressImage(file);
-      if (compressedFile.size >= MAX_COMPRESSED_SIZE) {
-        setError(t("profileSetup.errorCompress") || "Image could not be compressed below 250 KB.");
+      if (compressedFile.size > MAX_COMPRESSED_SIZE) {
+        setError(
+          t("profileSetup.errorCompress") ||
+            "Image could not be compressed below 100 KB."
+        );
         event.target.value = "";
         return;
       }
@@ -284,25 +486,69 @@ function ProfileSetup() {
     return `${userId}/${Date.now()}-${index}-${randomPart}.jpg`;
   };
 
-  const uploadProfilePhoto = async (userId, photo, index) => {
-    if (!photo?.file) return null;
+const uploadProfilePhoto = async (userId, photo, index) => {
+  if (!photo?.file) return null;
 
-    const filePath = createPhotoPath(userId, index);
-    const { error: uploadError } = await supabase.storage
-      .from(PROFILE_BUCKET)
-      .upload(filePath, photo.file, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: "image/jpeg",
-      });
+  const randomPart = Math.random().toString(36).substring(2, 10);
+  const base = `${userId}/${Date.now()}-${index}-${randomPart}`;
 
-    if (uploadError) throw new Error(`Photo upload failed: ${uploadError.message}`);
+  // -------- MAIN (≤ 100 KB, already compressed) --------
+  const mainPath = `${base}.jpg`;
+  const { error: uploadError } = await supabase.storage
+    .from(PROFILE_BUCKET)
+    .upload(mainPath, photo.file, {
+      cacheControl: "86400",
+      upsert: false,
+      contentType: "image/jpeg",
+    });
 
-    const { data } = supabase.storage.from(PROFILE_BUCKET).getPublicUrl(filePath);
-    if (!data?.publicUrl) throw new Error("Unable to create profile photo URL.");
+  if (uploadError) {
+    throw new Error(`Photo upload failed: ${uploadError.message}`);
+  }
 
-    return { path: filePath, url: data.publicUrl };
+  const { data: mainData } = supabase.storage
+    .from(PROFILE_BUCKET)
+    .getPublicUrl(mainPath);
+
+  if (!mainData?.publicUrl) {
+    throw new Error("Unable to create profile photo URL.");
+  }
+
+  let thumbUrl = null;
+
+  // -------- THUMB (20–50 KB) — only for main photo (index 0) --------
+  if (index === 0) {
+    try {
+      const thumbFile = await compressThumb(photo.file);
+      const thumbPath = `${base}-thumb.jpg`;
+
+      const { error: thumbError } = await supabase.storage
+        .from(PROFILE_BUCKET)
+        .upload(thumbPath, thumbFile, {
+          cacheControl: "86400",
+          upsert: false,
+          contentType: "image/jpeg",
+        });
+
+      if (!thumbError) {
+        const { data: thumbData } = supabase.storage
+          .from(PROFILE_BUCKET)
+          .getPublicUrl(thumbPath);
+        thumbUrl = thumbData?.publicUrl || null;
+      }
+    } catch (thumbErr) {
+      console.warn("Thumb upload skipped:", thumbErr);
+      // fallback: use main if thumb fails
+      thumbUrl = mainData.publicUrl;
+    }
+  }
+
+  return {
+    path: mainPath,
+    url: mainData.publicUrl,   // main
+    thumbUrl,                  // thumb (only index 0)
   };
+};
 
   // =====================================================
   // FINISH PROFILE
@@ -339,24 +585,34 @@ function ProfileSetup() {
         if (uploaded) uploadedPhotos.push({ index, ...uploaded });
       }
 
-      const mainPhoto = uploadedPhotos.find((p) => p.index === 0);
-      if (!mainPhoto) throw new Error("Main profile photo could not be uploaded.");
 
-      const photoUrls = uploadedPhotos.map((p) => p.url);
-      const photoPaths = uploadedPhotos.map((p) => p.path);
 
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({
-          interests: selectedInterests,
-          profile_photo_url: mainPhoto.url,
-          profile_photos: photoUrls,
-          profile_photo_paths: photoPaths,
-          profile_photo_count: uploadedPhotos.length,
-          profile_completed: true,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", userId);
+const mainPhoto = uploadedPhotos.find((p) => p.index === 0);
+if (!mainPhoto) {
+  throw new Error("Main profile photo could not be uploaded.");
+}
+
+const photoUrls = uploadedPhotos.map((p) => p.url);
+const photoPaths = uploadedPhotos.map((p) => p.path);
+
+const { error: profileError } = await supabase
+  .from("profiles")
+  .update({
+    interests: selectedInterests,
+
+    // MAIN → full profile
+    profile_photo_url: mainPhoto.url,
+
+    // THUMB → cards / lists
+    profile_photo_thumb_url: mainPhoto.thumbUrl || mainPhoto.url,
+
+    profile_photos: photoUrls,
+    profile_photo_paths: photoPaths,
+    profile_photo_count: uploadedPhotos.length,
+    profile_completed: true,
+    updated_at: new Date().toISOString(),
+  })
+  .eq("id", userId);
 
       if (profileError) throw profileError;
 

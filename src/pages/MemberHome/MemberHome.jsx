@@ -795,6 +795,13 @@ useEffect(() => {
     member.image ??
     "";
 
+  // Thumb for cards (fallback to main if no thumb yet)
+  const profilePhotoThumbUrl =
+    member.profile_photo_thumb_url ??
+    profilePhotoUrl;
+
+
+
     // after you have currentUser
 
 
@@ -876,12 +883,13 @@ useEffect(() => {
       member.gender ??
       "",
 
-    // Profile photo
-    profile_photo_url:
-      profilePhotoUrl,
+    // Profile photo — MAIN (full profile / match popup)
+    profile_photo_url: profilePhotoUrl,
 
-    profilePhoto:
-      profilePhotoUrl,
+    // Profile photo — THUMB (member cards)
+    profile_photo_thumb_url: profilePhotoThumbUrl,
+
+    profilePhoto: profilePhotoThumbUrl,
 
     // Location
     city,
@@ -2890,8 +2898,9 @@ const handleStartChat = (member) => {
           "UMUHUZA Member";
 
         const photo =
-          member.profile_photo_url ||
+          member.profile_photo_thumb_url ||
           member.profilePhoto ||
+          member.profile_photo_url ||
           member.profile_photo ||
           member.photoURL ||
           member.photo_url ||

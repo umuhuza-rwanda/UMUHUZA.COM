@@ -22,6 +22,7 @@ import PrivacyPolicy from "./pages/Legal/PrivacyPolicy";
 import ChildSafety from "./pages/Legal/ChildSafety";
 import TermsOfService from "./pages/Legal/TermsOfService";
 import Download from "./pages/Download/Download";
+import AdminPhotoCleanup from "./pages/AdminPhotoCleanup";
 
 // =========================
 // AUTH PAGES
@@ -731,6 +732,8 @@ function App() {
     </MemberLayout>
   }
 />
+
+<Route path="/admin/photo-cleanup" element={<AdminPhotoCleanup />} />
 
           {/* =================================================
               INTERESTS
